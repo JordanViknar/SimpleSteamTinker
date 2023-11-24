@@ -46,7 +46,7 @@ function lgiHelper.connectUtilityToButton(id, button, utility, property, setting
 		button:set_sensitive(true)
 		button:set_active(property)
 		lgiHelper.replaceSignal(button, "on_activated", function()
-			wait(0.01)
+			wait(0.1)
 			configManager.modifyGameConfig(id, setting, not button:get_active())
 		end)
 	else

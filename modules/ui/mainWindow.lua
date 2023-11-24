@@ -49,7 +49,7 @@ return function(app, steamGames)
 				statusLabel = "SteamTinkerLaunch is enabled for this game instead of "..programMetadata.name.."."
 				statusColor = "warning"
 			else
-				statusIcon = "edit-delete-symbolic"
+				statusIcon = "dialog-error-symbolic"
 				statusLabel = programMetadata.name.." is disabled for this game."
 				statusColor = ""
 			end

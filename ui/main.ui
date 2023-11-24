@@ -326,6 +326,27 @@ Command may change depending on installation method.</property>
                                                         </child>
                                                       </object>
                                                     </child>
+                                                    <child>
+                                                      <object class="AdwActionRow" id="gameCompatdata_ActionRow">
+                                                        <property name="title" translatable="true">Proton filesystem location</property>
+                                                        <property name="activatable-widget">gameCompatdataButton</property>
+                                                        <property name="subtitle-lines">2</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkButton" id="gameCompatdataButton">
+                                                            <child>
+                                                              <object class="AdwButtonContent">
+                                                                <property name="icon-name">folder-open-symbolic</property>
+                                                              </object>
+                                                            </child>
+                                                            <style>
+                                                              <class name="image-button"/>
+                                                              <class name="flat"/>
+                                                              <class name="circular"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                 </child>
                                                 <child>
@@ -341,7 +362,7 @@ Command may change depending on installation method.</property>
                                                           <object class="GtkButton" id="protonDBPage_Button">
                                                             <child>
                                                               <object class="AdwButtonContent">
-                                                                <property name="icon-name">application-exit-symbolic</property>
+                                                                <property name="icon-name">help-browser-symbolic</property>
                                                               </object>
                                                             </child>
                                                             <style>
@@ -362,7 +383,7 @@ Command may change depending on installation method.</property>
                                                           <object class="GtkButton" id="PCGamingWikiPage_Button">
                                                             <child>
                                                               <object class="AdwButtonContent">
-                                                                <property name="icon-name">application-exit-symbolic</property>
+                                                                <property name="icon-name">help-browser-symbolic</property>
                                                               </object>
                                                             </child>
                                                             <style>
@@ -383,7 +404,7 @@ Command may change depending on installation method.</property>
                                                           <object class="GtkButton" id="steamDBPage_Button">
                                                             <child>
                                                               <object class="AdwButtonContent">
-                                                                <property name="icon-name">application-exit-symbolic</property>
+                                                                <property name="icon-name">help-browser-symbolic</property>
                                                               </object>
                                                             </child>
                                                             <style>
@@ -429,7 +450,15 @@ Command may change depending on installation method.</property>
                                                 <child>
                                                   <object class="AdwSwitchRow" id="gamemode_switch">
                                                     <property name="subtitle" translatable="true">GameMode is a tool to optimize Linux system performance on demand.</property>
-                                                    <property name="title" translatable="true">Enable GameMode</property>
+                                                    <property name="title">Feral GameMode</property>
+                                                    <property name="sensitive">false</property>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwSwitchRow" id="mangohud_switch">
+                                                    <property name="subtitle" translatable="true">A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.</property>
+                                                    <property name="subtitle-lines">2</property>
+                                                    <property name="title">MangoHud</property>
                                                     <property name="sensitive">false</property>
                                                   </object>
                                                 </child>

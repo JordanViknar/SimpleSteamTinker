@@ -116,6 +116,25 @@ return function(app, builder, game)
 		os.execute("xdg-open '"..game.location:gsub("'", "'\\''").."' &> /dev/null")
 	end)
 
+	-- Sets the compatdata folder in the overview area
+	local gameCompatdata_ActionRow = builder:get_object("gameCompatdata_ActionRow")
+	if game.os_platform == "Windows" then
+		gameCompatdata_ActionRow.visible = true
+		if game.proton_config.compatdata then
+			gameCompatdata_ActionRow:set_sensitive(true)
+			gameCompatdata_ActionRow.subtitle = game.proton_config.compatdata
+			-- Modifies the button to get to the game's compatdata folder
+			lgiHelper.replaceSignal(builder:get_object("gameCompatdataButton"), "on_clicked", function()
+				os.execute("xdg-open '"..game.proton_config.compatdata:gsub("'", "'\\''").."' &> /dev/null")
+			end)
+		else
+			gameCompatdata_ActionRow:set_sensitive(false)
+			gameCompatdata_ActionRow.subtitle = "Not found. Try launching the game at least once ?"
+		end
+	else
+		gameCompatdata_ActionRow.visible = false
+	end
+
 	--[[
 		LINKS
 	]]

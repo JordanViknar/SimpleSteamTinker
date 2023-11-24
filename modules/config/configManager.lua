@@ -47,7 +47,25 @@ function configManager.getGameConfig(gameId)
 	local fileContent = file:read("*a")
 	file:close()
 
-	return json.decode(fileContent)
+	-- Parse the JSON
+	local parsed = json.decode(fileContent)
+
+	-- Update the config to be based on defaultConfigTemplate recursively
+	local defaultConfig = require("modules.config.defaultConfigTemplate")
+	local function updateConfig(config, template)
+		for key, value in pairs(template) do
+			if type(value) == "table" then
+				if config[key] == nil then
+					config[key] = value
+				else
+					updateConfig(config[key], value)
+				end
+			end
+		end
+	end
+	updateConfig(parsed, defaultConfig)
+
+	return parsed
 end
 
 --[[

@@ -18,6 +18,9 @@ function gameLauncher.prepareGameLaunch(game, command)
 		return command
 	end
 
+	-- Environment variables : Part 1
+	local environmentVars = {}
+
 	-- MangoHud
 	if gameConfig.utilities.mangohud.enabled and systemUtils.isInstalled("mangohud") then
 		command = "mangohud "..command
@@ -26,6 +29,12 @@ function gameLauncher.prepareGameLaunch(game, command)
 	-- GameMode
 	if gameConfig.utilities.gamemode.enabled and systemUtils.isInstalled("gamemoderun") then
 		command = "gamemoderun "..command
+	end
+
+	-- Environment variables : Part 2
+	if environmentVars ~= {} then
+		local envVarString = table.concat(environmentVars, " ")
+		command = "env "..envVarString.." "..command
 	end
 
 	return command

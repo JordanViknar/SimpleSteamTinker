@@ -315,6 +315,22 @@ Adw.ApplicationWindow mainWindow {
 															]
 														}
 													}
+													Adw.ActionRow gameCompatdata_ActionRow { //[MODIFIED IN LUA]
+														title: _("Proton filesystem location");
+														activatable-widget: gameCompatdataButton;
+														subtitle-lines: 2;
+														[suffix]
+														Button gameCompatdataButton { //[MODIFIED IN LUA]
+															Adw.ButtonContent {
+																icon-name: "folder-open-symbolic";
+															}
+															styles [
+																"image-button",
+																"flat",
+																"circular"
+															]
+														}
+													}
 												}
 
 												// Links
@@ -329,7 +345,7 @@ Adw.ApplicationWindow mainWindow {
 														[suffix]
 														Button protonDBPage_Button { //[MODIFIED IN LUA]
 															Adw.ButtonContent {
-																icon-name: "application-exit-symbolic";
+																icon-name: "help-browser-symbolic";
 															}
 															styles [
 																"image-button",
@@ -346,7 +362,7 @@ Adw.ApplicationWindow mainWindow {
 														[suffix]
 														Button PCGamingWikiPage_Button { //[MODIFIED IN LUA]
 															Adw.ButtonContent {
-																icon-name: "application-exit-symbolic";
+																icon-name: "help-browser-symbolic";
 															}
 															styles [
 																"image-button",
@@ -363,7 +379,7 @@ Adw.ApplicationWindow mainWindow {
 														[suffix]
 														Button steamDBPage_Button { //[MODIFIED IN LUA]
 															Adw.ButtonContent {
-																icon-name: "application-exit-symbolic";
+																icon-name: "help-browser-symbolic";
 															}
 															styles [
 																"image-button",
@@ -402,13 +418,14 @@ Adw.ApplicationWindow mainWindow {
 
 												Adw.SwitchRow gamemode_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
 													subtitle: _("GameMode is a tool to optimize Linux system performance on demand.");
-													title: _("Enable GameMode");
+													title: "Feral GameMode";
 													sensitive: false;
 												}
 
 												Adw.SwitchRow mangohud_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
-													subtitle: _("A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more...");
-													title: _("Enable MangoHud");
+													subtitle: _("A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.");
+													subtitle-lines: 2;
+													title: "MangoHud";
 													sensitive: false;
 												}
 											}
