@@ -5,6 +5,9 @@ return
 	["utilities"] = {
 		["gamemode"] = {
 			["enabled"] = false;
+		},
+		['mangohud'] = {
+			["enabled"] = false;
 		}
 	}
 }

@@ -18,6 +18,11 @@ function gameLauncher.prepareGameLaunch(game, command)
 		return command
 	end
 
+	-- MangoHud
+	if gameConfig.utilities.mangohud.enabled and systemUtils.isInstalled("mangohud") then
+		command = "mangohud "..command
+	end
+
 	-- GameMode
 	if gameConfig.utilities.gamemode.enabled and systemUtils.isInstalled("gamemoderun") then
 		command = "gamemoderun "..command
