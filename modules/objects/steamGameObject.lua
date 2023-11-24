@@ -1,5 +1,5 @@
 -- Internal Modules
-local fsUtils = require("general_modules.fsUtils")
+local fsUtils = require("modules.general.fsUtils")
 
 -- Constants
 local steamImagesLocation = os.getenv("HOME").."/.local/share/Steam/appcache/librarycache/"

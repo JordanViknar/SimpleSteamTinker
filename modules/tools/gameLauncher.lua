@@ -1,7 +1,7 @@
 -- Internal Modules
-local logSystem = require("general_modules.logSystem")
-local systemUtils = require("general_modules.systemUtils")
-local configManager = require("config_modules.configManager")
+local logSystem = require("modules.general.logSystem")
+local systemUtils = require("modules.general.systemUtils")
+local configManager = require("modules.config.configManager")
 
 local gameLauncher = {}
 

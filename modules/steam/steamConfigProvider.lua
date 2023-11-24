@@ -1,9 +1,9 @@
 -- Internal Modules
-local logSystem = require("general_modules.logSystem")
-local vdfParser = require("steam_modules.vdfParser")
-local steamUtils = require("steam_modules.steamUtils")
-local programMetadata = require("extra_modules.programMetadata")
-local fsUtils = require("general_modules.fsUtils")
+local logSystem = require("modules.general.logSystem")
+local vdfParser = require("modules.steam.vdfParser")
+local steamUtils = require("modules.steam.steamUtils")
+local programMetadata = require("modules.extra.programMetadata")
+local fsUtils = require("modules.general.fsUtils")
 
 -- Timer
 local timeStart
@@ -59,7 +59,7 @@ timeStart = os.clock()
 local libraryFolders = vdfParser.parseFile(os.getenv("HOME").."/.local/share/Steam/config/libraryfolders.vdf")
 
 -- Steam Game Object
-local SteamGame = require("objects_modules.steamGameObject")
+local SteamGame = require("modules.objects.steamGameObject")
 -- And list
 local steamGames = {}
 

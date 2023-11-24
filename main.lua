@@ -2,12 +2,12 @@
 local totalStartupTimeVar = os.clock()
 
 -- Internal Modules
-local logSystem = require("general_modules.logSystem")
-local fsUtils = require("general_modules.fsUtils")
-local systemUtils = require("general_modules.systemUtils")
-local steamUtils = require("steam_modules.steamUtils")
-local programMetadata = require("extra_modules.programMetadata")
-local gameLauncher = require("tool_modules.gameLauncher")
+local logSystem = require("modules.general.logSystem")
+local fsUtils = require("modules.general.fsUtils")
+local systemUtils = require("modules.general.systemUtils")
+local steamUtils = require("modules.steam.steamUtils")
+local programMetadata = require("modules.extra.programMetadata")
+local gameLauncher = require("modules.tools.gameLauncher")
 
 if programMetadata.version:find("dev") then
 	logSystem.log("warning", "DEVELOPMENT VERSION")
@@ -43,7 +43,7 @@ fsUtils.createOrUseDirectory(programMetadata.folders.cache)
 ]]
 
 -- We retrieve games registered in Steam.
-local steamGames = require("steam_modules.steamConfigProvider")
+local steamGames = require("modules.steam.steamConfigProvider")
 collectgarbage("collect")
 
 -- We check if we're starting a Steam game or not through the arguments.
@@ -123,7 +123,7 @@ newSteamGamesTable = nil
 -- Time to start the application
 local timeStart = os.clock()
 function app:on_startup()
-	require("ui_modules.mainWindow")(app, steamGames)
+	require("modules.ui.mainWindow")(app, steamGames)
 end
 
 function app:on_activate()

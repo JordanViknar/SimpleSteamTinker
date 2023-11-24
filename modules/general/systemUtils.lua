@@ -1,5 +1,5 @@
 -- Custom modules
-local logSystem = require("general_modules.logSystem")
+local logSystem = require("modules.general.logSystem")
 
 -- Module
 local systemUtils = {}

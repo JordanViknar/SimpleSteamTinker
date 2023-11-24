@@ -2,7 +2,7 @@
 local lfs = require("lfs")
 
 -- Internal Modules
-local logSystem = require("general_modules.logSystem")
+local logSystem = require("modules.general.logSystem")
 
 -- Module
 local fsUtils = {}

@@ -1,9 +1,9 @@
 -- Internal Modules
-local lgiHelper = require("ui_modules.lgiHelper")
-local protonDBManager = require("steam_modules.protonDBManager")
-local fsUtils = require("general_modules.fsUtils")
-local logSystem = require("general_modules.logSystem")
-local systemUtils = require("general_modules.systemUtils")
+local lgiHelper = require("modules.ui.lgiHelper")
+local protonDBManager = require("modules.steam.protonDBManager")
+local fsUtils = require("modules.general.fsUtils")
+local logSystem = require("modules.general.logSystem")
+local systemUtils = require("modules.general.systemUtils")
 
 -- External Modules
 local lgi = require("lgi")

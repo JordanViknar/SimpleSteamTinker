@@ -1,5 +1,5 @@
 -- Internal Modules
-local lgiHelper = require("ui_modules.lgiHelper")
+local lgiHelper = require("modules.ui.lgiHelper")
 
 return function(application, interface, steamGameData, gameSettings)
 	local protonPage = interface:get_object("protonPage")

@@ -4,7 +4,7 @@ local ltn12 = require("ltn12")
 local json = require("dkjson")
 
 -- Internal Modules
-local logSystem = require("general_modules.logSystem")
+local logSystem = require("modules.general.logSystem")
 
 local protonDBManager = {}
 

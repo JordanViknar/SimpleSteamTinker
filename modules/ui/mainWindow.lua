@@ -1,6 +1,6 @@
 -- Internal Modules
-local programMetadata = require("extra_modules.programMetadata")
-local configManager = require("config_modules.configManager")
+local programMetadata = require("modules.extra.programMetadata")
+local configManager = require("modules.config.configManager")
 
 -- External Modules
 local lgi = require("lgi")
@@ -108,10 +108,10 @@ return function(app, steamGames)
 				css_classes = { "circular", "flat", "image-button" },
 				on_clicked = function()
 					-- We setup the gameSettings UI for this game
-					require("ui_modules.gameSettingsOverview")(app, builder, game)
+					require("modules.ui.gameSettingsOverview")(app, builder, game)
 					local gameSettings = configManager.getGameConfig(game.id)
-					require("ui_modules.gameSettingsUtilities")(app, builder, game, gameSettings)
-					require("ui_modules.gameSettingsProton")(app, builder, game, gameSettings)
+					require("modules.ui.gameSettingsUtilities")(app, builder, game, gameSettings)
+					require("modules.ui.gameSettingsProton")(app, builder, game, gameSettings)
 					collectgarbage("collect")
 
 					mainView:push(gameSettingsInterface)

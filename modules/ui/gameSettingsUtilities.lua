@@ -1,7 +1,7 @@
 -- Internal Modules
-local lgiHelper = require("ui_modules.lgiHelper")
-local systemUtils = require("general_modules.systemUtils")
-local configManager = require("config_modules.configManager")
+local lgiHelper = require("modules.ui.lgiHelper")
+local systemUtils = require("modules.general.systemUtils")
+local configManager = require("modules.config.configManager")
 
 return function(application, interface, steamGameData, gameSettings)
 	-- GameMode

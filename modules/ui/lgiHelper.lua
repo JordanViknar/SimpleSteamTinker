@@ -3,8 +3,8 @@ local lgi = require("lgi")
 local GObject = lgi.GObject
 
 -- Internal Modules
-local systemUtils = require("general_modules.systemUtils")
-local configManager = require("config_modules.configManager")
+local systemUtils = require("modules.general.systemUtils")
+local configManager = require("modules.config.configManager")
 
 local lgiHelper = {}
 

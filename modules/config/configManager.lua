@@ -1,7 +1,7 @@
 -- Internal Modules
-local gameConfigFolder = require("extra_modules.programMetadata").folders.gamesConfig
-local fsUtils = require("general_modules.fsUtils")
-local logSystem = require("general_modules.logSystem")
+local gameConfigFolder = require("modules.extra.programMetadata").folders.gamesConfig
+local fsUtils = require("modules.general.fsUtils")
+local logSystem = require("modules.general.logSystem")
 
 -- External Modules
 local json = require("dkjson")
@@ -16,7 +16,7 @@ local configManager = {}
 ]]
 function configManager.createGameConfig(gameId)
 	-- Grab the default template
-	local gameConfig = require("config_modules.defaultConfigTemplate")
+	local gameConfig = require("modules.config.defaultConfigTemplate")
 	gameConfig.steamGameId = gameId
 
 	-- Write the new table to the file
