@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=SimpleSteamTinker
+Comment=A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch.
+Exec=/usr/bin/sst
+Terminal=false
+Type=Application
+Categories=Game;

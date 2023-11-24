@@ -41,6 +41,7 @@ package() {
 
 	install -D "${app_directory}/sst" "${pkgdir}/usr/bin/sst"
 	install -D "${app_directory}/main.lua" "${install_directory}/main.lua"
+	install -D "${app_directory}/assets/desktop/system.desktop" "${pkgdir}/usr/share/applications/SimpleSteamTinker.desktop"
 	cp -r "${app_directory}/modules" "${install_directory}/modules"
 	cp -r "${app_directory}/ui" "${install_directory}/ui"
 }
