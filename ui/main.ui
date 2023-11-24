@@ -135,10 +135,10 @@ Command may change depending on installation method.</property>
                                           <object class="AdwClamp">
                                             <child>
                                               <object class="GtkBox">
-                                                <property name="margin-bottom">12</property>
+                                                <property name="margin-bottom">16</property>
                                                 <property name="margin-end">12</property>
                                                 <property name="margin-start">12</property>
-                                                <property name="margin-top">12</property>
+                                                <property name="margin-top">16</property>
                                                 <property name="orientation">1</property>
                                                 <property name="spacing">16</property>
                                                 <property name="vexpand">true</property>
@@ -243,8 +243,8 @@ Command may change depending on installation method.</property>
                                                     <property name="title" translatable="true">Game details</property>
                                                     <child>
                                                       <object class="AdwActionRow">
-                                                        <property name="title" translatable="true">Steam ID</property>
-                                                        <property name="subtitle" translatable="true">The game's Steam ID.</property>
+                                                        <property name="title" translatable="true">Steam AppID</property>
+                                                        <property name="subtitle" translatable="true">The game's Steam AppID.</property>
                                                         <property name="activatable-widget">gameID_copyButton</property>
                                                         <child type="suffix">
                                                           <object class="GtkBox">
@@ -314,7 +314,76 @@ Command may change depending on installation method.</property>
                                                           <object class="GtkButton" id="gameLocationButton">
                                                             <child>
                                                               <object class="AdwButtonContent">
-                                                                <property name="icon-name">folder-symbolic</property>
+                                                                <property name="icon-name">folder-open-symbolic</property>
+                                                              </object>
+                                                            </child>
+                                                            <style>
+                                                              <class name="image-button"/>
+                                                              <class name="flat"/>
+                                                              <class name="circular"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup">
+                                                    <property name="title" translatable="true">Links</property>
+                                                    <property name="description" translatable="true">Links to useful pages related to the game.</property>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">ProtonDB</property>
+                                                        <property name="subtitle" translatable="true">The game's ProtonDB page.</property>
+                                                        <property name="activatable-widget">protonDBPage_Button</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkButton" id="protonDBPage_Button">
+                                                            <child>
+                                                              <object class="AdwButtonContent">
+                                                                <property name="icon-name">application-exit-symbolic</property>
+                                                              </object>
+                                                            </child>
+                                                            <style>
+                                                              <class name="image-button"/>
+                                                              <class name="flat"/>
+                                                              <class name="circular"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">PCGamingWiki</property>
+                                                        <property name="subtitle" translatable="true">The game's PCGamingWiki page.</property>
+                                                        <property name="activatable-widget">PCGamingWikiPage_Button</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkButton" id="PCGamingWikiPage_Button">
+                                                            <child>
+                                                              <object class="AdwButtonContent">
+                                                                <property name="icon-name">application-exit-symbolic</property>
+                                                              </object>
+                                                            </child>
+                                                            <style>
+                                                              <class name="image-button"/>
+                                                              <class name="flat"/>
+                                                              <class name="circular"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">SteamDB</property>
+                                                        <property name="subtitle" translatable="true">The game's SteamDB page.</property>
+                                                        <property name="activatable-widget">steamDBPage_Button</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkButton" id="steamDBPage_Button">
+                                                            <child>
+                                                              <object class="AdwButtonContent">
+                                                                <property name="icon-name">application-exit-symbolic</property>
                                                               </object>
                                                             </child>
                                                             <style>

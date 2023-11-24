@@ -144,10 +144,10 @@ Adw.ApplicationWindow mainWindow {
 
 										Adw.Clamp {
 											Box {
-												margin-bottom: 12;
+												margin-bottom: 16;
 												margin-end: 12;
 												margin-start: 12;
-												margin-top: 12;
+												margin-top: 16;
 												orientation: vertical;
 												spacing: 16;
 												vexpand: true;
@@ -247,8 +247,8 @@ Adw.ApplicationWindow mainWindow {
 													title: _("Game details");
 
 													Adw.ActionRow {
-														title: _("Steam ID");
-														subtitle: _("The game's Steam ID.");
+														title: _("Steam AppID");
+														subtitle: _("The game's Steam AppID.");
 														activatable-widget: gameID_copyButton;
 														[suffix]
 														Box {
@@ -306,7 +306,64 @@ Adw.ApplicationWindow mainWindow {
 														[suffix]
 														Button gameLocationButton { //[MODIFIED IN LUA]
 															Adw.ButtonContent {
-																icon-name: "folder-symbolic";
+																icon-name: "folder-open-symbolic";
+															}
+															styles [
+																"image-button",
+																"flat",
+																"circular"
+															]
+														}
+													}
+												}
+
+												// Links
+												Adw.PreferencesGroup {
+													title: _("Links");
+													description: _("Links to useful pages related to the game.");
+
+													Adw.ActionRow {
+														title: _("ProtonDB");
+														subtitle: _("The game's ProtonDB page.");
+														activatable-widget: protonDBPage_Button;
+														[suffix]
+														Button protonDBPage_Button { //[MODIFIED IN LUA]
+															Adw.ButtonContent {
+																icon-name: "application-exit-symbolic";
+															}
+															styles [
+																"image-button",
+																"flat",
+																"circular"
+															]
+														}
+													}
+
+													Adw.ActionRow {
+														title: _("PCGamingWiki");
+														subtitle: _("The game's PCGamingWiki page.");
+														activatable-widget: PCGamingWikiPage_Button;
+														[suffix]
+														Button PCGamingWikiPage_Button { //[MODIFIED IN LUA]
+															Adw.ButtonContent {
+																icon-name: "application-exit-symbolic";
+															}
+															styles [
+																"image-button",
+																"flat",
+																"circular"
+															]
+														}
+													}
+
+													Adw.ActionRow {
+														title: _("SteamDB");
+														subtitle: _("The game's SteamDB page.");
+														activatable-widget: steamDBPage_Button;
+														[suffix]
+														Button steamDBPage_Button { //[MODIFIED IN LUA]
+															Adw.ButtonContent {
+																icon-name: "application-exit-symbolic";
 															}
 															styles [
 																"image-button",

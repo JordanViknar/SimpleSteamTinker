@@ -115,4 +115,22 @@ return function(app, builder, game)
 	lgiHelper.replaceSignal(gameFolderButton, "on_clicked", function()
 		os.execute("xdg-open '"..game.location:gsub("'", "'\\''").."' &> /dev/null")
 	end)
+
+	--[[
+		LINKS
+	]]
+	local protonDBPage_Button = builder:get_object("protonDBPage_Button")
+	lgiHelper.replaceSignal(protonDBPage_Button, "on_clicked", function()
+		os.execute("xdg-open 'https://www.protondb.com/app/"..game.id.."' &> /dev/null")
+	end)
+
+	local steamDBPage_Button = builder:get_object("steamDBPage_Button")
+	lgiHelper.replaceSignal(steamDBPage_Button, "on_clicked", function()
+		os.execute("xdg-open 'https://steamdb.info/app/"..game.id.."' &> /dev/null")
+	end)
+
+	local PCGamingWikiPage_Button = builder:get_object("PCGamingWikiPage_Button")
+	lgiHelper.replaceSignal(PCGamingWikiPage_Button, "on_clicked", function()
+		os.execute("xdg-open 'https://www.pcgamingwiki.com/wiki/"..game.name:gsub(" ", "_").."' &> /dev/null")
+	end)
 end
