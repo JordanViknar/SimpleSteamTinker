@@ -1,0 +1,52 @@
+# Maintainer: JordanViknar
+
+pkgname=simplesteamtinker-git
+pkgver=r3.4b64290
+pkgrel=1
+pkgdesc="A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch."
+arch=('x86_64' 'i686' 'armv7h' 'aarch64')
+url=https://github.com/JordanViknar/SimpleSteamTinker
+license=(MPL-2.0)
+makedepends=(
+	'git'
+	'blueprint-compiler'
+)
+depends=(
+	'lua'
+	'lua-lgi-git' # Used for GTK (git version because latest release doesn't support Libadwaita and is very old)
+	'libadwaita'
+	'gtk4'
+	'lua-filesystem' # Used for some filesystem operations
+	'lua-socket' # Used for network operations
+	'lua-sec' # Used for secure https interactions
+	'lua-dkjson' # Used for json parsing
+	'xclip' # Used for copying to clipboard
+	'libnotify' # Used for notifications
+)
+optdepends=(
+	'lua-lpeg: Speed up config-related operations.'
+	'gamemode: Enable GameMode support'
+)
+makedepends=(git)
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+source=("SimpleSteamTinker::git+https://github.com/JordanViknar/SimpleSteamTinker")
+md5sums=(SKIP)
+
+pkgver() {
+	cd "$srcdir/SimpleSteamTinker"
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package() {
+	app_directory="${srcdir}/SimpleSteamTinker"
+	install_directory="${pkgdir}/usr/share/SimpleSteamTinker"
+	
+	# Update the UI in case it's outdated
+	${app_directory}/update-ui.sh
+
+	install -D "${app_directory}/sst" "${pkgdir}/usr/bin/sst"
+	install -D "${app_directory}/main.lua" "${install_directory}/main.lua"
+	cp -r "${app_directory}/modules" "${install_directory}/modules"
+	cp -r "${app_directory}/ui" "${install_directory}/ui"
+}
