@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <object class="AdwApplicationWindow" id="mainWindow">
+    <property name="default-height">500</property>
+    <property name="default-width">700</property>
+    <property name="height-request">400</property>
+    <property name="show-menubar">true</property>
+    <property name="width-request">360</property>
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 500sp</condition>
+        <setter object="sidebarToggleButton" property="visible">true</setter>
+        <setter object="sidebarToggleButton" property="active">false</setter>
+        <setter object="gameSettings_SplitView" property="collapsed">true</setter>
+      </object>
+    </child>
+    <child type="content">
+      <object class="AdwToastOverlay" id="toastSystem">
+        <child>
+          <object class="AdwToolbarView" id="topbar">
+            <child type="top">
+              <object class="AdwHeaderBar">
+                <child>
+                  <object class="GtkButton" id="backToMenu">
+                    <property name="has-frame">false</property>
+                    <property name="icon-name">go-previous-symbolic</property>
+                    <property name="visible">false</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="sidebarToggleButton">
+                    <property name="active">true</property>
+                    <property name="visible">false</property>
+                    <property name="has-frame">false</property>
+                    <property name="icon-name">view-sidebar-start-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwNavigationView" id="mainView">
+                <child>
+                  <object class="AdwNavigationPage" id="mainPage">
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="hscrollbar-policy">2</property>
+                        <child>
+                          <object class="AdwClamp">
+                            <property name="margin-bottom">12</property>
+                            <property name="margin-end">12</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-top">12</property>
+                            <child>
+                              <object class="AdwPreferencesGroup" id="gameList">
+                                <property name="description" translatable="true">Insert "sst %command%" as a game's launch options to enable it here.
+Command may change depending on installation method.</property>
+                                <property name="title" translatable="true">Detected Steam games</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwNavigationPage" id="gameSettings">
+                    <child>
+                      <object class="AdwOverlaySplitView" id="gameSettings_SplitView">
+                        <property name="min-sidebar-width">0</property>
+                        <property name="show-sidebar" bind-source="sidebarToggleButton" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                        <property name="sidebar">
+                          <object class="AdwNavigationPage" id="gameSettingsSidebar">
+                            <property name="child">
+                              <object class="AdwToolbarView">
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">1</property>
+                                    <property name="vexpand">true</property>
+                                    <property name="vexpand-set">true</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="hexpand">true</property>
+                                        <property name="hexpand-set">true</property>
+                                        <property name="margin-bottom">12</property>
+                                        <property name="margin-end">12</property>
+                                        <property name="margin-start">12</property>
+                                        <property name="margin-top">12</property>
+                                        <property name="orientation">1</property>
+                                        <property name="spacing">8</property>
+                                        <property name="valign">1</property>
+                                        <child>
+                                          <object class="GtkImage" id="gameSettingsSidebarIcon">
+                                            <property name="icon-size">2</property>
+                                            <style>
+                                              <class name="lowres-icon"/>
+                                            </style>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="gameSettingsSidebarLabel">
+                                            <property name="justify">2</property>
+                                            <property name="wrap">true</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkStackSidebar">
+                                        <property name="vexpand">true</property>
+                                        <property name="vexpand-set">true</property>
+                                        <property name="stack">gameSettingsStack</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </property>
+                          </object>
+                        </property>
+                        <property name="content">
+                          <object class="AdwNavigationPage">
+                            <child>
+                              <object class="GtkStack" id="gameSettingsStack">
+                                <property name="transition-type">1</property>
+                                <child>
+                                  <object class="GtkStackPage" id="overviewPage">
+                                    <property name="name">overviewPage</property>
+                                    <property name="title" translatable="true">Overview</property>
+                                    <property name="child">
+                                      <object class="GtkScrolledWindow">
+                                        <property name="hscrollbar-policy">2</property>
+                                        <child>
+                                          <object class="AdwClamp">
+                                            <child>
+                                              <object class="GtkBox">
+                                                <property name="margin-bottom">12</property>
+                                                <property name="margin-end">12</property>
+                                                <property name="margin-start">12</property>
+                                                <property name="margin-top">12</property>
+                                                <property name="orientation">1</property>
+                                                <property name="spacing">16</property>
+                                                <property name="vexpand">true</property>
+                                                <property name="vexpand-set">true</property>
+                                                <child>
+                                                  <object class="AdwClamp">
+                                                    <property name="maximum-size">350</property>
+                                                    <child>
+                                                      <object class="GtkPicture" id="gameBanner">
+                                                        <property name="height-request">200</property>
+                                                        <property name="halign">0</property>
+                                                        <property name="valign">0</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox">
+                                                    <property name="orientation">1</property>
+                                                    <property name="spacing">8</property>
+                                                    <property name="halign">3</property>
+                                                    <child>
+                                                      <object class="GtkLabel" id="gameTitle">
+                                                        <property name="halign">3</property>
+                                                        <property name="valign">2</property>
+                                                        <property name="wrap">true</property>
+                                                        <style>
+                                                          <class name="title-1"/>
+                                                        </style>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="protonDBRating_Box">
+                                                        <property name="orientation">0</property>
+                                                        <property name="spacing">8</property>
+                                                        <property name="halign">3</property>
+                                                        <child>
+                                                          <object class="GtkLabel">
+                                                            <property name="label" translatable="true">ProtonDB Rating :</property>
+                                                            <property name="halign">3</property>
+                                                            <property name="valign">2</property>
+                                                            <style>
+                                                              <class name="dim-label"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkLabel" id="protonDBRating_Label">
+                                                            <property name="label" translatable="true">Unavailable</property>
+                                                            <property name="halign">3</property>
+                                                            <property name="valign">2</property>
+                                                            <style>
+                                                              <class name="dim-label"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton" id="gameLaunchButton">
+                                                    <property name="halign">3</property>
+                                                    <property name="valign">2</property>
+                                                    <child>
+                                                      <object class="AdwButtonContent">
+                                                        <property name="icon-name">media-playback-start-symbolic</property>
+                                                        <property name="label" translatable="true">Launch</property>
+                                                      </object>
+                                                    </child>
+                                                    <style>
+                                                      <class name="suggested-action"/>
+                                                      <class name="pill"/>
+                                                      <class name="image-button"/>
+                                                    </style>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup">
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">SimpleSteamTinker Status</property>
+                                                        <property name="subtitle" translatable="true">Based on the game's launch options.</property>
+                                                        <property name="subtitle-lines">1</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkLabel" id="gameStatus_Label">
+                                                            <property name="label" translatable="true">Placeholder</property>
+                                                            <property name="halign">2</property>
+                                                            <property name="wrap">true</property>
+                                                            <style>
+                                                              <class name="dim-label"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup">
+                                                    <property name="description" translatable="true">Details about the game.</property>
+                                                    <property name="title" translatable="true">Game details</property>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">Steam ID</property>
+                                                        <property name="subtitle" translatable="true">The game's Steam ID.</property>
+                                                        <property name="activatable-widget">gameID_copyButton</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkBox">
+                                                            <property name="spacing">8</property>
+                                                            <child>
+                                                              <object class="GtkLabel" id="gameID_Label">
+                                                                <property name="halign">2</property>
+                                                                <property name="wrap">true</property>
+                                                                <property name="selectable">true</property>
+                                                                <style>
+                                                                  <class name="dim-label"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                            <child>
+                                                              <object class="GtkButton" id="gameID_copyButton">
+                                                                <property name="halign">2</property>
+                                                                <property name="icon-name">edit-copy-symbolic</property>
+                                                                <style>
+                                                                  <class name="image-button"/>
+                                                                  <class name="flat"/>
+                                                                  <class name="circular"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">Platform</property>
+                                                        <property name="subtitle" translatable="true">The platform the game was developed for.</property>
+                                                        <property name="subtitle-lines">1</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkLabel" id="gamePlatform_Label">
+                                                            <property name="halign">2</property>
+                                                            <property name="wrap">true</property>
+                                                            <style>
+                                                              <class name="dim-label"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">Size</property>
+                                                        <property name="subtitle" translatable="true">The size of the game on the drive.</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkLabel" id="gameSize_Label">
+                                                            <property name="halign">2</property>
+                                                            <property name="lines">1</property>
+                                                            <style>
+                                                              <class name="dim-label"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow" id="gameLocation_ActionRow">
+                                                        <property name="title" translatable="true">Location</property>
+                                                        <property name="activatable-widget">gameLocationButton</property>
+                                                        <property name="subtitle-lines">2</property>
+                                                        <child type="suffix">
+                                                          <object class="GtkButton" id="gameLocationButton">
+                                                            <child>
+                                                              <object class="AdwButtonContent">
+                                                                <property name="icon-name">folder-symbolic</property>
+                                                              </object>
+                                                            </child>
+                                                            <style>
+                                                              <class name="image-button"/>
+                                                              <class name="flat"/>
+                                                              <class name="circular"/>
+                                                            </style>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkStackPage" id="utilitiesPage">
+                                    <property name="title" translatable="true">Utilities</property>
+                                    <property name="child">
+                                      <object class="AdwClampScrollable">
+                                        <property name="margin-bottom">12</property>
+                                        <property name="margin-end">12</property>
+                                        <property name="margin-start">12</property>
+                                        <property name="margin-top">12</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="margin-bottom">12</property>
+                                            <property name="margin-end">12</property>
+                                            <property name="margin-start">12</property>
+                                            <property name="margin-top">12</property>
+                                            <property name="orientation">1</property>
+                                            <property name="spacing">18</property>
+                                            <child>
+                                              <object class="AdwPreferencesGroup">
+                                                <property name="description" translatable="true">Those are generally safe settings you may want enabled.</property>
+                                                <property name="title" translatable="true">Linux Utilities</property>
+                                                <child>
+                                                  <object class="AdwSwitchRow" id="gamemode_switch">
+                                                    <property name="subtitle" translatable="true">GameMode is a tool to optimize Linux system performance on demand.</property>
+                                                    <property name="title" translatable="true">Enable GameMode</property>
+                                                    <property name="sensitive">false</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkStackPage" id="commandPage">
+                                    <property name="title" translatable="true">Launch options</property>
+                                    <property name="child">
+                                      <object class="GtkLabel">
+                                        <property name="label">Coming Soon</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkStackPage" id="protonPage">
+                                    <property name="title">Proton</property>
+                                    <property name="child">
+                                      <object class="GtkLabel">
+                                        <property name="label">Coming Soon</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkStackPage" id="cleaner">
+                                    <property name="title">Cleaner</property>
+                                    <property name="child">
+                                      <object class="GtkLabel">
+                                        <property name="label">Coming Soon</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

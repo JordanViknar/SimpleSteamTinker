@@ -1,0 +1,386 @@
+/*
+	Why not use LGI directly instead ?
+
+	Because LGI doesn't support well many properties, that can be easily defined here.
+	Still, both are by FAR a much better solution than using XML directly.
+	Plus, I feel like using a universal standard would be a good idea to make it easier for people to contribute.
+*/
+
+using Gtk 4.0;
+using Adw 1;
+
+Adw.ApplicationWindow mainWindow {
+	default-height: 500;
+	default-width: 700;
+	height-request: 400;
+	show-menubar: true;
+	width-request: 360;
+
+	// AdwBreakpoint used to dynamically make the sidebar appear or disappear depending on the window's width.
+	Adw.Breakpoint {
+		condition ("max-width: 500sp")
+		setters {
+			sidebarToggleButton.visible: true;
+			sidebarToggleButton.active: false;
+			gameSettings_SplitView.collapsed: true;
+		}
+	}
+
+	[content]
+	Adw.ToastOverlay toastSystem { //[INTERACTS WITH LUA]
+		Adw.ToolbarView topbar {
+			// Header bar
+			[top]
+			Adw.HeaderBar {
+				// Button that allows you to exit the game settings page, hidden by default and shown through Lua code when needed.
+				Button backToMenu { //[MODIFIED IN LUA][INTERACTS THROUGH LUA]
+					has-frame: false;
+					icon-name: "go-previous-symbolic";
+					visible: false;
+				}
+
+				// Button that allows you to toggle the sidebar in the game settings page.
+				ToggleButton sidebarToggleButton { //[MODIFIED IN LUA][INTERACTS THROUGH LUA]
+					active: true;
+					visible: false;
+					has-frame: false;
+					icon-name: "view-sidebar-start-symbolic";
+				}
+			}
+
+			/*
+				MAIN VIEW
+				This is the page the program starts on when it's launched.
+			*/
+			Adw.NavigationView mainView {
+				Adw.NavigationPage mainPage {
+					ScrolledWindow {
+						hscrollbar-policy: never;
+
+						Adw.Clamp {
+							margin-bottom: 12;
+							margin-end: 12;
+							margin-start: 12;
+							margin-top: 12;
+
+							Adw.PreferencesGroup gameList { //[MODIFIED IN LUA]
+								description: _("Insert \"sst %command%\" as a game\'s launch options to enable it here.\nCommand may change depending on installation method.");
+								title: _("Detected Steam games");
+							}
+						}
+					}
+				}
+
+				// This is the page that shows up when you click on a game.
+				/*
+					SHOULD BE PUT IN A SEPARATE FILE LATER ON
+				*/
+				Adw.NavigationPage gameSettings { //[INTERACTS THROUGH LUA]
+					Adw.OverlaySplitView gameSettings_SplitView {
+						/*
+							SIDEBAR
+						*/
+
+						min-sidebar-width: 0;
+						show-sidebar: bind sidebarToggleButton.active bidirectional;
+						sidebar: 
+						Adw.NavigationPage gameSettingsSidebar {
+							child:
+							Adw.ToolbarView {
+								Box {
+									orientation: vertical;
+									vexpand: true;
+									vexpand-set: true;
+
+									// This is the header of the sidebar of the game settings page.
+									Box {
+										hexpand: true;
+										hexpand-set: true;
+										margin-bottom: 12;
+										margin-end: 12;
+										margin-start: 12;
+										margin-top: 12;
+										orientation: vertical;
+										spacing: 8;
+										valign: start;
+
+										// This is the icon in the sidebar of the game settings page.
+										Image gameSettingsSidebarIcon { //[MODIFIED IN LUA]
+											icon-size: large;
+											styles [ "lowres-icon" ]
+										}
+										// This is the title in the sidebar of the game settings page.
+										Label gameSettingsSidebarLabel { //[MODIFIED IN LUA]
+											justify: center;
+											wrap: true;
+										}
+									}
+
+									// This is the list of pages in the sidebar of the game settings page.
+									StackSidebar {
+										vexpand: true;
+										vexpand-set: true;
+										stack: gameSettingsStack;
+									}
+								}
+							};
+						};
+						
+						/*
+							OVERVIEW PAGE
+						*/
+						content:
+						Adw.NavigationPage {
+							Stack gameSettingsStack {
+								transition-type: crossfade;
+
+								StackPage overviewPage { //[INTERACTS IN LUA]
+									name: "overviewPage";
+									title: _("Overview");
+
+									child:
+									ScrolledWindow {
+										hscrollbar-policy: never;
+
+										Adw.Clamp {
+											Box {
+												margin-bottom: 12;
+												margin-end: 12;
+												margin-start: 12;
+												margin-top: 12;
+												orientation: vertical;
+												spacing: 16;
+												vexpand: true;
+												vexpand-set: true;
+
+												// Game banner
+												Adw.Clamp { //[MODIFIED IN LUA]
+													maximum-size: 350;
+													Picture gameBanner {
+														height-request: 200;
+														halign: fill;
+														valign: fill;
+													}
+												}
+
+												Box {
+													orientation: vertical;
+													spacing: 8;
+													halign: center;
+
+													// Game title
+													Label gameTitle { //[MODIFIED IN LUA]
+														halign: center;
+														valign: end;
+														wrap: true;
+
+														styles [
+															"title-1"
+														]
+													}
+
+													// ProtonDB Rating
+													Box protonDBRating_Box {
+														orientation: horizontal;
+														spacing: 8;
+														halign: center;
+														Label {
+															label: _("ProtonDB Rating :");
+															halign: center;
+															valign: end;
+
+															styles [
+																"dim-label"
+															]
+														}
+														Label protonDBRating_Label { //[MODIFIED IN LUA]
+															label: _("Unavailable");
+															halign: center;
+															valign: end;
+
+															styles [
+																"dim-label"
+															]
+														}
+													}
+												}
+
+												// Launch button
+												Button gameLaunchButton { //[INTERACTS THROUGH LUA]
+													halign: center;
+													valign: end;
+
+													Adw.ButtonContent {
+														icon-name: "media-playback-start-symbolic";
+														label: _("Launch");
+													}
+
+													styles [
+														"suggested-action",
+														"pill",
+														"image-button"
+													]
+												}
+
+												// SimpleSteamMod Status
+												Adw.PreferencesGroup {
+													Adw.ActionRow {
+														title: _("SimpleSteamTinker Status");
+														subtitle: _("Based on the game's launch options.");
+														subtitle-lines: 1;
+
+														[suffix]
+														Label gameStatus_Label { //[MODIFIED IN LUA]
+															label: _("Placeholder");
+															halign: end;
+															wrap: true;
+															styles [
+																"dim-label"
+															]
+														}
+													}
+												}
+
+												// Game details
+												Adw.PreferencesGroup {
+													description: _("Details about the game.");
+													title: _("Game details");
+
+													Adw.ActionRow {
+														title: _("Steam ID");
+														subtitle: _("The game's Steam ID.");
+														activatable-widget: gameID_copyButton;
+														[suffix]
+														Box {
+															spacing: 8;
+															Label gameID_Label { //[MODIFIED IN LUA]
+																halign: end;
+																wrap: true;
+																selectable: true;
+																styles [
+																	"dim-label"
+																]
+															}
+															Button gameID_copyButton { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+																halign: end;
+																icon-name: "edit-copy-symbolic";
+																styles [
+																	"image-button",
+																	"flat",
+																	"circular"
+																]
+															}
+														}
+													}
+													Adw.ActionRow {
+														title: _("Platform");
+														subtitle: _("The platform the game was developed for.");
+														subtitle-lines: 1;
+
+														[suffix]
+														Label gamePlatform_Label { //[MODIFIED IN LUA]
+															halign: end;
+															wrap: true;
+															styles [
+																"dim-label"
+															]
+														}
+													}
+													Adw.ActionRow {
+														title: _("Size");
+														subtitle: _("The size of the game on the drive.");
+
+														[suffix]
+														Label gameSize_Label { //[MODIFIED IN LUA]
+															halign: end;
+															lines: 1;
+															styles [
+																"dim-label"
+															]
+														}
+													}
+													Adw.ActionRow gameLocation_ActionRow { //[MODIFIED IN LUA]
+														title: _("Location");
+														activatable-widget: gameLocationButton;
+														subtitle-lines: 2;
+														[suffix]
+														Button gameLocationButton { //[MODIFIED IN LUA]
+															Adw.ButtonContent {
+																icon-name: "folder-symbolic";
+															}
+															styles [
+																"image-button",
+																"flat",
+																"circular"
+															]
+														}
+													}
+												}
+											}
+										}
+									};
+								}
+
+								StackPage utilitiesPage {
+									title: _("Utilities");
+
+									child:
+									Adw.ClampScrollable {
+										margin-bottom: 12;
+										margin-end: 12;
+										margin-start: 12;
+										margin-top: 12;
+
+										Box {
+											margin-bottom: 12;
+											margin-end: 12;
+											margin-start: 12;
+											margin-top: 12;
+											orientation: vertical;
+											spacing: 18;
+
+											Adw.PreferencesGroup {
+												description: _("Those are generally safe settings you may want enabled.");
+												title: _("Linux Utilities");
+
+												Adw.SwitchRow gamemode_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+													subtitle: _("GameMode is a tool to optimize Linux system performance on demand.");
+													title: _("Enable GameMode");
+													sensitive: false;
+												}
+											}
+										}
+									};
+								}
+
+								StackPage commandPage {
+									title: _("Launch options");
+									child:
+									Label {
+										label: "Coming Soon";
+									};
+								}
+
+								StackPage protonPage { //[MODIFIED IN LUA]: This page is only shown if the game is using Proton.
+									title: "Proton";
+									child:
+									Label {
+										label: "Coming Soon";
+									};
+								}
+
+								StackPage cleaner { //[MODIFIED IN LUA]: This page is only shown if the game is using Proton.
+									title: "Cleaner";
+									child:
+									Label {
+										label: "Coming Soon";
+									};
+								}
+							}
+						};
+					}
+				}
+			}
+		}
+	}
+}

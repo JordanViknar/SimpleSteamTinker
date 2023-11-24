@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Check if installed locally (main.lua is in the same directory as this script) or in the system (main.lua is in /usr/share/simplesteammod)
+if [ -f "$(dirname $0)/main.lua" ]; then
+	# Installed locally
+	SCRIPT_PATH="$(dirname $0)"
+elif [ -f "/usr/share/SimpleSteamTinker/main.lua" ]; then
+	# Installed in the system
+	SCRIPT_PATH="/usr/share/SimpleSteamTinker"
+else
+	echo "main.lua not found. Please install SimpleSteamTinker and try again."
+	exit 1
+fi
+
+# Set LUA_PATH to avoid missing require issues, using the detected directory
+export LUA_PATH="$SCRIPT_PATH/?.lua;$SCRIPT_PATH/?/init.lua;;"
+
+# Provide script directory
+export SST_SCRIPT_PATH="$SCRIPT_PATH/"
+
+# Check if Lua is installed and run main.lua, accounting for the script path
+if [ -x "$(command -v lua)" ]; then
+	lua $SCRIPT_PATH/main.lua "$@"
+else
+	echo "No Lua installation found. Please install Lua and try again."
+	exit 1
+fi
