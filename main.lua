@@ -16,15 +16,6 @@ end
 -- Garbage collection settings
 collectgarbage("incremental")
 
--- Put the arguments inside the cache folder for testing purposes
-local cacheFile = io.open(programMetadata.folders.cache.."/lastArguments.txt", "w")
-if not cacheFile then
-	logSystem.log("error", "Unable to open cache file.")
-else
-	cacheFile:write(table.concat(arg, "\n"))
-	cacheFile:close()
-end
-
 --[[ 
 	Chapter 0 : Preparing the environment
 	We need to create the config folder if it doesn't exist.
@@ -36,6 +27,15 @@ fsUtils.createOrUseDirectory(programMetadata.folders.gamesConfig)
 
 -- Create the cache folder if it doesn't exist
 fsUtils.createOrUseDirectory(programMetadata.folders.cache)
+
+-- Put the arguments inside the cache folder for testing purposes
+local cacheFile = io.open(programMetadata.folders.cache.."/lastArguments.txt", "w")
+if not cacheFile then
+	logSystem.log("error", "Unable to open cache file.")
+else
+	cacheFile:write(table.concat(arg, "\n"))
+	cacheFile:close()
+end
 
 --[[
 	Chapter 1 : Game management

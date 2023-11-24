@@ -23,6 +23,25 @@ function fsUtils.exists(path)
 end
 
 --[[
+	Name : function fsUtils.isDirectory(path)
+	Description : Checks if a path is a directory.
+	Arg 1 : path (string) : The path to check.
+	Return : true if the path is a directory, false otherwise.
+]]
+function fsUtils.isDirectory(path)
+	local attributes, err = lfs.attributes(path)
+	if attributes then
+		if attributes.mode == "directory" then
+			return true
+		else
+			return false
+		end
+	else
+		return false, err
+	end
+end
+
+--[[
 	Name : function fsUtils.createDirectory(path)
 	Description : Creates a directory.
 	Arg 1 : path (string) : The path to create.
@@ -144,7 +163,7 @@ end
 
 function fsUtils.directoryContainsLinuxData(location)
 	for file in lfs.dir(location) do
-		if (file:find(".sh") or not file:find(".")) and (file ~= "." or "..") then
+		if (string.find(file,".sh") or not string.find(file,".")) and not fsUtils.isDirectory(location.."/"..file) then
 			local containsKeywords = checkFileForKeywords(location, file)
 			if containsKeywords then
 				return true

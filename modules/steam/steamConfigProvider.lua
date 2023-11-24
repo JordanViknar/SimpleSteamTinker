@@ -45,7 +45,19 @@ timeStart = os.clock()
 local userAppSettings = vdfParser.parseFile(
 	os.getenv("HOME").."/.local/share/Steam/userdata/"..userData["users"][activeUserID]["steamID3"]["onlyId"].."/config/localconfig.vdf",
 	{"UserLocalConfigStore","Software","Valve","Steam","apps"},
-	{"CachedCommunityPreferences", "CachedStorePreferences", "CachedNotificationPreferences", "SteamVoiceSettings_", "UIStoreLocalSteamUIState", "CTextFilterStore_strBannedPattern", "trendingstore_storage", "GetEquippedProfileItemsForUser"} -- Optimization : we remove big lines that we don't need.
+	{"CachedCommunityPreferences",
+	"UIStoreLocalState",
+	"CachedStorePreferences",
+	"CachedNotificationPreferences",
+	"SteamVoiceSettings_",
+	"UIStoreLocalSteamUIState",
+	"UIStoreLocalGamepadState",
+	"GetEquippedProfileItemsForUser",
+	"CTextFilterStore_strBannedPattern",
+	"CTextFilterStore_strCleanPattern",
+	"trendingstore_storage",
+	"playnextstore_storage",
+	"GetEquippedProfileItemsForUser"} -- Optimization : we remove big lines that we don't need.
 )["UserLocalConfigStore"]["Software"]["Valve"]["Steam"]["apps"]
 logSystem.log("speed", timeStart)
 
@@ -65,6 +77,12 @@ local steamGames = {}
 
 -- For each library
 for _,folderData in pairs(libraryFolders["libraryfolders"]) do
+	-- We check if the folder exists
+	if not fsUtils.exists(folderData["path"].."/steamapps") then
+		logSystem.log("warning", "Steam library "..folderData["path"].." doesn't exist. Skipping...")
+		goto continue 
+	end
+
 	-- We get the list of every appmanifest_*.acf file in the folder
 	local appManifestsFileNames = fsUtils.getFilenamePatternInDirectory(folderData["path"].."/steamapps", "appmanifest_")
 	for _,appId in pairs(appManifestsFileNames) do
@@ -82,6 +100,8 @@ for _,folderData in pairs(libraryFolders["libraryfolders"]) do
 		-- We add it to the list
 		steamGames[appId] = steamGame
 	end
+
+	::continue::
 end
 
 -- And now we merge user game data and game data

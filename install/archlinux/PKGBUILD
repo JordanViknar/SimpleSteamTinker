@@ -9,7 +9,6 @@ url=https://github.com/JordanViknar/SimpleSteamTinker
 license=(MPL-2.0)
 makedepends=(
 	'git'
-	'blueprint-compiler'
 )
 depends=(
 	'lua'
@@ -24,10 +23,8 @@ depends=(
 	'libnotify' # Used for notifications
 )
 optdepends=(
-	'lua-lpeg: Speed up config-related operations.'
 	'gamemode: Enable GameMode support'
 )
-makedepends=(git)
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")
 source=("SimpleSteamTinker::git+https://github.com/JordanViknar/SimpleSteamTinker")
@@ -41,9 +38,6 @@ pkgver() {
 package() {
 	app_directory="${srcdir}/SimpleSteamTinker"
 	install_directory="${pkgdir}/usr/share/SimpleSteamTinker"
-	
-	# Update the UI in case it's outdated
-	${app_directory}/update-ui.sh
 
 	install -D "${app_directory}/sst" "${pkgdir}/usr/bin/sst"
 	install -D "${app_directory}/main.lua" "${install_directory}/main.lua"
