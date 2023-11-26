@@ -77,29 +77,19 @@ end
 	Arg 1 : path (string) : The path to get the size of.
 	Return : The size of the file or directory.
 ]]
+local function trim(s)
+	return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
+end
 function fsUtils.getSize(path)
-	local totalSize = 0
-	local stack = { path } -- Initialize a stack with the initial path
-
-	while #stack > 0 do
-		local currentPath = table.remove(stack) -- Get the last path from the stack
-
-		local attributes = lfs.attributes(currentPath)
-		if attributes then
-			if attributes.mode == "file" then
-				totalSize = totalSize + attributes.size -- Add file size to total size
-			elseif attributes.mode == "directory" then
-				for file in lfs.dir(currentPath) do
-					if file ~= "." and file ~= ".." then
-						local filePath = currentPath .. "/" .. file
-						table.insert(stack, filePath) -- Add subdirectories to the stack
-					end
-				end
-			end
-		end
+	local handle = io.popen("du -sb '"..path:gsub("'", "'\\''").."' | cut -f1")
+	if not handle then
+		return 0
 	end
 
-	return totalSize
+	local result = handle:read("*a")
+	handle:close()
+
+	return tonumber(trim(result))
 end
 
 --[[ 
@@ -136,7 +126,7 @@ end
 	Return : true if the directory contains Linux data, false otherwise.
 
 	Note : Used to for game platform detection to work around Steam not cleaning up the compat.vdf file when going back from the Windows version of a game to the Linux version.
-	Note 2 : The reason we don't use os.execute(file) is because Steam can get stuck while starting a game for whatever reason.
+	Note 2 : The reason we don't use os.execute("file ...") is because Steam can get stuck while starting a game for whatever reason.
 ]]
 -- Alternative to using file command
 local function checkFileForKeywords(location, file)

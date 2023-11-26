@@ -8,6 +8,7 @@ local systemUtils = require("modules.general.systemUtils")
 -- External Modules
 local lgi = require("lgi")
 local Adw = lgi.Adw
+local Gio = lgi.Gio
 
 return function(app, builder, game)
 	--[[
@@ -30,7 +31,7 @@ return function(app, builder, game)
 	protonRating_Label.label = "Loading..."
 	protonRating_Label.css_classes = {"dim-label"}
 	if game.os_platform == "Windows" then
-		-- Coroutine to load the rating : it's done in a coroutine to avoid slowing down the UI.
+
 		local function loadProtonDBrating()
 			-- If the game's rating hasn't been retrieved yet, we retrieve it.
 			-- The reason why this is done HERE is because it would slow down startup otherwise.
@@ -51,8 +52,8 @@ return function(app, builder, game)
 			-- Set label and capitalize the first letter
 			protonRating_Label.label = rating:sub(1, 1):upper()..rating:sub(2)
 		end
+		Gio.Async.start(loadProtonDBrating)()
 
-		coroutine.wrap(loadProtonDBrating)()
 	else
 		protonRating_Label.label = "Native"
 	end
@@ -99,11 +100,13 @@ return function(app, builder, game)
 	gameSize_Label.label = "Loading..."
 	if not game.size then
 		logSystem.log("fileRead", "Detecting size for "..game.name.."...")
-		-- Coroutine to get the game size : it's done in a coroutine to avoid slowing down the app.
-		coroutine.wrap(function()
+
+		local function insertGameSize()
 			game.size = fsUtils.sizeToUnit(fsUtils.getSize(game.location))
 			gameSize_Label.label = game.size
-		end)()
+		end
+		Gio.Async.start(insertGameSize)()
+
 	else
 		gameSize_Label.label = game.size
 	end
