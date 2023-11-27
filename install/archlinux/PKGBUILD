@@ -12,7 +12,7 @@ makedepends=(
 )
 depends=(
 	'lua'
-	'lua-lgi-git' # Used for GTK (git version because latest release doesn't support Libadwaita and is very old)
+	'lua-lgi-git' # Used for GTK (git version because latest release doesn't support Libadwaita nor GTK4 and is pretty old)
 	'libadwaita'
 	'gtk4'
 	'lua-filesystem' # Used for some filesystem operations
@@ -24,6 +24,8 @@ depends=(
 )
 optdepends=(
 	'gamemode: Enable GameMode support'
+	'mangohud: Enable MangoHud support'
+	'mesa: Enable Zink support'
 )
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")

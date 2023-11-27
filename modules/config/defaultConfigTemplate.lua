@@ -8,6 +8,9 @@ return
 		},
 		['mangohud'] = {
 			["enabled"] = false;
-		}
+		},
+		['zink'] = {
+			["enabled"] = false;
+		},
 	}
 }

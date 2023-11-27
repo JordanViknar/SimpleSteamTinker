@@ -462,6 +462,14 @@ Command may change depending on installation method.</property>
                                                     <property name="sensitive">false</property>
                                                   </object>
                                                 </child>
+                                                <child>
+                                                  <object class="AdwSwitchRow" id="zink_switch">
+                                                    <property name="subtitle" translatable="true">Convert OpenGL games to Vulkan.</property>
+                                                    <property name="subtitle-lines">2</property>
+                                                    <property name="title">Zink</property>
+                                                    <property name="sensitive">false</property>
+                                                  </object>
+                                                </child>
                                               </object>
                                             </child>
                                           </object>

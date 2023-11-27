@@ -4,6 +4,7 @@ local GObject = lgi.GObject
 
 -- Internal Modules
 local systemUtils = require("modules.general.systemUtils")
+local fsUtils = require("modules.general.fsUtils")
 local configManager = require("modules.config.configManager")
 
 local lgiHelper = {}
@@ -36,7 +37,15 @@ end
 function lgiHelper.connectUtilityToButton(id, button, utility, property, setting)
 	lgiHelper.removeSignal(button, "on_activated")
 
-	if systemUtils.isInstalled(utility) then
+	-- If utility begins with /, then it's a file path.
+	local isPresent = false
+	if utility:sub(1, 1) == "/" then
+		isPresent = fsUtils.exists(utility)
+	else
+		isPresent = systemUtils.isInstalled(utility)
+	end
+
+	if isPresent then
 		button:set_sensitive(true)
 		button:set_active(property)
 
@@ -47,7 +56,7 @@ function lgiHelper.connectUtilityToButton(id, button, utility, property, setting
 		button:set_sensitive(false)
 		button:set_active(false)
 		button.has_tooltip = true
-		button.tooltip_text = "Utility '"..utility.."' is not installed on your system."
+		button.tooltip_text = "'"..utility.."' is not present on your system."
 	end
 end
 

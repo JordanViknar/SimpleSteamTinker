@@ -31,6 +31,11 @@ function gameLauncher.prepareGameLaunch(game, command)
 		command = "gamemoderun "..command
 	end
 
+	-- Zink
+	if gameConfig.utilities.zink.enabled then
+		table.insert(environmentVars, "MESA_LOADER_DRIVER_OVERRIDE=zink")
+	end
+
 	-- Environment variables : Part 2
 	if environmentVars ~= {} then
 		local envVarString = table.concat(environmentVars, " ")
