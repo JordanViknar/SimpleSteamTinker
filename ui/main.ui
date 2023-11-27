@@ -448,26 +448,56 @@ Command may change depending on installation method.</property>
                                                 <property name="description" translatable="true">Those are generally safe settings you may want enabled.</property>
                                                 <property name="title" translatable="true">Linux Utilities</property>
                                                 <child>
-                                                  <object class="AdwSwitchRow" id="gamemode_switch">
+                                                  <object class="AdwActionRow">
                                                     <property name="subtitle" translatable="true">GameMode is a tool to optimize Linux system performance on demand.</property>
                                                     <property name="title">Feral GameMode</property>
-                                                    <property name="sensitive">false</property>
+                                                    <property name="activatable-widget">gamemode_switch</property>
+                                                    <property name="has-tooltip" bind-source="gamemode_switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="tooltip-text" bind-source="gamemode_switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="gamemode_switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                    <child>
+                                                      <object class="GtkSwitch" id="gamemode_switch">
+                                                        <property name="active">false</property>
+                                                        <property name="sensitive">false</property>
+                                                        <property name="valign">3</property>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                 </child>
                                                 <child>
-                                                  <object class="AdwSwitchRow" id="mangohud_switch">
+                                                  <object class="AdwActionRow">
                                                     <property name="subtitle" translatable="true">A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.</property>
                                                     <property name="subtitle-lines">2</property>
                                                     <property name="title">MangoHud</property>
-                                                    <property name="sensitive">false</property>
+                                                    <property name="activatable-widget">mangohud_switch</property>
+                                                    <property name="has-tooltip" bind-source="mangohud_switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="tooltip-text" bind-source="mangohud_switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="mangohud_switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                    <child>
+                                                      <object class="GtkSwitch" id="mangohud_switch">
+                                                        <property name="active">false</property>
+                                                        <property name="sensitive">false</property>
+                                                        <property name="valign">3</property>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                 </child>
                                                 <child>
-                                                  <object class="AdwSwitchRow" id="zink_switch">
+                                                  <object class="AdwActionRow">
                                                     <property name="subtitle" translatable="true">Convert OpenGL games to Vulkan.</property>
                                                     <property name="subtitle-lines">2</property>
                                                     <property name="title">Zink</property>
-                                                    <property name="sensitive">false</property>
+                                                    <property name="activatable-widget">zink_switch</property>
+                                                    <property name="has-tooltip" bind-source="zink_switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="tooltip-text" bind-source="zink_switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="zink_switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                    <child>
+                                                      <object class="GtkSwitch" id="zink_switch">
+                                                        <property name="active">false</property>
+                                                        <property name="sensitive">false</property>
+                                                        <property name="valign">3</property>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                 </child>
                                               </object>

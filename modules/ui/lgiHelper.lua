@@ -49,8 +49,8 @@ function lgiHelper.connectUtilityToButton(id, button, utility, property, setting
 		button:set_sensitive(true)
 		button:set_active(property)
 
-		button.on_activated = function()
-			configManager.modifyGameConfig(id, setting, not button:get_active())
+		button.on_state_set = function()
+			configManager.modifyGameConfig(id, setting, button:get_active())
 		end
 	else
 		button:set_sensitive(false)

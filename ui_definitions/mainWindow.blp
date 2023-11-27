@@ -416,24 +416,54 @@ Adw.ApplicationWindow mainWindow {
 												description: _("Those are generally safe settings you may want enabled.");
 												title: _("Linux Utilities");
 
-												Adw.SwitchRow gamemode_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+												// Adw.SwitchRow seem to be buggy-ish. The value gets inverted, and clicking directly on the button
+												// doesn't send the signal I need to run the functions.
+
+												Adw.ActionRow {
 													subtitle: _("GameMode is a tool to optimize Linux system performance on demand.");
 													title: "Feral GameMode";
-													sensitive: false;
+													activatable-widget: gamemode_switch;
+													has-tooltip: bind gamemode_switch.has-tooltip bidirectional;
+													tooltip-text: bind gamemode_switch.tooltip-text bidirectional;
+													sensitive: bind gamemode_switch.sensitive bidirectional;
+
+													Switch gamemode_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+														active: false;
+														sensitive: false;
+														valign: center;
+													}
 												}
 
-												Adw.SwitchRow mangohud_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+												Adw.ActionRow {
 													subtitle: _("A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.");
 													subtitle-lines: 2;
 													title: "MangoHud";
-													sensitive: false;
+													activatable-widget: mangohud_switch;
+													has-tooltip: bind mangohud_switch.has-tooltip bidirectional;
+													tooltip-text: bind mangohud_switch.tooltip-text bidirectional;
+													sensitive: bind mangohud_switch.sensitive bidirectional;
+
+													Switch mangohud_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+														active: false;
+														sensitive: false;
+														valign: center;
+													}
 												}
 
-												Adw.SwitchRow zink_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+												Adw.ActionRow {
 													subtitle: _("Convert OpenGL games to Vulkan.");
 													subtitle-lines: 2;
 													title: "Zink";
-													sensitive: false;
+													activatable-widget: zink_switch;
+													has-tooltip: bind zink_switch.has-tooltip bidirectional;
+													tooltip-text: bind zink_switch.tooltip-text bidirectional;
+													sensitive: bind zink_switch.sensitive bidirectional;
+
+													Switch zink_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+														active: false;
+														sensitive: false;
+														valign: center;
+													}
 												}
 											}
 										}
