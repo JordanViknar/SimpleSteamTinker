@@ -1,0 +1,67 @@
+using Gtk 4.0;
+using Adw 1;
+
+StackPage gamescopePage { //[MODIFIED IN LUA]: This page is only shown if the game is using Proton.
+	title: "Gamescope";
+	child:
+	Gtk.ScrolledWindow {
+		Adw.Clamp {
+			Box {
+				margin-bottom: 16;
+				margin-end: 12;
+				margin-start: 12;
+				margin-top: 16;
+				orientation: vertical;
+				spacing: 18;
+				vexpand: true;
+				vexpand-set: true;
+			
+				Adw.PreferencesGroup {
+					title: "Gamescope";
+					description: _("GameScope is a tool from Valve that allows for games to run in an isolated Xwayland instance.");
+					Adw.ActionRow {
+						title : _("Enable Gamescope");
+						subtitle: _("May cause compatibility issues with some utilities and Wayland-native games.");
+						activatable-widget: gamescope_Switch;
+
+						sensitive: bind gamescope_Switch.sensitive bidirectional;
+						has-tooltip: bind gamescope_Switch.has-tooltip bidirectional;
+						tooltip-text: bind gamescope_Switch.tooltip-text bidirectional;
+
+						Gtk.Switch gamescope_Switch {
+							active: false;
+							sensitive: false;
+							valign: center;
+						}
+					}
+				}
+
+				Adw.PreferencesGroup {
+					title: _("General");
+					description: _("General settings for Gamescope.");
+					sensitive: bind gamescope_Switch.sensitive bidirectional;
+					Adw.ExpanderRow {
+						title: _("Resolution");
+						show-enable-switch: true;
+						Adw.ComboRow {
+							title: _("Internal Resolution");
+							subtitle: _("The resolution that the game will be rendered at.");
+							[model]
+							Gtk.StringList {
+
+							}
+						}
+						Adw.ComboRow {
+							title: _("External Resolution");
+							subtitle: _("The resolution that the game will be displayed at.");
+							[model]
+							Gtk.StringList {
+
+							}
+						}
+					}
+				}
+			}
+		}
+	};
+}

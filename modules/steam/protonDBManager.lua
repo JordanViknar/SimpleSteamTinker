@@ -25,8 +25,7 @@ function protonDBManager.getAppInfo(appId)
     }
 
     if success then
-        local responseBody = table.concat(response)
-        local data = json.decode(responseBody) -- Parse the JSON response
+        local data = json.decode(table.concat(response)) -- Parse the JSON response
         if data then
 			return data
         else

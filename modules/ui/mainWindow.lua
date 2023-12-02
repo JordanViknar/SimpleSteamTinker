@@ -9,12 +9,15 @@ local Adw = lgi.Adw
 
 return function(app, steamGames)
 	-- We create the window
-	local builder = Gtk.Builder()
-	builder:add_from_file(programMetadata.installdir.."ui/main.ui")
+	local builder = Gtk.Builder.new_from_file(programMetadata.installdir.."ui/main.ui")
 	local win = builder:get_object("mainWindow")
 	win.application = app
-	win.title = programMetadata.name.." "..programMetadata.version
+	win.title = programMetadata.name
 	win.startup_id = programMetadata.name
+
+	-- Icon
+	win:set_icon_name(programMetadata.icon_name)
+
 	-- Check for dev version and add relevant theme
 	if programMetadata.version:find("dev") then
 		win:add_css_class("devel")
@@ -111,10 +114,12 @@ return function(app, steamGames)
 					-- We setup the gameSettings UI for this game
 					require("modules.ui.gameSettingsOverview")(app, builder, game)
 					local gameSettings = configManager.getGameConfig(game.id)
+					require("modules.ui.gameSettingsSettings")(app, builder, game, gameSettings)
 					require("modules.ui.gameSettingsUtilities")(app, builder, game, gameSettings)
 					require("modules.ui.gameSettingsProton")(app, builder, game, gameSettings)
-					collectgarbage("collect")
+					require("modules.ui.gameSettingsGamescope")(app, builder, game, gameSettings)
 
+					collectgarbage("collect")
 					mainView:push(gameSettingsInterface)
 				end
 			}
@@ -127,6 +132,7 @@ return function(app, steamGames)
 	end
 
 	--Topbar management
+	topbar:set_top_bar_style(Adw.ToolbarStyle.RAISED_BORDER)
 	gameSettingsInterface.on_showing = function()
 		topbar:set_top_bar_style(Adw.ToolbarStyle.RAISED)
 	end
@@ -134,7 +140,7 @@ return function(app, steamGames)
 		backToMenu:set_visible(true)
 	end
 	gameSettingsInterface.on_hiding = function()
-		topbar:set_top_bar_style(Adw.ToolbarStyle.FLAT)
+		topbar:set_top_bar_style(Adw.ToolbarStyle.RAISED_BORDER)
 		backToMenu:set_visible(false)
 	end
 	-- Overview restoration when we exit out of the settings
@@ -146,4 +152,7 @@ return function(app, steamGames)
 	backToMenu.on_clicked = function()
 		mainView:pop()
 	end
+
+	-- Credits
+	require("modules.ui.aboutWindow")(app, builder, win)
 end

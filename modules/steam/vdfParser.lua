@@ -2,7 +2,7 @@ local vdfParser = {}
 
 --[[
 	Name : function vdfParser.printArray(data, indent)
-	Description : Prints a table in a human-readable way.
+	Description : Prints a table in a human-readable way. Used for testing.
 	Arg 1 : data (table) : The table to print.
 	Arg 2 : indent (number) : The indentation level. Default : 0
 ]]

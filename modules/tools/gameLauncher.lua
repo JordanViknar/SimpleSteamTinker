@@ -21,6 +21,10 @@ function gameLauncher.prepareGameLaunch(game, command)
 	-- Environment variables : Part 1
 	local environmentVars = {}
 
+	-- DGPU
+	if gameConfig.dgpu.enabled and systemUtils.isInstalled("switcherooctl") then
+		command = "switcherooctl launch "..command
+	end
 	-- MangoHud
 	if gameConfig.utilities.mangohud.enabled and systemUtils.isInstalled("mangohud") then
 		command = "mangohud "..command

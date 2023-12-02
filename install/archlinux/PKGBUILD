@@ -1,7 +1,7 @@
 # Maintainer: JordanViknar
 
 pkgname=simplesteamtinker-git
-pkgver=r10.3a4cf27
+pkgver=r16.4f816ec
 pkgrel=1
 pkgdesc="A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch."
 arch=('x86_64' 'i686' 'armv7h' 'aarch64')
@@ -26,6 +26,7 @@ optdepends=(
 	'gamemode: Enable GameMode support'
 	'mangohud: Enable MangoHud support'
 	'mesa: Enable Zink support'
+	'switcheroo-control: Launch games with your dedicated GPU'
 )
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")
@@ -48,5 +49,5 @@ package() {
 
 	install -D "${app_directory}/main.lua" "${install_directory}/main.lua"
 	cp -r "${app_directory}/modules" "${install_directory}/modules"
-	cp -r "${app_directory}/ui" "${install_directory}/ui"
+	install -D "${app_directory}/ui/main.ui" "${install_directory}/ui/main.ui"
 }

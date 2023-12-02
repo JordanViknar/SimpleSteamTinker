@@ -52,7 +52,7 @@ local gameStartStatus = steamUtils.isSteamArgs(arg)
 if gameStartStatus == "steamGame" then
 	local game = steamGames[arg[3]:gsub("AppId=", "")]
 
-	-- We notify the user that SimpleSteamMod is running.
+	-- We notify the user that SimpleSteamTinker is running.
 	logSystem.log("info", "Starting "..game.name.."...")
 	systemUtils.sendNotification(programMetadata.name.." is starting...", "Detected "..game.name, "normal", true)
 

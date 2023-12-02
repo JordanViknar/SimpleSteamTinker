@@ -44,7 +44,7 @@
       <stop offset="0" style="stop-color: rgb(100% 100% 100%)"/>
       <stop offset="1" style="stop-color: rgb(199, 199, 199);"/>
     </linearGradient>
-    <linearGradient gradientUnits="userSpaceOnUse" x1="780.857" y1="403.353" x2="780.857" y2="537.254" id="gradient-4" gradientTransform="matrix(1, 0, 0, 1, 0, 0)">
+    <linearGradient gradientUnits="userSpaceOnUse" x1="780.857" y1="403.353" x2="780.857" y2="537.254" id="gradient-4" gradientTransform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 377.784572, -516.747448)">
       <stop offset="0" style="stop-color: rgb(84.706% 84.706% 84.706%)"/>
       <stop offset="1" style="stop-color: rgb(163, 163, 163);"/>
     </linearGradient>
@@ -132,7 +132,7 @@
       <path d="M 636.576 262.287 L 683.303 309.013 L 279.39 728.299 L 232.665 681.574 L 636.576 262.287 Z" style="fill-rule: nonzero; transform-box: fill-box; transform-origin: 50% 50%; fill: url('#gradient-5'); filter: url('#drop-shadow-filter-2');" transform="matrix(0.999391, 0.034899, -0.034899, 0.999391, 4.168052, 4.19233)">
         <title>Middle</title>
       </path>
-      <rect x="656.626" y="403.353" width="248.462" height="133.901" style="fill: url('#gradient-4'); filter: url('#drop-shadow-filter-0'); transform-box: fill-box; transform-origin: 50% 50%;" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, -180.062836, -104.054113)"/>
+      <path d="M 556.876 232.771 L 732.565 408.46 L 637.882 503.142 L 462.193 327.453 L 556.876 232.771 Z" style="fill: url('#gradient-4'); filter: url('#drop-shadow-filter-0'); transform-origin: 597.379px 367.956px;"/>
       <path d="M 126.243 439.682 L 322.969 563.201 L 278.176 640.785 L 127.076 545.745 C 113.667 540.329 113.759 434.64 126.243 439.682 Z" style="fill-rule: nonzero; fill: url('#gradient-7'); filter: url('#drop-shadow-filter-5');" transform="matrix(0.987688004971, -0.156435012817, 0.156435012817, 0.987688004971, -82.970893134332, 78.122765026859)">
         <title>Arm</title>
       </path>

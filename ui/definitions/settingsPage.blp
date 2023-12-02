@@ -1,0 +1,42 @@
+using Gtk 4.0;
+using Adw 1;
+
+StackPage settingsPage { //[MODIFIED IN LUA]: This page is only shown if the game is using Proton.
+	title: _("Settings");
+	child:
+	Gtk.ScrolledWindow {
+		Adw.Clamp {
+			Box {
+				margin-bottom: 16;
+				margin-end: 12;
+				margin-start: 12;
+				margin-top: 16;
+				orientation: vertical;
+				spacing: 18;
+				vexpand: true;
+				vexpand-set: true;
+			
+				Adw.PreferencesGroup {
+					title: "Recommended";
+					description: _("Settings recommended to be used for the best experience.");
+					Adw.ActionRow {
+						title : _("Use dedicated graphics card");
+						subtitle: _("Use your dedicated graphics card to boost performance by a lot, in exchange for higher power consumption.");
+						subtitle-lines: 3;
+
+						activatable-widget: DGPU_Switch;
+						sensitive: bind DGPU_Switch.sensitive bidirectional;
+						has-tooltip: bind DGPU_Switch.has-tooltip bidirectional;
+						tooltip-text: bind DGPU_Switch.tooltip-text bidirectional;
+
+						Gtk.Switch DGPU_Switch {
+							active: false;
+							sensitive: false;
+							valign: center;
+						}
+					}
+				}
+			}
+		}
+	};
+}

@@ -1,6 +1,8 @@
 return {
 	name="SimpleSteamTinker",
+	description = "A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch.",
 	executable="sst",
+	icon_name = "simplesteamtinker",
 	version="indev",
 	developer="JordanViknar",
 	url = "https://github.com/JordanViknar/SimpleSteamTinker",

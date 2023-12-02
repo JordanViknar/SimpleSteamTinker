@@ -18,7 +18,7 @@ Adw.ApplicationWindow mainWindow {
 
 	// AdwBreakpoint used to dynamically make the sidebar appear or disappear depending on the window's width.
 	Adw.Breakpoint {
-		condition ("max-width: 500sp")
+		condition ("max-width: 600sp")
 		setters {
 			sidebarToggleButton.visible: true;
 			sidebarToggleButton.active: false;
@@ -46,6 +46,14 @@ Adw.ApplicationWindow mainWindow {
 					has-frame: false;
 					icon-name: "view-sidebar-start-symbolic";
 				}
+
+				styles ["titlebar"]
+
+				[end]
+				Button aboutLauncher {
+					icon-name: "open-menu-symbolic";
+					styles ["image-button"]
+				}
 			}
 
 			/*
@@ -58,10 +66,10 @@ Adw.ApplicationWindow mainWindow {
 						hscrollbar-policy: never;
 
 						Adw.Clamp {
-							margin-bottom: 12;
+							margin-bottom: 16;
 							margin-end: 12;
 							margin-start: 12;
-							margin-top: 12;
+							margin-top: 16;
 
 							Adw.PreferencesGroup gameList { //[MODIFIED IN LUA]
 								description: _("Insert \"sst %command%\" as a game\'s launch options to enable it here.\nCommand may change depending on installation method.");
@@ -104,12 +112,13 @@ Adw.ApplicationWindow mainWindow {
 										// This is the icon in the sidebar of the game settings page.
 										Image gameSettingsSidebarIcon { //[MODIFIED IN LUA]
 											icon-size: large;
-											styles [ "lowres-icon" ]
+											styles ["lowres-icon"]
 										}
 										// This is the title in the sidebar of the game settings page.
 										Label gameSettingsSidebarLabel { //[MODIFIED IN LUA]
 											justify: center;
 											wrap: true;
+											styles ["title-4"]
 										}
 									}
 
@@ -133,9 +142,13 @@ Adw.ApplicationWindow mainWindow {
 
 								//[overviewPage.blp]
 
+								//[settingsPage.blp]
+
 								//[utilitiesPage.blp]
 
 								//[commandPage.blp]
+
+								//[gamescopePage.blp]
 
 								//[protonPage.blp]
 

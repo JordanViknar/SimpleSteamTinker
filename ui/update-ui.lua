@@ -4,6 +4,8 @@
 	This script should be used after modifying any of the ui_definitions files.
 	It will compile the ui_definitions files into ui files that GTK can use.
 	If you do not, the modifications you've made to the UI outside of Lua code will not be applied.
+	
+	This is basically a workaround for LGI not working well with Gtk templates or to assemble widgets together in general right now.
 ]]
 
 -- Define the list of files to compile
@@ -12,14 +14,16 @@ local files = {
     [baseFile] = false,
 	["overviewPage.blp"] = false,
 	["utilitiesPage.blp"] = false,
+	["settingsPage.blp"] = false,
 	["commandPage.blp"] = false,
+	["gamescopePage.blp"] = false,
 	["protonPage.blp"] = false,
 	["cleanerPage.blp"] = false,
 }
 
 -- Add their contents to the list
 for file, _ in pairs(files) do
-	local f = io.open("ui_definitions/"..file, "r")
+	local f = io.open("ui/definitions/"..file, "r")
 	if not f then
 		print("Error: Could not open file "..file)
 		os.exit(1)
@@ -71,7 +75,7 @@ f:write(files[baseFile])
 f:close()
 
 -- Make the blueprint with blueprint-compiler
-local command = "blueprint-compiler compile "..location.." > ./ui/main.ui"
+local command = "blueprint-compiler compile "..location.." > ui/main.ui"
 print(command)
 os.execute(command)
 os.remove(location)
