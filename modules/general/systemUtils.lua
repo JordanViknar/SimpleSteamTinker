@@ -1,5 +1,6 @@
 -- Custom modules
 local logSystem = require("modules.general.logSystem")
+local fsUtils = require("modules.general.fsUtils")
 
 -- Module
 local systemUtils = {}
@@ -60,10 +61,14 @@ end
 	Return : true if installed, false otherwise.
 ]]
 function systemUtils.isInstalled(command)
-	if os.execute("which "..command.." &> /dev/null") then
-		return true
+	if command:sub(1, 1) == "/" then
+		return fsUtils.exists(command)
 	else
-		return false
+		if os.execute("which "..command.." &> /dev/null") then
+			return true
+		else
+			return false
+		end
 	end
 end
 

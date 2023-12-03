@@ -38,12 +38,7 @@ function lgiHelper.connectUtilityToButton(id, button, utility, property, setting
 	lgiHelper.removeSignal(button, "on_activated")
 
 	-- If utility begins with /, then it's a file path.
-	local isPresent = false
-	if utility:sub(1, 1) == "/" then
-		isPresent = fsUtils.exists(utility)
-	else
-		isPresent = systemUtils.isInstalled(utility)
-	end
+	local isPresent = systemUtils.isInstalled(utility)
 
 	if isPresent then
 		button:set_sensitive(true)

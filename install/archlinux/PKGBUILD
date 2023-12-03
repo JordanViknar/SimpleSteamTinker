@@ -27,6 +27,7 @@ optdepends=(
 	'mangohud: Enable MangoHud support'
 	'mesa: Enable Zink support'
 	'switcheroo-control: Launch games with your dedicated GPU'
+	'protonplus: Recommended to install with SimpleSteamTinker'
 )
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")

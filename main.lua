@@ -7,7 +7,7 @@ local fsUtils = require("modules.general.fsUtils")
 local systemUtils = require("modules.general.systemUtils")
 local steamUtils = require("modules.steam.steamUtils")
 local programMetadata = require("modules.extra.programMetadata")
-local gameLauncher = require("modules.tools.gameLauncher")
+local gameLauncher = require("modules.gameLauncher")
 
 if programMetadata.version:find("dev") then
 	logSystem.log("warning", "DEVELOPMENT VERSION")

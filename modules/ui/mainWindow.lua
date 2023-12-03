@@ -15,9 +15,6 @@ return function(app, steamGames)
 	win.title = programMetadata.name
 	win.startup_id = programMetadata.name
 
-	-- Icon
-	win:set_icon_name(programMetadata.icon_name)
-
 	-- Check for dev version and add relevant theme
 	if programMetadata.version:find("dev") then
 		win:add_css_class("devel")
