@@ -7,7 +7,7 @@
 > With that being said, I'd still very much appreciate people testing SimpleSteamTinker and reporting [issues](https://github.com/JordanViknar/SimpleSteamTinker/issues) or contributing.
 
 <div align="center">
-	<img src="./assets/icons/scalable/simplesteamtinker.svg" width=132>
+	<img src="./assets/icons/scalable/simplesteamtinker.svg" width=172>
 	<h1>SimpleSteamTinker</h1>
 	<p align="center">A work-in-progress simple, fast, and modern Adwaita alternative to SteamTinkerLaunch.</p>
 	<!-- Badges -->
