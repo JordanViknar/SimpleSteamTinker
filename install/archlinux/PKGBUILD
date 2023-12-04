@@ -3,7 +3,7 @@
 pkgname=simplesteamtinker-git
 pkgver=r16.4f816ec
 pkgrel=1
-pkgdesc="A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch."
+pkgdesc="A work-in-progress simple, fast and modern Adwaita alternative to SteamTinkerLaunch."
 arch=('x86_64' 'i686' 'armv7h' 'aarch64')
 url=https://github.com/JordanViknar/SimpleSteamTinker
 license=(MPL-2.0)
