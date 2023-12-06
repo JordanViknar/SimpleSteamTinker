@@ -13,9 +13,6 @@ if programMetadata.version:find("dev") then
 	logSystem.log("warning", "DEVELOPMENT VERSION")
 end
 
--- Garbage collection settings
-collectgarbage("incremental")
-
 --[[ 
 	Chapter 0 : Preparing the environment
 	We need to create the config folder if it doesn't exist.

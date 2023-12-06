@@ -26,11 +26,8 @@ return function(app, steamGames)
 	-- Page management
 	local mainView = builder:get_object("mainView")
 	local gameList = builder:get_object("gameList")
+
 	local gameSettingsInterface = builder:get_object("gameSettings")
-	-- Topbar
-	local topbar = builder:get_object("topbar")
-	-- Buttons
-	local backToMenu = builder:get_object("backToMenu")
 
 	-- Stack test
 	local stack = builder:get_object("gameSettingsStack")
@@ -108,15 +105,16 @@ return function(app, steamGames)
 				halign = Gtk.Align.CENTER,
 				css_classes = { "circular", "flat", "image-button" },
 				on_clicked = function()
+					-- We get the game's settings
+					local gameSettings = configManager.getGameConfig(game.id)
+
 					-- We setup the gameSettings UI for this game
 					require("modules.ui.gameSettingsOverview")(app, builder, game)
-					local gameSettings = configManager.getGameConfig(game.id)
 					require("modules.ui.gameSettingsSettings")(app, builder, game, gameSettings)
 					require("modules.ui.gameSettingsUtilities")(app, builder, game, gameSettings)
 					require("modules.ui.gameSettingsProton")(app, builder, game, gameSettings)
 					require("modules.ui.gameSettingsGamescope")(app, builder, game, gameSettings)
 
-					collectgarbage("collect")
 					mainView:push(gameSettingsInterface)
 				end
 			}
@@ -129,25 +127,12 @@ return function(app, steamGames)
 	end
 
 	--Topbar management
-	topbar:set_top_bar_style(Adw.ToolbarStyle.RAISED_BORDER)
-	gameSettingsInterface.on_showing = function()
-		topbar:set_top_bar_style(Adw.ToolbarStyle.RAISED)
-	end
-	gameSettingsInterface.on_shown = function ()
-		backToMenu:set_visible(true)
-	end
-	gameSettingsInterface.on_hiding = function()
-		topbar:set_top_bar_style(Adw.ToolbarStyle.RAISED_BORDER)
-		backToMenu:set_visible(false)
-	end
+	builder:get_object("mainPageTopbar"):set_top_bar_style(Adw.ToolbarStyle.RAISED_BORDER)
+	builder:get_object("gameSettingsTopbar"):set_top_bar_style(Adw.ToolbarStyle.RAISED_BORDER)
+
 	-- Overview restoration when we exit out of the settings
 	gameSettingsInterface.on_hidden = function()
 		stack:set_visible_child_name("overviewPage")
-	end
-
-	-- Button to go back to the main menu
-	backToMenu.on_clicked = function()
-		mainView:pop()
 	end
 
 	-- Credits

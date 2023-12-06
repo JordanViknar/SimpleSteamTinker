@@ -18,41 +18,31 @@
     <child type="content">
       <object class="AdwToastOverlay" id="toastSystem">
         <child>
-          <object class="AdwToolbarView" id="topbar">
-            <child type="top">
-              <object class="AdwHeaderBar">
-                <child>
-                  <object class="GtkButton" id="backToMenu">
-                    <property name="has-frame">false</property>
-                    <property name="icon-name">go-previous-symbolic</property>
-                    <property name="visible">false</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkToggleButton" id="sidebarToggleButton">
-                    <property name="active">true</property>
-                    <property name="visible">false</property>
-                    <property name="has-frame">false</property>
-                    <property name="icon-name">view-sidebar-start-symbolic</property>
-                  </object>
-                </child>
-                <style>
-                  <class name="titlebar"/>
-                </style>
-                <child type="end">
-                  <object class="GtkButton" id="aboutLauncher">
-                    <property name="icon-name">open-menu-symbolic</property>
-                    <style>
-                      <class name="image-button"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
+          <object class="AdwNavigationView" id="mainView">
             <child>
-              <object class="AdwNavigationView" id="mainView">
+              <object class="AdwNavigationPage" id="mainPage">
                 <child>
-                  <object class="AdwNavigationPage" id="mainPage">
+                  <object class="AdwToolbarView" id="mainPageTopbar">
+                    <child type="top">
+                      <object class="AdwHeaderBar">
+                        <style>
+                          <class name="titlebar"/>
+                        </style>
+                        <property name="title-widget">
+                          <object class="AdwWindowTitle">
+                            <property name="title">SimpleSteamTinker</property>
+                          </object>
+                        </property>
+                        <child type="end">
+                          <object class="GtkButton" id="aboutLauncher">
+                            <property name="icon-name">open-menu-symbolic</property>
+                            <style>
+                              <class name="image-button"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkScrolledWindow">
                         <property name="hscrollbar-policy">2</property>
@@ -75,8 +65,32 @@ Command may change depending on installation method.</property>
                     </child>
                   </object>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwNavigationPage" id="gameSettings">
                 <child>
-                  <object class="AdwNavigationPage" id="gameSettings">
+                  <object class="AdwToolbarView" id="gameSettingsTopbar">
+                    <child type="top">
+                      <object class="AdwHeaderBar">
+                        <style>
+                          <class name="titlebar"/>
+                        </style>
+                        <property name="title-widget">
+                          <object class="AdwWindowTitle" id="gameSettingsWindowTitle">
+                            <property name="title" translatable="true">Settings</property>
+                          </object>
+                        </property>
+                        <child>
+                          <object class="GtkToggleButton" id="sidebarToggleButton">
+                            <property name="active">true</property>
+                            <property name="visible">false</property>
+                            <property name="has-frame">false</property>
+                            <property name="icon-name">view-sidebar-start-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                     <child>
                       <object class="AdwOverlaySplitView" id="gameSettings_SplitView">
                         <property name="min-sidebar-width">0</property>

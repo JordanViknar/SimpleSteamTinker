@@ -1,7 +1,7 @@
 /*
 	Why not use LGI directly instead ?
 
-	Because LGI doesn't support well many properties, that can be easily defined here.
+	Because LGI doesn't support well in GTK4 many things that can be easily defined here.
 	Still, both are by FAR a much better solution than using XML directly.
 	Plus, I feel like using a universal standard would be a good idea to make it easier for people to contribute.
 */
@@ -28,40 +28,30 @@ Adw.ApplicationWindow mainWindow {
 
 	[content]
 	Adw.ToastOverlay toastSystem { //[INTERACTS WITH LUA]
-		Adw.ToolbarView topbar {
-			// Header bar
-			[top]
-			Adw.HeaderBar {
-				// Button that allows you to exit the game settings page, hidden by default and shown through Lua code when needed.
-				Button backToMenu { //[MODIFIED IN LUA][INTERACTS THROUGH LUA]
-					has-frame: false;
-					icon-name: "go-previous-symbolic";
-					visible: false;
-				}
-
-				// Button that allows you to toggle the sidebar in the game settings page.
-				ToggleButton sidebarToggleButton { //[MODIFIED IN LUA][INTERACTS THROUGH LUA]
-					active: true;
-					visible: false;
-					has-frame: false;
-					icon-name: "view-sidebar-start-symbolic";
-				}
-
-				styles ["titlebar"]
-
-				[end]
-				Button aboutLauncher {
-					icon-name: "open-menu-symbolic";
-					styles ["image-button"]
-				}
-			}
-
+		Adw.NavigationView mainView {
 			/*
-				MAIN VIEW
+				MAIN PAGE
 				This is the page the program starts on when it's launched.
 			*/
-			Adw.NavigationView mainView {
-				Adw.NavigationPage mainPage {
+			Adw.NavigationPage mainPage {
+				Adw.ToolbarView mainPageTopbar {
+					[top]
+					Adw.HeaderBar {
+						styles ["titlebar"]
+
+						title-widget:
+						Adw.WindowTitle {
+							title: "SimpleSteamTinker";
+						};
+
+						[end]
+						Button aboutLauncher {
+							icon-name: "open-menu-symbolic";
+							styles ["image-button"]
+						}
+					}
+
+					// This is where the games are listed.
 					ScrolledWindow {
 						hscrollbar-policy: never;
 
@@ -78,14 +68,33 @@ Adw.ApplicationWindow mainWindow {
 						}
 					}
 				}
+			}
 
-				// This is the page that shows up when you click on a game.
-				Adw.NavigationPage gameSettings { //[INTERACTS THROUGH LUA]
+			// This is the page that shows up when you click on a game.
+			Adw.NavigationPage gameSettings { //[INTERACTS THROUGH LUA]
+				Adw.ToolbarView gameSettingsTopbar {
+					[top]
+					Adw.HeaderBar {
+						styles ["titlebar"]
+
+						title-widget:
+						Adw.WindowTitle gameSettingsWindowTitle { //[MODIFIED IN LUA]
+							title: _("Settings");
+						};
+
+						// Button that allows you to toggle the sidebar in the game settings page.
+						ToggleButton sidebarToggleButton { //[MODIFIED IN LUA][INTERACTS THROUGH LUA]
+							active: true;
+							visible: false;
+							has-frame: false;
+							icon-name: "view-sidebar-start-symbolic";
+						}
+					}
+
 					Adw.OverlaySplitView gameSettings_SplitView {
 						/*
 							SIDEBAR
 						*/
-
 						min-sidebar-width: 0;
 						show-sidebar: bind sidebarToggleButton.active bidirectional;
 						sidebar: 
@@ -131,7 +140,7 @@ Adw.ApplicationWindow mainWindow {
 								}
 							};
 						};
-						
+							
 						/*
 							OVERVIEW PAGE
 						*/
