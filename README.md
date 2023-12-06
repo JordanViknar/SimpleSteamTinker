@@ -31,9 +31,9 @@ However, it has always been flawed to me : it is *slow*, it is not comfortable t
 
 I want Linux Gaming to be for **everyone**. SteamTinkerLaunch, as a tool, ***fails*** to make itself easily usable by non-technical users.
 
-The straw that broke the camel's back for me was when my curiosity got me to look inside its source code, only to be met with a single Bash script containing 26 000 lines.
+Finally, one time, my curiosity led me to look inside its source code, only to be met with a single Bash script containing 26 000 lines. At that point, I decided there should be an alternative to it.
 
-So, not only is it slow, not only is it not user-friendly, but it's not even developer-friendly. It's time to fix that.
+*And thus came SimpleSteamTinker...*
 
 ### Goal
 
@@ -63,6 +63,11 @@ SimpleSteamTinker can be installed from Arch Linux, Manjaro, and variants throug
 
 It will eventually be made available on the AUR once the program is complete enough.
 
+To enable a game in SimpleSteamTinker with this installation method, use this text as launch options in Steam :
+```bash
+sst %command%
+```
+
 ### Packaging for other distributions
 
 Here are informations which might be useful to you :
@@ -86,7 +91,16 @@ And optionally (if they're missing, their related features will simply be disabl
 
 ## Development
 
-<!-- To be finished -->
+Simply install the project's dependencies described earlier and clone it.
+
+To test the launch of Steam games, insert in their launch options :
+```bash
+/PATH/TO/CLONED/REPO/sst %command%
+```
+For example, in my case `/PATH/TO/CLONED/REPO/sst` is `/home/jordan/Programmation/SimpleSteamTinker/sst`.
+
+Additionally, if you want to perform UI-related changes, you'll need [Blueprint](https://gitlab.gnome.org/jwestman/blueprint-compiler).
+If, in the future, LGI becomes stable enough with GTK4 to use it directly to generate the UI, Blueprint might be dropped.
 
 ## Comparison
 
@@ -120,33 +134,35 @@ And optionally (if they're missing, their related features will simply be disabl
 
 ### Tools, settings, etc.
 
+*(Note : Native Linux features/tools/settings are prioritized over alternatives designed for Windows.)*
+
 | Features (tools, settings, etc.) | SteamTinkerLaunch | SimpleSteamTinker |
 | --- | --- | --- |
 | Non-Steam game support | ✅ | ❌ *([Bottles](https://github.com/bottlesdevs/Bottles) recommended)* |
 | Proton version management | ✅ | ❌ *([ProtonPlus](https://github.com/Vysp3r/ProtonPlus) recommended)* |
 | dGPU management | ✅ | ✅ |
 | GameMode | ✅ | ✅ |
-| Custom launch system | ✅ | ❌ *(Planned, high priority)* |
+| Custom launch system | ✅ | 🚧 *(Planned, high priority)* |
 | Winetricks | ✅ | ❌ *(Planned ?)* |
 | Protontricks | ❌ | ❌ *(Planned ?)* |
-| Proton settings | ✅ | ❌ *(Planned, high priority, not too difficult)* |
-| DXVK settings | ✅ | ❌ *(Planned, high priority, not too difficult)* |
-| VKD3D settings | ✅ | ❌ *(Planned, high priority, not too difficult)* |
-| FSR settings | ✅ | ❌ *(Planned, high priority, not too difficult)* |
+| Proton settings | ✅ | 🚧 *(Planned, high priority)* |
+| DXVK settings | ✅ | 🚧 *(Planned, high priority)* |
+| VKD3D settings | ✅ | 🚧 *(Planned, high priority)* |
+| FSR settings | ✅ | 🚧 *(Planned, high priority)* |
 | MangoHud | ✅ | ✅ |
-| GameScope | ✅ | Work In Progress |
+| GameScope | ✅ | 🚧 *(Work In Progress)* |
 | Shader support (ReShade/vkBasalt) | ✅ | ❌ *(Planned, low priority)* |
-| SDL Wayland video driver | ✅ | ❌ *(Planned, easy)* |
+| SDL Wayland video driver | ✅ | 🚧 *(Planned)* |
 | Zink | ✅ | ✅ |
-| PulseAudio latency | ✅ | ❌ *(Planned, easy)* |
+| PulseAudio latency | ✅ | 🚧 *(Planned)* |
 | Vortex | ✅ | ❌ |
 | Mod Organizer 2 | ✅ | ❌ |
-| HedgeModManager | ✅ | ❌ *(Planned, low priority)* |
+| HedgeModManager | ✅ | ❌ *(Planned ?)* |
 | geo-11 3D Driver | ✅ | ❌ |
 | SpecialK | ✅ | ❌ |
 | FlawlessWidescreen | ✅ | ❌ |
 | Stereo3D | ✅ | ❌ |
-| RADV Perftest Options | ✅ | ❌ *(Seems easy to add, but I lack an AMD card for testing.)* |
+| RADV Perftest Options | ✅ | ❌ *(Planned, low priority, cannot test properly due to lack of an AMD GPU)* |
 | Steam Linux Runtime toggle | ✅ | ❌ |
 | steamwebhelper toggle | ✅ | ❌ |
 | obs-gamecapture | ✅ | ❌ |
