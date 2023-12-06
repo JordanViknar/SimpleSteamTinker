@@ -7,18 +7,18 @@ local vdfParser = {}
 	Arg 2 : indent (number) : The indentation level. Default : 0
 ]]
 function vdfParser.printArray(data, indent)
-    indent = indent or 0
-    local spaces = string.rep("  ", indent)
+	indent = indent or 0
+	local spaces = string.rep("  ", indent)
 
-    for key, value in pairs(data) do
-        if type(value) == "table" then
-            print(spaces .. key .. ": {")
-            vdfParser.printArray(value, indent + 1)
-            print(spaces .. "}")
-        else
-            print(spaces .. key .. ": " .. tostring(value))
-        end
-    end
+	for key, value in pairs(data) do
+		if type(value) == "table" then
+			print(spaces .. key .. ": {")
+			vdfParser.printArray(value, indent + 1)
+			print(spaces .. "}")
+		else
+			print(spaces .. key .. ": " .. tostring(value))
+		end
+	end
 end
 
 --[[
@@ -29,19 +29,19 @@ end
 	Return : result (table) : The parsed table.
 ]]
 function vdfParser.parseString(input, stopKeyList)
-    local result = {}
+	local result = {}
 
-    local status = "keyWait"
+	local status = "keyWait"
 
 	-- Temp Values
-    local tempKey, tempValue, tempRecursiveInput = "", "", ""
+	local tempKey, tempValue, tempRecursiveInput = "", "", ""
 
-    local indent = 0
-    local previousChar = nil
+	local indent = 0
+	local previousChar = nil
 
 	-- Until we reached the end of the file
-    for i = 1, #input do
-        local char = input:sub(i, i)
+	for i = 1, #input do
+		local char = input:sub(i, i)
 
 		-- Status :
 		-- keyWait : We wait for a key
@@ -51,76 +51,76 @@ function vdfParser.parseString(input, stopKeyList)
 		-- readingTableValue : We are reading a table value
 
 		-- String management
-        if char == '"' and previousChar ~= "\\" then
-            if status == "keyWait" then
-                status = "readingKey"
-            elseif status == "readingKey" then
-                status = "valueWait"
-            elseif status == "valueWait" then
-                status = "readingValue"
-            elseif status == "readingValue" then
-                result[tempKey] = tempValue
+		if char == '"' and previousChar ~= "\\" then
+			if status == "keyWait" then
+				status = "readingKey"
+			elseif status == "readingKey" then
+				status = "valueWait"
+			elseif status == "valueWait" then
+				status = "readingValue"
+			elseif status == "readingValue" then
+				result[tempKey] = tempValue
 				-- We stop the parsing if we reached the stopKeyList entry
-                if stopKeyList and tempKey == stopKeyList[1] then
-                    return result
-                end
-                tempKey = ""
-                tempValue = ""
-                status = "keyWait"
-            elseif status == "readingTableValue" then
-                tempRecursiveInput = tempRecursiveInput..char
-            end
+				if stopKeyList and tempKey == stopKeyList[1] then
+					return result
+				end
+				tempKey = ""
+				tempValue = ""
+				status = "keyWait"
+			elseif status == "readingTableValue" then
+				tempRecursiveInput = tempRecursiveInput..char
+			end
 
 		-- Subtable management
-        elseif char == '{'  and previousChar ~= "\\" and (status == "valueWait" or status == "readingTableValue") then
-            if status == "valueWait" then
-                status = "readingTableValue"
-            elseif status == "readingTableValue" then
-                tempRecursiveInput = tempRecursiveInput..char
-                indent = indent + 1
-            end
-        elseif char == '}'  and previousChar ~= "\\" and status == "readingTableValue" then
-            if indent == 0 then
-                local newStopKeyList = nil
-                if stopKeyList then
-                    newStopKeyList = {table.unpack(stopKeyList, 2)}
-                    if next(newStopKeyList) == nil then
-                        newStopKeyList = nil
-                    end
-                end
+		elseif char == '{'  and previousChar ~= "\\" and (status == "valueWait" or status == "readingTableValue") then
+			if status == "valueWait" then
+				status = "readingTableValue"
+			elseif status == "readingTableValue" then
+				tempRecursiveInput = tempRecursiveInput..char
+				indent = indent + 1
+			end
+		elseif char == '}'  and previousChar ~= "\\" and status == "readingTableValue" then
+			if indent == 0 then
+				local newStopKeyList = nil
+				if stopKeyList then
+					newStopKeyList = {table.unpack(stopKeyList, 2)}
+					if next(newStopKeyList) == nil then
+						newStopKeyList = nil
+					end
+				end
 
-                if stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1] then
-                    result[tempKey] = vdfParser.parseString(tempRecursiveInput, newStopKeyList)
-                end
+				if stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1] then
+					result[tempKey] = vdfParser.parseString(tempRecursiveInput, newStopKeyList)
+				end
 
-                if stopKeyList and tempKey == stopKeyList[1] then
-                    return result
-                end
+				if stopKeyList and tempKey == stopKeyList[1] then
+					return result
+				end
 
-                tempKey = ""
-                tempValue = ""
-                tempRecursiveInput = ""
-                status = "keyWait"
-            else
-                tempRecursiveInput = tempRecursiveInput..char
-                indent = indent - 1
-            end
+				tempKey = ""
+				tempValue = ""
+				tempRecursiveInput = ""
+				status = "keyWait"
+			else
+				tempRecursiveInput = tempRecursiveInput..char
+				indent = indent - 1
+			end
 
 		-- While reading a key
-        elseif status == "readingKey" then
-            tempKey = tempKey..char
+		elseif status == "readingKey" then
+			tempKey = tempKey..char
 		-- While reading a value
-        elseif status == "readingValue" and (stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1]) then
-            tempValue = tempValue..char
+		elseif status == "readingValue" and (stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1]) then
+			tempValue = tempValue..char
 		-- While reading a table value, before sending it through the function again to parse it
-        elseif status == "readingTableValue" and (stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1]) then
-            tempRecursiveInput = tempRecursiveInput..char
-        end
+		elseif status == "readingTableValue" and (stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1]) then
+			tempRecursiveInput = tempRecursiveInput..char
+		end
 
-        previousChar = char
-    end
+		previousChar = char
+	end
 
-    return result
+	return result
 end
 
 --[[

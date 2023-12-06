@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=SimpleSteamTinker
 Icon=simplesteamtinker
-Comment=A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch.
+Comment=A work-in-progress simple, fast and modern Adwaita alternative to SteamTinkerLaunch.
 Exec=/usr/bin/sst
 Terminal=false
 Type=Application
