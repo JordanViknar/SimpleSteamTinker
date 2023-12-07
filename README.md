@@ -150,7 +150,7 @@ If, in the future, LGI becomes stable enough with GTK4 to use it directly to gen
 | VKD3D settings | ✅ | 🚧 *(Planned, high priority)* |
 | FSR settings | ✅ | 🚧 *(Planned, high priority)* |
 | MangoHud | ✅ | ✅ |
-| GameScope | ✅ | 🚧 *(Work In Progress)* |
+| GameScope | ✅ | ✅ |
 | Shader support (ReShade/vkBasalt) | ✅ | ❌ *(Planned, low priority)* |
 | SDL Wayland video driver | ✅ | 🚧 *(Planned)* |
 | Zink | ✅ | ✅ |

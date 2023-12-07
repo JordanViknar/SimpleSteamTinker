@@ -10,7 +10,7 @@ return
 
 	utilities = {
 		gamemode = {
-			enabled = false;
+			enabled = true;
 		},
 		mangohud = {
 			enabled = false;
@@ -20,29 +20,30 @@ return
 		},
 	},
 
---[[
-	["gamescope"] = {
-		["enabled"] = true;
-		["general"] = {
-			["resolution"] = {
-				["internal"] = "default";
-				["external"] = "default";
+
+	gamescope = {
+		enabled = false;
+		general = {
+			resolution = {
+				internal = {
+					width = -1;
+					height = -1;
+				};
+				external = {
+					width = -1;
+					height = -1;
+				};
 			};
 			["frame-limit"] = {
-				["normal"] = -1;
-				["unfocused"] = -1;
+				normal = -1;
+				unfocused = -1;
 			};
-			["fullscreen"] = false;
-			["borderless"] = false;
-			["steam-integration"] = false; -- SteamTinkerLaunch UI mentions this
-			["force-nested-window-fullscreen"] = false;
-			["grab-cursor"] = false;
-			["orientation"] = "normal";
+			fullscreen = false;
+			borderless = false;
 		};
-		["filtering"] = {
-			["sharpness"] = -1; -- Ranges from 0 to 20
-			["type"] = "none"; -- "none", "nearest-neighbor", "amd-fsr", "nvidia-img-scaling"
+		filtering = {
+			sharpness = -1; -- Ranges from 0 to 20 (-1 used when not set)
+			filter = "none"; -- "none", "linear", "nearest", "fsr", "nis", "pixel"
 		}
 	}
-]]
 }

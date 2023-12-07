@@ -5,6 +5,7 @@ return function (gameConfig)
 
 	{
 		{require("modules.tools.zink"),gameConfig.utilities.zink.enabled,"gameConfig.utilities.zink.enabled"},
+		{require("modules.tools.gamescope"),gameConfig.gamescope.enabled,"gameConfig.gamescope.enabled"},
 		{require("modules.tools.switcherooctl"),gameConfig.dgpu.enabled,"gameConfig.dgpu.enabled"},
 		{require("modules.tools.mangohud"),gameConfig.utilities.mangohud.enabled,"gameConfig.utilities.mangohud.enabled"},
 		{require("modules.tools.gamemode"),gameConfig.utilities.gamemode.enabled,"gameConfig.utilities.gamemode.enabled"}

@@ -47,7 +47,7 @@ return function(application, interface, win)
 			"Lua https://www.lua.org/",
 			"LGI https://github.com/lgi-devs/lgi",
 			"GTK https://www.gtk.org/",
-			"LibAdwaita https://gnome.pages.gitlab.gnome.org/libadwaita/",
+			"libadwaita https://gnome.pages.gitlab.gnome.org/libadwaita/",
 			"LuaFileSystem https://github.com/lunarmodules/luafilesystem",
 			"LuaSocket https://github.com/lunarmodules/luasocket",
 			"dkjson http://dkolf.de/src/dkjson-lua.fsl/home"
@@ -58,7 +58,8 @@ return function(application, interface, win)
 			"GameMode https://github.com/FeralInteractive/gamemode",
 			"MangoHud https://github.com/flightlessmango/MangoHud",
 			"Zink https://docs.mesa3d.org/drivers/zink.html",
-			"ProtonDB https://www.protondb.com/"
+			"ProtonDB https://www.protondb.com/",
+			"GameScope https://github.com/ValveSoftware/gamescope"
 		})
 
 		creditWindow:set_comments(_("A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch."))
