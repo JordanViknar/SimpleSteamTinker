@@ -34,19 +34,15 @@ Adw.ApplicationWindow mainWindow {
 				This is the page the program starts on when it's launched.
 			*/
 			Adw.NavigationPage mainPage {
+				title: _("SimpleSteamTinker");
 				Adw.ToolbarView mainPageTopbar {
 					[top]
 					Adw.HeaderBar {
 						styles ["titlebar"]
 
-						title-widget:
-						Adw.WindowTitle {
-							title: "SimpleSteamTinker";
-						};
-
 						[end]
 						Button aboutLauncher {
-							icon-name: "open-menu-symbolic";
+							icon-name: "help-about-symbolic";
 							styles ["image-button"]
 						}
 					}
@@ -72,15 +68,11 @@ Adw.ApplicationWindow mainWindow {
 
 			// This is the page that shows up when you click on a game.
 			Adw.NavigationPage gameSettings { //[INTERACTS THROUGH LUA]
+				title: _("Game settings");
 				Adw.ToolbarView gameSettingsTopbar {
 					[top]
 					Adw.HeaderBar {
 						styles ["titlebar"]
-
-						title-widget:
-						Adw.WindowTitle gameSettingsWindowTitle { //[MODIFIED IN LUA]
-							title: _("Settings");
-						};
 
 						// Button that allows you to toggle the sidebar in the game settings page.
 						ToggleButton sidebarToggleButton { //[MODIFIED IN LUA][INTERACTS THROUGH LUA]
@@ -99,6 +91,7 @@ Adw.ApplicationWindow mainWindow {
 						show-sidebar: bind sidebarToggleButton.active bidirectional;
 						sidebar: 
 						Adw.NavigationPage gameSettingsSidebar {
+							title: _("Sidebar");
 							child:
 							Adw.ToolbarView {
 								Box {
@@ -142,10 +135,11 @@ Adw.ApplicationWindow mainWindow {
 						};
 							
 						/*
-							OVERVIEW PAGE
+							CONTENT
 						*/
 						content:
 						Adw.NavigationPage {
+							title: _("Game settings");
 							Stack gameSettingsStack {
 								transition-type: crossfade;
 

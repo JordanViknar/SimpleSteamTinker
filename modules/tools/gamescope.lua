@@ -8,45 +8,25 @@ local usage = function(command, config)
 
 	-- Nested resolution
 	if
-		config.gamescope.general.resolution.internal.width ~= -1
-		and
-		config.gamescope.general.resolution.internal.height ~= -1
+		config.gamescope.general.resolution.enabled == true
 	then
 		options = string.format(
-			"%s --nested-width %s --nested-height %s",
+			"%s --nested-width %s --nested-height %s --output-width %s --output-height %s",
 			options,
 			config.gamescope.general.resolution.internal.width,
-			config.gamescope.general.resolution.internal.height
-		)
-	end
-
-	-- External resolution
-	if
-		config.gamescope.general.resolution.external.width ~= -1
-		and
-		config.gamescope.general.resolution.external.height ~= -1
-	then
-		options = string.format(
-			"%s --output-width %s --output-height %s",
-			options,
+			config.gamescope.general.resolution.internal.height,
 			config.gamescope.general.resolution.external.width,
 			config.gamescope.general.resolution.external.height
 		)
 	end
 
 	-- Frame limit
-	if config.gamescope.general["frame-limit"].normal ~= -1 then
+	if config.gamescope.general.frame_limit.enabled == true then
 		options = string.format(
-			"%s -r %s",
+			"%s -r %s -o %s",
 			options,
-			config.gamescope.general["frame-limit"].normal
-		)
-	end
-	if config.gamescope.general["frame-limit"].unfocused ~= -1 then
-		options = string.format(
-			"%s -o %s",
-			options,
-			config.gamescope.general["frame-limit"].unfocused
+			config.gamescope.general.frame_limit.normal,
+			config.gamescope.general.frame_limit.unfocused
 		)
 	end
 
@@ -54,25 +34,17 @@ local usage = function(command, config)
 	if config.gamescope.general.fullscreen == true then
 		options = options.." -f"
 	end
-
-	-- Borderless
 	if config.gamescope.general.borderless == true then
 		options = options.." -b"
 	end
 
 	-- Filtering
-	if config.gamescope.filtering.sharpness ~= -1 then
+	if config.gamescope.filtering.enabled == true then
 		options = string.format(
-			"%s --sharpness %s",
+			"%s --filter %s --sharpness %s",
 			options,
+			config.gamescope.filtering.filter,
 			config.gamescope.filtering.sharpness
-		)
-	end
-	if config.gamescope.filtering.filter ~= nil then
-		options = string.format(
-			"%s --filter %s",
-			options,
-			config.gamescope.filtering.filter
 		)
 	end
 

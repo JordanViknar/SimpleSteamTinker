@@ -18,7 +18,7 @@ StackPage gamescopePage { //[MODIFIED IN LUA]: This page is only shown if the ga
 			
 				Adw.PreferencesGroup {
 					title: "Gamescope";
-					description: _("GameScope is a tool from Valve that allows for games to run in an isolated Xwayland instance.");
+					description: _("Gamescope is a tool from Valve that allows for games to run in an isolated XWayland instance.");
 					Adw.ActionRow {
 						title : _("Enable Gamescope");
 						subtitle: _("May cause compatibility issues with some utilities and Wayland-native games.");
@@ -37,26 +37,153 @@ StackPage gamescopePage { //[MODIFIED IN LUA]: This page is only shown if the ga
 				}
 
 				Adw.PreferencesGroup {
-					title: _("General");
-					description: _("General settings for Gamescope.");
-					sensitive: bind gamescope_Switch.sensitive bidirectional;
+					title: _("Resolution");
+					description: _("Resolution settings for both the game and the Gamescope window.");
+
+					sensitive: bind gamescope_Switch.active bidirectional;
+
 					Adw.ExpanderRow {
-						title: _("Resolution");
-						show-enable-switch: true;
-						Adw.ComboRow {
-							title: _("Internal Resolution");
-							subtitle: _("The resolution that the game will be rendered at.");
-							[model]
-							Gtk.StringList {
+						title: _("Game resolution");
 
-							}
+						sensitive: bind gamescope_Resolution_Switch.active bidirectional;
+
+						Adw.SpinRow {
+							title: _("Height");
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
 						}
-						Adw.ComboRow {
-							title: _("External Resolution");
-							subtitle: _("The resolution that the game will be displayed at.");
-							[model]
-							Gtk.StringList {
+						Adw.SpinRow {
+							title: _("Width");
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
+						}
+					}
 
+					Adw.ExpanderRow {
+						title: _("Window resolution");
+
+						sensitive: bind gamescope_Resolution_Switch.active bidirectional;
+
+						Adw.SpinRow {
+							title: _("Height");
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
+						}
+						Adw.SpinRow {
+							title: _("Width");
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
+						}
+					}
+					
+					[header-suffix]
+					Switch gamescope_Resolution_Switch {
+						active: false;
+						sensitive: bind gamescope_Switch.active bidirectional;
+						valign: center;
+					}
+				}
+
+
+				Adw.PreferencesGroup {
+					title: _("Framerate");
+					description: _("The maximum framerate the game will run at.");
+
+					sensitive: bind gamescope_Switch.active bidirectional;
+
+					Adw.SpinRow {
+						title: _("Normal");
+						sensitive: bind gamescope_Framerate_Switch.active bidirectional;
+						numeric: true;
+						adjustment :
+						Gtk.Adjustment {
+							lower: 0;
+							upper: 244;
+							step-increment: 1;
+						};
+					}
+					Adw.SpinRow {
+						title: _("Unfocused");
+						sensitive: bind gamescope_Framerate_Switch.active bidirectional;
+						numeric: true;
+						adjustment :
+						Gtk.Adjustment {
+							lower: 0;
+							upper: 244;
+							step-increment: 1;
+						};
+					}
+					
+					[header-suffix]
+					Switch gamescope_Framerate_Switch {
+						active: false;
+						sensitive: bind gamescope_Switch.active bidirectional;
+						valign: center;
+					}
+				}
+
+				Adw.PreferencesGroup {
+					title: _("Filtering");
+					description: _("Makes the game look smoother at lower resolutions.");
+
+					sensitive: bind gamescope_Switch.active bidirectional;
+
+					Adw.ComboRow {
+						title: _("Filter");
+						model: Gtk.StringList {
+						};
+					}
+					Adw.SpinRow {
+						title: _("Sharpness");
+						numeric: true;
+						adjustment :
+						Gtk.Adjustment {
+							lower: 0;
+							upper: 20;
+							step-increment: 1;
+						};
+					}
+				}
+
+				Adw.PreferencesGroup {
+					title: _("Extras");
+					description: _("Additional settings for GameScope.");
+
+					sensitive: bind gamescope_Switch.active bidirectional;
+
+					Adw.ActionRow {
+						title: _("Window type");
+
+						Box {
+							styles ["linked"]
+
+							ToggleButton {
+								label: _("Borderless");
+								valign: center;
+							}
+							ToggleButton {
+								label: _("Fullscreen");
+								valign: center;
 							}
 						}
 					}
