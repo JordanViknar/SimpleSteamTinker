@@ -14,8 +14,8 @@
 	<img src="https://img.shields.io/badge/lua-%232C2D72.svg?style=for-the-badge&logo=lua&logoColor=white">
 	</br>
 	<img src="https://img.shields.io/github/license/JordanViknar/SimpleSteamTinker?color=orange">
-	<img src="https://img.shields.io/github/commit-activity/m/JordanViknar/StompMyFiles?color=orange">
-	<img src="https://img.shields.io/github/repo-size/JordanViknar/StompMyFiles">
+	<img src="https://img.shields.io/github/commit-activity/m/JordanViknar/SimpleSteamTinker?color=orange">
+	<img src="https://img.shields.io/github/repo-size/JordanViknar/SimpleSteamTinker">
 	</br>
 	<!-- Screenshot -->
 	<img src="./assets/screenshots/ViewLight.png" width=768>
