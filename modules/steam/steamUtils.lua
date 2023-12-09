@@ -31,15 +31,11 @@ function steamUtils.convertToSteamID3(steamID)
 	local id_str = tostring(steamID)
 
 	if tonumber(id_str) then
-		if #id_str ~= 17 then
-			error("Invalid steamID64 length")
-		end
-
 		local offset_id = tonumber(id_str) - 76561197960265728
 		local account_type = offset_id % 2
 		local account_id = math.floor((offset_id - account_type) / 2) + account_type
 
-		return string.format("[U:1:%d]", (account_id * 2) - account_type)
+		return (account_id * 2) - account_type
 	else
 		error("Unable to decode SteamID : "..id_str)
 	end

@@ -4,7 +4,6 @@ local GObject = lgi.GObject
 
 -- Internal Modules
 local systemUtils = require("modules.general.systemUtils")
-local fsUtils = require("modules.general.fsUtils")
 local configManager = require("modules.config.configManager")
 
 local lgiHelper = {}
@@ -26,36 +25,6 @@ function lgiHelper.replaceSignal(object, signal, action)
 end
 
 --[[
-	Name : function lgiHelper.connectUtilityToButton(id, button, utility, property, setting)
-	Description : Connects a utility to a button.
-	Arg 1 : string id : The game's ID.
-	Arg 2 : The button to connect.
-	Arg 3 : string utility : The utility's name.
-	Arg 4 : string property : The property to connect.
-	Arg 5 : string setting : The setting to modify.
-]]
-function lgiHelper.connectUtilityToButton(id, button, utility, property, setting)
-	lgiHelper.removeSignal(button, "on_activated")
-
-	-- If utility begins with /, then it's a file path.
-	local isPresent = systemUtils.isInstalled(utility)
-
-	if isPresent then
-		button:set_sensitive(true)
-		button:set_active(property)
-
-		button.on_state_set = function()
-			configManager.modifyGameConfig(id, setting, button:get_active())
-		end
-	else
-		button:set_sensitive(false)
-		button:set_active(false)
-		button.has_tooltip = true
-		button.tooltip_text = "'"..utility.."' is not present on your system."
-	end
-end
-
---[[
 	Name : function lgiHelper.removeSignal(object, signal)
 	Description : Simply deactivate the function of a button.
 	Arg 1 : The object to modify.
@@ -65,7 +34,42 @@ function lgiHelper.removeSignal(object, signal)
 	-- We create a table for the object if it doesn't exist.
 	signalList[object] = signalList[object] or {}
 	-- If the object already has an event connected to the same signal, we disconnect it.
-	if signalList[object][signal] then GObject.signal_handler_disconnect(object, signalList[object][signal]) end
+	if signalList[object][signal] then
+		GObject.signal_handler_disconnect(object, signalList[object][signal])
+		signalList[object][signal] = nil
+	end
+end
+
+--[[
+	Name : function lgiHelper.connectUtilityToButton(id, button, utility, property, setting)
+	Description : Connects a utility to a button.
+	Arg 1 : string id : The game's ID.
+	Arg 2 : The button to connect.
+	Arg 3 : string utility : The utility's name.
+	Arg 4 : string property : The property to connect.
+	Arg 5 : string setting : The setting to modify.
+]]
+function lgiHelper.connectUtilityToButton(id, button, utility, property, setting, signal)
+	signal = signal or "on_state_set"
+	lgiHelper.removeSignal(button, signal)
+
+	-- If utility begins with /, then it's a file path.
+	local isPresent = systemUtils.isInstalled(utility)
+
+	if isPresent then
+		button:set_sensitive(true)
+		button:set_active(property)
+
+		if signalList[button] == nil then signalList[button] = {} end
+		signalList[button][signal] = button[signal]:connect(function()
+			configManager.modifyGameConfig(id, setting, button:get_active())
+		end)
+	else
+		button:set_sensitive(false)
+		button:set_active(false)
+		button.has_tooltip = true
+		button.tooltip_text = "'"..utility.."' is not present on your system."
+	end
 end
 
 return lgiHelper

@@ -18,7 +18,7 @@ StackPage gamescopePage { //[MODIFIED IN LUA]: This page is only shown if the ga
 			
 				Adw.PreferencesGroup {
 					title: "Gamescope";
-					description: _("GameScope is a tool from Valve that allows for games to run in an isolated Xwayland instance.");
+					description: _("Gamescope is a tool from Valve that allows for games to run in an isolated XWayland instance.");
 					Adw.ActionRow {
 						title : _("Enable Gamescope");
 						subtitle: _("May cause compatibility issues with some utilities and Wayland-native games.");
@@ -37,26 +37,174 @@ StackPage gamescopePage { //[MODIFIED IN LUA]: This page is only shown if the ga
 				}
 
 				Adw.PreferencesGroup {
-					title: _("General");
-					description: _("General settings for Gamescope.");
-					sensitive: bind gamescope_Switch.sensitive bidirectional;
+					title: _("Resolution");
+					description: _("Resolution settings for both the game and the Gamescope window.");
+
+					sensitive: bind gamescope_Switch.active;
+
 					Adw.ExpanderRow {
-						title: _("Resolution");
-						show-enable-switch: true;
-						Adw.ComboRow {
-							title: _("Internal Resolution");
-							subtitle: _("The resolution that the game will be rendered at.");
-							[model]
-							Gtk.StringList {
+						title: _("Game resolution");
+						subtitle: _("The resolution the game will run at.");
 
-							}
+						sensitive: bind gamescope_Resolution_Switch.active;
+
+						Adw.SpinRow gamescope_Resolution_Internal_Width_SpinRow {
+							title: _("Width");
+							subtitle: _("The width of the game's internal resolution.");
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
 						}
-						Adw.ComboRow {
-							title: _("External Resolution");
-							subtitle: _("The resolution that the game will be displayed at.");
-							[model]
-							Gtk.StringList {
+						Adw.SpinRow gamescope_Resolution_Internal_Height_SpinRow {
+							title: _("Height");
+							subtitle: _("The height of the game's internal resolution.");
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
+						}
+					}
 
+					Adw.ExpanderRow {
+						title: _("Window resolution");
+						subtitle: _("The resolution of the Gamescope window.");
+
+						sensitive: bind gamescope_Resolution_Switch.active;
+
+						Adw.SpinRow gamescope_Resolution_External_Width_SpinRow {
+							title: _("Width");
+							subtitle: _("The width of the Gamescope window.");
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
+						}
+						Adw.SpinRow gamescope_Resolution_External_Height_SpinRow {
+							title: _("Height");
+							subtitle: _("The height of the Gamescope window.");
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
+						}
+					}
+					
+					[header-suffix]
+					Switch gamescope_Resolution_Switch {
+						active: false;
+						sensitive: bind gamescope_Switch.active;
+						valign: center;
+					}
+				}
+
+
+				Adw.PreferencesGroup {
+					title: _("Framerate");
+					description: _("The maximum framerate the game will run at.");
+
+					sensitive: bind gamescope_Switch.active;
+
+					Adw.SpinRow gamescope_Framerate_Normal_SpinRow {
+						title: _("Normal");
+						subtitle: _("The framerate when the game is focused.");
+						sensitive: bind gamescope_Framerate_Switch.active;
+						numeric: true;
+						adjustment :
+						Gtk.Adjustment {
+							lower: 0;
+							upper: 244;
+							step-increment: 1;
+						};
+					}
+					Adw.SpinRow gamescope_Framerate_Unfocused_SpinRow {
+						title: _("Unfocused");
+						subtitle: _("The framerate when the game is not focused.");
+						sensitive: bind gamescope_Framerate_Switch.active;
+						numeric: true;
+						adjustment :
+						Gtk.Adjustment {
+							lower: 0;
+							upper: 244;
+							step-increment: 1;
+						};
+					}
+					
+					[header-suffix]
+					Switch gamescope_Framerate_Switch {
+						active: false;
+						sensitive: bind gamescope_Switch.active;
+						valign: center;
+					}
+				}
+
+				Adw.PreferencesGroup {
+					title: _("Filtering");
+					description: _("Makes the game look smoother at lower resolutions.");
+
+					sensitive: bind gamescope_Switch.active;
+
+					Adw.ComboRow gamescope_Filtering_Filter_ComboRow {
+						title: _("Filter");
+						subtitle: _("The filter to use. (NIS = Nvidia Image Scaling, FSR = FidelityFX Super Resolution)");
+						sensitive: bind gamescope_Filtering_Switch.active;
+						model: Gtk.StringList {
+							strings ["Linear", "Nearest", "FSR", "NIS", "Pixel"]
+						};
+					}
+					Adw.SpinRow gamescope_Filtering_Sharpness_SpinRow {
+						title: _("Sharpness");
+						subtitle: _("The sharpness of the filter. (20 is the maximum, 0 is the minimum)");
+						sensitive: bind gamescope_Filtering_Switch.active;
+						numeric: true;
+						adjustment :
+						Gtk.Adjustment {
+							lower: 0;
+							upper: 20;
+							step-increment: 1;
+						};
+					}
+
+					[header-suffix]
+					Switch gamescope_Filtering_Switch {
+						active: false;
+						sensitive: bind gamescope_Switch.active;
+						valign: center;
+					}
+				}
+
+				Adw.PreferencesGroup {
+					title: _("Extras");
+					description: _("Additional settings for GameScope.");
+
+					sensitive: bind gamescope_Switch.active;
+
+					Adw.ActionRow {
+						title: _("Window type");
+						subtitle: _("The type of window to use for the Gamescope window.");
+
+						Box {
+							styles ["linked"]
+
+							ToggleButton gamescope_Borderless_Toggle {
+								label: _("Borderless");
+								valign: center;
+							}
+							ToggleButton gamescope_Fullscreen_Toggle {
+								label: _("Fullscreen");
+								valign: center;
 							}
 						}
 					}

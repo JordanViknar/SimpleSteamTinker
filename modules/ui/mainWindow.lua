@@ -112,8 +112,8 @@ return function(app, steamGames)
 					require("modules.ui.gameSettingsOverview")(app, builder, game)
 					require("modules.ui.gameSettingsSettings")(app, builder, game, gameSettings)
 					require("modules.ui.gameSettingsUtilities")(app, builder, game, gameSettings)
-					require("modules.ui.gameSettingsProton")(app, builder, game, gameSettings)
 					require("modules.ui.gameSettingsGamescope")(app, builder, game, gameSettings)
+					require("modules.ui.gameSettingsProton")(app, builder, game, gameSettings)
 
 					mainView:push(gameSettingsInterface)
 				end
