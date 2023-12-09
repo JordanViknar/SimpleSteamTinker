@@ -44,8 +44,8 @@ return
 		};
 		filtering = {
 			enabled = false;
-			filter = "fsr"; -- "linear", "nearest", "fsr", "nis", "pixel"
-			sharpness = 0; -- Ranges from 0 to 20
+			filter = "FSR"; -- "Linear", "Nearest", "FSR", "NIS", "Pixel"
+			sharpness = 5; -- Ranges from 0 to 20
 		}
 	}
 }

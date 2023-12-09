@@ -43,8 +43,8 @@ local usage = function(command, config)
 		options = string.format(
 			"%s --filter %s --sharpness %s",
 			options,
-			config.gamescope.filtering.filter,
-			config.gamescope.filtering.sharpness
+			string.lower(config.gamescope.filtering.filter),
+			20 - config.gamescope.filtering.sharpness -- gamescope's sharpness is inverted
 		)
 	end
 

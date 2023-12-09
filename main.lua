@@ -115,7 +115,6 @@ for _, v in pairs(steamGames) do
 end
 table.sort(newSteamGamesTable, function(a, b) return a.name < b.name end)
 steamGames = newSteamGamesTable
-newSteamGamesTable = nil
 
 -- Time to start the application
 local timeStart = os.clock()

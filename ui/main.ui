@@ -630,14 +630,16 @@ Command may change depending on installation method.</property>
                                                   <object class="AdwPreferencesGroup">
                                                     <property name="title" translatable="true">Resolution</property>
                                                     <property name="description" translatable="true">Resolution settings for both the game and the Gamescope window.</property>
-                                                    <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create"/>
                                                     <child>
                                                       <object class="AdwExpanderRow">
                                                         <property name="title" translatable="true">Game resolution</property>
-                                                        <property name="sensitive" bind-source="gamescope_Resolution_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="subtitle" translatable="true">The resolution the game will run at.</property>
+                                                        <property name="sensitive" bind-source="gamescope_Resolution_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <child>
-                                                          <object class="AdwSpinRow">
-                                                            <property name="title" translatable="true">Height</property>
+                                                          <object class="AdwSpinRow" id="gamescope_Resolution_Internal_Width_SpinRow">
+                                                            <property name="title" translatable="true">Width</property>
+                                                            <property name="subtitle" translatable="true">The width of the game's internal resolution.</property>
                                                             <property name="numeric">true</property>
                                                             <property name="adjustment">
                                                               <object class="GtkAdjustment">
@@ -649,8 +651,9 @@ Command may change depending on installation method.</property>
                                                           </object>
                                                         </child>
                                                         <child>
-                                                          <object class="AdwSpinRow">
-                                                            <property name="title" translatable="true">Width</property>
+                                                          <object class="AdwSpinRow" id="gamescope_Resolution_Internal_Height_SpinRow">
+                                                            <property name="title" translatable="true">Height</property>
+                                                            <property name="subtitle" translatable="true">The height of the game's internal resolution.</property>
                                                             <property name="numeric">true</property>
                                                             <property name="adjustment">
                                                               <object class="GtkAdjustment">
@@ -666,10 +669,12 @@ Command may change depending on installation method.</property>
                                                     <child>
                                                       <object class="AdwExpanderRow">
                                                         <property name="title" translatable="true">Window resolution</property>
-                                                        <property name="sensitive" bind-source="gamescope_Resolution_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="subtitle" translatable="true">The resolution of the Gamescope window.</property>
+                                                        <property name="sensitive" bind-source="gamescope_Resolution_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <child>
-                                                          <object class="AdwSpinRow">
-                                                            <property name="title" translatable="true">Height</property>
+                                                          <object class="AdwSpinRow" id="gamescope_Resolution_External_Width_SpinRow">
+                                                            <property name="title" translatable="true">Width</property>
+                                                            <property name="subtitle" translatable="true">The width of the Gamescope window.</property>
                                                             <property name="numeric">true</property>
                                                             <property name="adjustment">
                                                               <object class="GtkAdjustment">
@@ -681,8 +686,9 @@ Command may change depending on installation method.</property>
                                                           </object>
                                                         </child>
                                                         <child>
-                                                          <object class="AdwSpinRow">
-                                                            <property name="title" translatable="true">Width</property>
+                                                          <object class="AdwSpinRow" id="gamescope_Resolution_External_Height_SpinRow">
+                                                            <property name="title" translatable="true">Height</property>
+                                                            <property name="subtitle" translatable="true">The height of the Gamescope window.</property>
                                                             <property name="numeric">true</property>
                                                             <property name="adjustment">
                                                               <object class="GtkAdjustment">
@@ -698,7 +704,7 @@ Command may change depending on installation method.</property>
                                                     <child type="header-suffix">
                                                       <object class="GtkSwitch" id="gamescope_Resolution_Switch">
                                                         <property name="active">false</property>
-                                                        <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <property name="valign">3</property>
                                                       </object>
                                                     </child>
@@ -708,11 +714,12 @@ Command may change depending on installation method.</property>
                                                   <object class="AdwPreferencesGroup">
                                                     <property name="title" translatable="true">Framerate</property>
                                                     <property name="description" translatable="true">The maximum framerate the game will run at.</property>
-                                                    <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create"/>
                                                     <child>
-                                                      <object class="AdwSpinRow">
+                                                      <object class="AdwSpinRow" id="gamescope_Framerate_Normal_SpinRow">
                                                         <property name="title" translatable="true">Normal</property>
-                                                        <property name="sensitive" bind-source="gamescope_Framerate_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="subtitle" translatable="true">The framerate when the game is focused.</property>
+                                                        <property name="sensitive" bind-source="gamescope_Framerate_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <property name="numeric">true</property>
                                                         <property name="adjustment">
                                                           <object class="GtkAdjustment">
@@ -724,9 +731,10 @@ Command may change depending on installation method.</property>
                                                       </object>
                                                     </child>
                                                     <child>
-                                                      <object class="AdwSpinRow">
+                                                      <object class="AdwSpinRow" id="gamescope_Framerate_Unfocused_SpinRow">
                                                         <property name="title" translatable="true">Unfocused</property>
-                                                        <property name="sensitive" bind-source="gamescope_Framerate_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="subtitle" translatable="true">The framerate when the game is not focused.</property>
+                                                        <property name="sensitive" bind-source="gamescope_Framerate_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <property name="numeric">true</property>
                                                         <property name="adjustment">
                                                           <object class="GtkAdjustment">
@@ -740,7 +748,7 @@ Command may change depending on installation method.</property>
                                                     <child type="header-suffix">
                                                       <object class="GtkSwitch" id="gamescope_Framerate_Switch">
                                                         <property name="active">false</property>
-                                                        <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <property name="valign">3</property>
                                                       </object>
                                                     </child>
@@ -750,18 +758,30 @@ Command may change depending on installation method.</property>
                                                   <object class="AdwPreferencesGroup">
                                                     <property name="title" translatable="true">Filtering</property>
                                                     <property name="description" translatable="true">Makes the game look smoother at lower resolutions.</property>
-                                                    <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create"/>
                                                     <child>
-                                                      <object class="AdwComboRow">
+                                                      <object class="AdwComboRow" id="gamescope_Filtering_Filter_ComboRow">
                                                         <property name="title" translatable="true">Filter</property>
+                                                        <property name="subtitle" translatable="true">The filter to use. (NIS = Nvidia Image Scaling, FSR = FidelityFX Super Resolution)</property>
+                                                        <property name="sensitive" bind-source="gamescope_Filtering_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <property name="model">
-                                                          <object class="GtkStringList"></object>
+                                                          <object class="GtkStringList">
+                                                            <items>
+                                                              <item>Linear</item>
+                                                              <item>Nearest</item>
+                                                              <item>FSR</item>
+                                                              <item>NIS</item>
+                                                              <item>Pixel</item>
+                                                            </items>
+                                                          </object>
                                                         </property>
                                                       </object>
                                                     </child>
                                                     <child>
-                                                      <object class="AdwSpinRow">
+                                                      <object class="AdwSpinRow" id="gamescope_Filtering_Sharpness_SpinRow">
                                                         <property name="title" translatable="true">Sharpness</property>
+                                                        <property name="subtitle" translatable="true">The sharpness of the filter. (20 is the maximum, 0 is the minimum)</property>
+                                                        <property name="sensitive" bind-source="gamescope_Filtering_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <property name="numeric">true</property>
                                                         <property name="adjustment">
                                                           <object class="GtkAdjustment">
@@ -772,29 +792,37 @@ Command may change depending on installation method.</property>
                                                         </property>
                                                       </object>
                                                     </child>
+                                                    <child type="header-suffix">
+                                                      <object class="GtkSwitch" id="gamescope_Filtering_Switch">
+                                                        <property name="active">false</property>
+                                                        <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create"/>
+                                                        <property name="valign">3</property>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                 </child>
                                                 <child>
                                                   <object class="AdwPreferencesGroup">
                                                     <property name="title" translatable="true">Extras</property>
                                                     <property name="description" translatable="true">Additional settings for GameScope.</property>
-                                                    <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="gamescope_Switch" bind-property="active" bind-flags="sync-create"/>
                                                     <child>
                                                       <object class="AdwActionRow">
                                                         <property name="title" translatable="true">Window type</property>
+                                                        <property name="subtitle" translatable="true">The type of window to use for the Gamescope window.</property>
                                                         <child>
                                                           <object class="GtkBox">
                                                             <style>
                                                               <class name="linked"/>
                                                             </style>
                                                             <child>
-                                                              <object class="GtkToggleButton">
+                                                              <object class="GtkToggleButton" id="gamescope_Borderless_Toggle">
                                                                 <property name="label" translatable="true">Borderless</property>
                                                                 <property name="valign">3</property>
                                                               </object>
                                                             </child>
                                                             <child>
-                                                              <object class="GtkToggleButton">
+                                                              <object class="GtkToggleButton" id="gamescope_Fullscreen_Toggle">
                                                                 <property name="label" translatable="true">Fullscreen</property>
                                                                 <property name="valign">3</property>
                                                               </object>

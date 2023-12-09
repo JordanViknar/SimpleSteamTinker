@@ -20,11 +20,7 @@ local userData = vdfParser.parseFile(os.getenv("HOME").."/.local/share/Steam/con
 local activeUserID
 for id,data in pairs(userData["users"]) do
 	-- SteamID3
-	local converted = steamUtils.convertToSteamID3(id)
-	data["steamID3"] = {
-		pure = converted,
-		onlyId = converted:gsub("%[U:1:", ""):gsub("%]", "")
-	}
+	data["steamID3"] = steamUtils.convertToSteamID3(id)
 
 	-- Most recent
 	if data["MostRecent"] == "1" then
@@ -43,7 +39,7 @@ logSystem.log("fileRead", "Detecting active user game configs...")
 timeStart = os.clock()
 
 local userAppSettings = vdfParser.parseFile(
-	os.getenv("HOME").."/.local/share/Steam/userdata/"..userData["users"][activeUserID]["steamID3"]["onlyId"].."/config/localconfig.vdf",
+	os.getenv("HOME").."/.local/share/Steam/userdata/"..userData["users"][activeUserID]["steamID3"].."/config/localconfig.vdf",
 	{"UserLocalConfigStore","Software","Valve","Steam","apps"},
 	{"CachedCommunityPreferences",
 	"UIStoreLocalState",
@@ -126,7 +122,7 @@ logSystem.log("fileRead","Detecting games' platforms...")
 timeStart = os.clock()
 
 local compatList = vdfParser.parseFile(
-	os.getenv("HOME").."/.local/share/Steam/userdata/"..userData["users"][activeUserID]["steamID3"]["onlyId"].."/config/compat.vdf"
+	os.getenv("HOME").."/.local/share/Steam/userdata/"..userData["users"][activeUserID]["steamID3"].."/config/compat.vdf"
 )["platform_overrides"]
 
 for gameID,_ in pairs(compatList) do
