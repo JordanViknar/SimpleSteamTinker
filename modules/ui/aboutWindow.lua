@@ -52,14 +52,14 @@ return function(application, interface, win)
 			"LuaSocket https://github.com/lunarmodules/luasocket",
 			"dkjson http://dkolf.de/src/dkjson-lua.fsl/home"
 		})
-		creditWindow:add_acknowledgement_section(_("Third-Party Tools, Libraries and Special Thanks"),{
+		creditWindow:add_acknowledgement_section(_("Third-Party Tools and Special Thanks"),{
 			"Steam https://store.steampowered.com/",
 			"Proton https://github.com/ValveSoftware/proton",
 			"GameMode https://github.com/FeralInteractive/gamemode",
 			"MangoHud https://github.com/flightlessmango/MangoHud",
 			"Zink https://docs.mesa3d.org/drivers/zink.html",
 			"ProtonDB https://www.protondb.com/",
-			"GameScope https://github.com/ValveSoftware/gamescope"
+			"Gamescope https://github.com/ValveSoftware/gamescope"
 		})
 
 		creditWindow:set_comments(_("A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch."))

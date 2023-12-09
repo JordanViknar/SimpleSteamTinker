@@ -87,7 +87,7 @@ It depends on :
 
 And optionally (if they're missing, their related features will simply be disabled) :
 
-[GameMode](https://github.com/FeralInteractive/gamemode), [MangoHud](https://github.com/flightlessmango/MangoHud), [Mesa](https://www.mesa3d.org/) *(for Zink support)* and [switcheroo-control](https://gitlab.freedesktop.org/hadess/switcheroo-control).
+[GameMode](https://github.com/FeralInteractive/gamemode), [MangoHud](https://github.com/flightlessmango/MangoHud), [Mesa](https://www.mesa3d.org/) *(for Zink support)*, [switcheroo-control](https://gitlab.freedesktop.org/hadess/switcheroo-control) and [Gamescope](https://github.com/ValveSoftware/gamescope).
 
 ## Development
 
@@ -150,7 +150,7 @@ If, in the future, LGI becomes stable enough with GTK4 to use it directly to gen
 | VKD3D settings | ✅ | 🚧 *(Planned, high priority)* |
 | FSR settings | ✅ | 🚧 *(Planned, high priority)* |
 | MangoHud | ✅ | ✅ |
-| GameScope | ✅ | ✅ |
+| Gamescope | ✅ | ✅ |
 | Shader support (ReShade/vkBasalt) | ✅ | ❌ *(Planned, low priority)* |
 | SDL Wayland video driver | ✅ | 🚧 *(Planned)* |
 | Zink | ✅ | ✅ |
