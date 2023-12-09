@@ -1,11 +1,16 @@
 -- Internal Modules
 local programMetadata = require("modules.extra.programMetadata")
 local configManager = require("modules.config.configManager")
+local systemUtils = require("modules.general.systemUtils")
+local lgiHelper = require("modules.ui.lgiHelper")
 
 -- External Modules
 local lgi = require("lgi")
 local Gtk = lgi.require("Gtk")
 local Adw = lgi.Adw
+
+-- Install checks
+local installedList = {}
 
 return function(app, steamGames)
 	-- We create the window
@@ -105,16 +110,95 @@ return function(app, steamGames)
 				halign = Gtk.Align.CENTER,
 				css_classes = { "circular", "flat", "image-button" },
 				on_clicked = function()
-					-- We get the game's settings
-					local gameSettings = configManager.getGameConfig(game.id)
-
-					-- We setup the gameSettings UI for this game
+					-- We setup the gameSettings Overview UI for this game
 					require("modules.ui.gameSettingsOverview")(app, builder, game)
-					require("modules.ui.gameSettingsSettings")(app, builder, game, gameSettings)
-					require("modules.ui.gameSettingsUtilities")(app, builder, game, gameSettings)
-					require("modules.ui.gameSettingsGamescope")(app, builder, game, gameSettings)
-					require("modules.ui.gameSettingsProton")(app, builder, game, gameSettings)
 
+					-- We connect the UI elements to the game settings
+					local gameSettings = configManager.getGameConfig(game.id)
+					local UIelements = require("modules.ui.UItoSettingsList")
+					
+					-- We iterate through the UI elements
+					for widgetname, data in pairs(UIelements) do
+						local widget = builder:get_object(widgetname)
+
+						-- Split the setting into keys
+						local keys = {}
+						for substring in data.setting:gmatch("[^.]+") do
+							keys[#keys + 1] = substring
+						end
+						-- Connect to the settings table
+						local pointer = gameSettings
+						for i = 1, #keys - 1 do
+							pointer = pointer[keys[i]] or {}
+						end
+
+						-- We determine the right signal to use
+						local signal
+						if data.type == "Switch" then
+							signal = "on_state_set"
+						elseif data.type == "SpinRow" then
+							signal = "on_changed"
+						elseif data.type == "Toggle" then
+							signal = "on_toggled"
+						else
+							error("Unknown signal to use with type '"..data.type.."' for UI element '"..widgetname.."'")
+						end
+
+						-- Should they be active ? Is the related tool installed ?
+						if not installedList[data.tool] then
+							installedList[data.tool] = systemUtils.isInstalled(data.tool)
+						end
+						if installedList[data.tool] == false then
+							widget:set_sensitive(false)
+							widget.has_tooltip = true
+							widget.tooltip_text = "'"..data.tool.."' is not present on your system."
+						else
+							lgiHelper.removeSignal(widget, signal)
+							widget:set_sensitive(true)
+
+							if data.type == "Switch" or data.type == "Toggle" then
+								widget:set_active(pointer[keys[#keys]])
+								lgiHelper.replaceSignal(widget, signal,function() configManager.modifyGameConfig(game.id, data.setting, widget:get_active()) end)
+							elseif data.type == "SpinRow" then
+								widget.value = pointer[keys[#keys]]
+								lgiHelper.replaceSignal(widget, signal,function() configManager.modifyGameConfig(game.id, data.setting, math.floor(widget:get_value())) end)
+							else
+								error("Unknown type '"..data.type.."' for UI element '"..widgetname.."'")
+							end
+						end
+					end
+
+					--[[
+						Special cases that I'll have to optimize later
+					]]
+					-- Proton page
+					local protonPage = builder:get_object("protonPage")
+					if game.os_platform == "Windows" then
+						protonPage.visible = true
+					else
+						protonPage.visible = false
+					end
+					-- For that one comboRow
+					local comboRow = builder:get_object("gamescope_Filtering_Filter_ComboRow")
+					local model = comboRow:get_model()
+
+					lgiHelper.removeSignal(comboRow, "notify")
+
+					local filters = {"Linear","Nearest","FSR","NIS","Pixel"}
+					-- Iterate through the filters array
+					for index, filter in ipairs(filters) do
+						if gameSettings.gamescope.filtering.filter == filter then
+							comboRow:set_selected(index - 1)
+							break -- No need to continue
+						end
+					end
+
+					lgiHelper.replaceSignal(comboRow, "on_notify", function()
+						local setting = model:get_string(comboRow:get_selected())
+						configManager.modifyGameConfig(game.id, "gamescope.filtering.filter", setting)
+					end)
+
+					-- We finally push the settings page to the user.
 					mainView:push(gameSettingsInterface)
 				end
 			}

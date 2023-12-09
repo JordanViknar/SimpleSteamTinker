@@ -474,12 +474,12 @@ Command may change depending on installation method.</property>
                                                         <property name="title" translatable="true">Use dedicated graphics card</property>
                                                         <property name="subtitle" translatable="true">Use your dedicated graphics card to boost performance by a lot, in exchange for higher power consumption.</property>
                                                         <property name="subtitle-lines">3</property>
-                                                        <property name="activatable-widget">DGPU_Switch</property>
-                                                        <property name="sensitive" bind-source="DGPU_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
-                                                        <property name="has-tooltip" bind-source="DGPU_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
-                                                        <property name="tooltip-text" bind-source="DGPU_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="activatable-widget">dGPU_Switch</property>
+                                                        <property name="sensitive" bind-source="dGPU_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="has-tooltip" bind-source="dGPU_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="tooltip-text" bind-source="dGPU_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
                                                         <child>
-                                                          <object class="GtkSwitch" id="DGPU_Switch">
+                                                          <object class="GtkSwitch" id="dGPU_Switch">
                                                             <property name="active">false</property>
                                                             <property name="sensitive">false</property>
                                                             <property name="valign">3</property>
@@ -518,12 +518,12 @@ Command may change depending on installation method.</property>
                                                   <object class="AdwActionRow">
                                                     <property name="subtitle" translatable="true">GameMode is a tool to optimize Linux system performance on demand.</property>
                                                     <property name="title">Feral GameMode</property>
-                                                    <property name="activatable-widget">gamemode_switch</property>
-                                                    <property name="has-tooltip" bind-source="gamemode_switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
-                                                    <property name="tooltip-text" bind-source="gamemode_switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
-                                                    <property name="sensitive" bind-source="gamemode_switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="activatable-widget">gamemode_Switch</property>
+                                                    <property name="has-tooltip" bind-source="gamemode_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="tooltip-text" bind-source="gamemode_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="gamemode_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
                                                     <child>
-                                                      <object class="GtkSwitch" id="gamemode_switch">
+                                                      <object class="GtkSwitch" id="gamemode_Switch">
                                                         <property name="active">false</property>
                                                         <property name="sensitive">false</property>
                                                         <property name="valign">3</property>
@@ -536,12 +536,12 @@ Command may change depending on installation method.</property>
                                                     <property name="subtitle" translatable="true">A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.</property>
                                                     <property name="subtitle-lines">2</property>
                                                     <property name="title">MangoHud</property>
-                                                    <property name="activatable-widget">mangohud_switch</property>
-                                                    <property name="has-tooltip" bind-source="mangohud_switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
-                                                    <property name="tooltip-text" bind-source="mangohud_switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
-                                                    <property name="sensitive" bind-source="mangohud_switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="activatable-widget">mangohud_Switch</property>
+                                                    <property name="has-tooltip" bind-source="mangohud_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="tooltip-text" bind-source="mangohud_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="mangohud_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
                                                     <child>
-                                                      <object class="GtkSwitch" id="mangohud_switch">
+                                                      <object class="GtkSwitch" id="mangohud_Switch">
                                                         <property name="active">false</property>
                                                         <property name="sensitive">false</property>
                                                         <property name="valign">3</property>
@@ -554,12 +554,12 @@ Command may change depending on installation method.</property>
                                                     <property name="subtitle" translatable="true">Convert OpenGL games to Vulkan.</property>
                                                     <property name="subtitle-lines">2</property>
                                                     <property name="title">Zink</property>
-                                                    <property name="activatable-widget">zink_switch</property>
-                                                    <property name="has-tooltip" bind-source="zink_switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
-                                                    <property name="tooltip-text" bind-source="zink_switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
-                                                    <property name="sensitive" bind-source="zink_switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="activatable-widget">zink_Switch</property>
+                                                    <property name="has-tooltip" bind-source="zink_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="tooltip-text" bind-source="zink_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="zink_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
                                                     <child>
-                                                      <object class="GtkSwitch" id="zink_switch">
+                                                      <object class="GtkSwitch" id="zink_Switch">
                                                         <property name="active">false</property>
                                                         <property name="sensitive">false</property>
                                                         <property name="valign">3</property>

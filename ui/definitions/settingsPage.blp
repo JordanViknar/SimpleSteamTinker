@@ -24,12 +24,12 @@ StackPage settingsPage { //[MODIFIED IN LUA]: This page is only shown if the gam
 						subtitle: _("Use your dedicated graphics card to boost performance by a lot, in exchange for higher power consumption.");
 						subtitle-lines: 3;
 
-						activatable-widget: DGPU_Switch;
-						sensitive: bind DGPU_Switch.sensitive bidirectional;
-						has-tooltip: bind DGPU_Switch.has-tooltip bidirectional;
-						tooltip-text: bind DGPU_Switch.tooltip-text bidirectional;
+						activatable-widget: dGPU_Switch;
+						sensitive: bind dGPU_Switch.sensitive bidirectional;
+						has-tooltip: bind dGPU_Switch.has-tooltip bidirectional;
+						tooltip-text: bind dGPU_Switch.tooltip-text bidirectional;
 
-						Gtk.Switch DGPU_Switch {
+						Gtk.Switch dGPU_Switch {
 							active: false;
 							sensitive: false;
 							valign: center;

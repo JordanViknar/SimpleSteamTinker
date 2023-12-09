@@ -21,6 +21,8 @@ local lgiHelper = {}
 local signalList = {}
 function lgiHelper.replaceSignal(object, signal, action)
 	lgiHelper.removeSignal(object, signal)
+
+	if signalList[object] == nil then signalList[object] = {} end
 	signalList[object][signal] = object[signal]:connect(action)
 end
 
@@ -32,7 +34,7 @@ end
 ]]
 function lgiHelper.removeSignal(object, signal)
 	-- We create a table for the object if it doesn't exist.
-	signalList[object] = signalList[object] or {}
+	if signalList[object] == nil then signalList[object] = {} end
 	-- If the object already has an event connected to the same signal, we disconnect it.
 	if signalList[object][signal] then
 		GObject.signal_handler_disconnect(object, signalList[object][signal])
@@ -49,8 +51,8 @@ end
 	Arg 4 : string property : The property to connect.
 	Arg 5 : string setting : The setting to modify.
 ]]
-function lgiHelper.connectUtilityToButton(id, button, utility, property, setting, signal)
-	signal = signal or "on_state_set"
+function lgiHelper.connectUtilityToButton(id, button, utility, property, setting)
+	local signal = "on_state_set"
 	lgiHelper.removeSignal(button, signal)
 
 	-- If utility begins with /, then it's a file path.

@@ -24,12 +24,12 @@ StackPage utilitiesPage {
 				Adw.ActionRow {
 					subtitle: _("GameMode is a tool to optimize Linux system performance on demand.");
 					title: "Feral GameMode";
-					activatable-widget: gamemode_switch;
-					has-tooltip: bind gamemode_switch.has-tooltip bidirectional;
-					tooltip-text: bind gamemode_switch.tooltip-text bidirectional;
-					sensitive: bind gamemode_switch.sensitive bidirectional;
+					activatable-widget: gamemode_Switch;
+					has-tooltip: bind gamemode_Switch.has-tooltip bidirectional;
+					tooltip-text: bind gamemode_Switch.tooltip-text bidirectional;
+					sensitive: bind gamemode_Switch.sensitive bidirectional;
 
-					Switch gamemode_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+					Switch gamemode_Switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
 						active: false;
 						sensitive: false;
 						valign: center;
@@ -40,12 +40,12 @@ StackPage utilitiesPage {
 					subtitle: _("A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.");
 					subtitle-lines: 2;
 					title: "MangoHud";
-					activatable-widget: mangohud_switch;
-					has-tooltip: bind mangohud_switch.has-tooltip bidirectional;
-					tooltip-text: bind mangohud_switch.tooltip-text bidirectional;
-					sensitive: bind mangohud_switch.sensitive bidirectional;
+					activatable-widget: mangohud_Switch;
+					has-tooltip: bind mangohud_Switch.has-tooltip bidirectional;
+					tooltip-text: bind mangohud_Switch.tooltip-text bidirectional;
+					sensitive: bind mangohud_Switch.sensitive bidirectional;
 
-					Switch mangohud_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+					Switch mangohud_Switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
 						active: false;
 						sensitive: false;
 						valign: center;
@@ -56,12 +56,12 @@ StackPage utilitiesPage {
 					subtitle: _("Convert OpenGL games to Vulkan.");
 					subtitle-lines: 2;
 					title: "Zink";
-					activatable-widget: zink_switch;
-					has-tooltip: bind zink_switch.has-tooltip bidirectional;
-					tooltip-text: bind zink_switch.tooltip-text bidirectional;
-					sensitive: bind zink_switch.sensitive bidirectional;
+					activatable-widget: zink_Switch;
+					has-tooltip: bind zink_Switch.has-tooltip bidirectional;
+					tooltip-text: bind zink_Switch.tooltip-text bidirectional;
+					sensitive: bind zink_Switch.sensitive bidirectional;
 
-					Switch zink_switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+					Switch zink_Switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
 						active: false;
 						sensitive: false;
 						valign: center;
