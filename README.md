@@ -152,7 +152,7 @@ If, in the future, LGI becomes stable enough with GTK4 to use it directly to gen
 | MangoHud | ✅ | ✅ |
 | Gamescope | ✅ | ✅ |
 | Shader support (ReShade/vkBasalt) | ✅ | ❌ *(Planned, low priority)* |
-| SDL Wayland video driver | ✅ | 🚧 *(Planned)* |
+| SDL Wayland video driver | ✅ | ✅ |
 | Zink | ✅ | ✅ |
 | PulseAudio latency | ✅ | 🚧 *(Planned)* |
 | Vortex | ✅ | ❌ |

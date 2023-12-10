@@ -12,7 +12,7 @@ StackPage settingsPage { //[MODIFIED IN LUA]: This page is only shown if the gam
 				margin-start: 12;
 				margin-top: 16;
 				orientation: vertical;
-				spacing: 18;
+				spacing: 24;
 				vexpand: true;
 				vexpand-set: true;
 			
@@ -32,6 +32,23 @@ StackPage settingsPage { //[MODIFIED IN LUA]: This page is only shown if the gam
 						Gtk.Switch dGPU_Switch {
 							active: false;
 							sensitive: false;
+							valign: center;
+						}
+					}
+					Adw.ActionRow {
+						title : _("Enable SDL's Wayland driver");
+						subtitle: _("This option can give you smoother gameplay and performance in SDL-based games on Wayland. Useless on X11.");
+						subtitle-lines: 3;
+
+						activatable-widget: SDL_Wayland_Switch;
+						sensitive: bind SDL_Wayland_Switch.sensitive bidirectional;
+						visible: bind SDL_Wayland_Switch.visible bidirectional;
+						has-tooltip: bind SDL_Wayland_Switch.has-tooltip bidirectional;
+						tooltip-text: bind SDL_Wayland_Switch.tooltip-text bidirectional;
+
+						Gtk.Switch SDL_Wayland_Switch {
+							active: false;
+							sensitive: true;
 							valign: center;
 						}
 					}

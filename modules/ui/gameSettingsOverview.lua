@@ -41,12 +41,16 @@ return function(application, interface, steamGameData)
 			end
 
 			-- We set the rating label
-			if steamGameData.rating == "Not found" then
+			if steamGameData.protondb_data == "Not found" then
 				protonRating_Label.css_classes = {"error"}
-			elseif steamGameData.rating == "Unavailable" then
-				protonRating_Label.css_classes = {"dim-label"}
+			elseif steamGameData.protondb_data == "Unavailable" then
+				protonRating_Label.css_classes = {"warning"}
+			elseif steamGameData.protondb_data["tier"] == "platinum" then
+				protonRating_Label.css_classes = {"success"}
+			elseif steamGameData.protondb_data["tier"] == "silver" or "gold" then
+				protonRating_Label.css_classes = {"warning"}
 			else
-				-- May later be used for extra CSS classes
+				protonRating_Label.css_classes = {"error"}
 			end
 			local rating = steamGameData.protondb_data["tier"] or steamGameData.protondb_data
 			-- Set label and capitalize the first letter
@@ -56,6 +60,7 @@ return function(application, interface, steamGameData)
 
 	else
 		protonRating_Label.label = "Native"
+		protonRating_Label.css_classes = {"success"}
 	end
 
 	-- Sets up the game start button

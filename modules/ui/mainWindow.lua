@@ -21,7 +21,7 @@ return function(app, steamGames)
 	win.startup_id = programMetadata.name
 
 	-- Check for dev version and add relevant theme
-	if programMetadata.version:find("dev") then
+	if programMetadata.version:find("dev") or programMetadata.version:find("a") or programMetadata.version:find("b") then
 		win:add_css_class("devel")
 	end
 
@@ -114,9 +114,9 @@ return function(app, steamGames)
 					require("modules.ui.gameSettingsOverview")(app, builder, game)
 
 					-- We connect the UI elements to the game settings
-					local gameSettings = configManager.getGameConfig(game.id)
 					local UIelements = require("modules.ui.UItoSettingsList")
-					
+					local gameSettings = configManager.getGameConfig(game.id)
+
 					-- We iterate through the UI elements
 					for widgetname, data in pairs(UIelements) do
 						local widget = builder:get_object(widgetname)
@@ -134,26 +134,34 @@ return function(app, steamGames)
 
 						-- We determine the right signal to use
 						local signal
-						if data.type == "Switch" then
-							signal = "on_state_set"
-						elseif data.type == "SpinRow" then
-							signal = "on_changed"
-						elseif data.type == "Toggle" then
-							signal = "on_toggled"
+						if data.type == "Switch" then signal = "on_state_set"
+						elseif data.type == "SpinRow" then signal = "on_changed"
+						elseif data.type == "Toggle" then signal = "on_toggled"
+						elseif data.type == "ComboRow" then
+							signal = "on_notify" -- Not optimal, but it works. Isn't there a better way to do this ?
 						else
 							error("Unknown signal to use with type '"..data.type.."' for UI element '"..widgetname.."'")
 						end
 
+						lgiHelper.removeSignal(widget, signal)
+
+						-- We hide the option if it doesn't fit the platform
+						if data.os_platform and data.os_platform ~= game.os_platform then
+							widget.visible = false
+							goto skip
+						elseif widget.visible ~= true then
+							widget.visible = true
+						end
+
 						-- Should they be active ? Is the related tool installed ?
-						if not installedList[data.tool] then
+						if data.tool and not installedList[data.tool] then
 							installedList[data.tool] = systemUtils.isInstalled(data.tool)
 						end
-						if installedList[data.tool] == false then
+						if data.tool and installedList[data.tool] == false then
 							widget:set_sensitive(false)
 							widget.has_tooltip = true
-							widget.tooltip_text = "'"..data.tool.."' is not present on your system."
+							widget.tooltip_text = data.tool.." is not present on your system."
 						else
-							lgiHelper.removeSignal(widget, signal)
 							widget:set_sensitive(true)
 
 							if data.type == "Switch" or data.type == "Toggle" then
@@ -162,41 +170,41 @@ return function(app, steamGames)
 							elseif data.type == "SpinRow" then
 								widget.value = pointer[keys[#keys]]
 								lgiHelper.replaceSignal(widget, signal,function() configManager.modifyGameConfig(game.id, data.setting, math.floor(widget:get_value())) end)
+							elseif data.type == "ComboRow" then
+								-- We grab the model used
+								local model = widget:get_model()
+
+								-- We select the item that's configured in the settings
+								for index, filter in ipairs(data.items) do
+									if gameSettings.gamescope.filtering.filter == filter then
+										widget:set_selected(index - 1)
+										break -- No need to continue
+									end
+								end
+
+								-- We connect to the setting
+								lgiHelper.replaceSignal(widget, "on_notify", function()
+									local setting = model:get_string(widget:get_selected())
+									configManager.modifyGameConfig(game.id, "gamescope.filtering.filter", setting)
+								end)
 							else
 								error("Unknown type '"..data.type.."' for UI element '"..widgetname.."'")
 							end
 						end
+
+						::skip::
 					end
 
-					--[[
-						Special cases that I'll have to optimize later
-					]]
-					-- Proton page
-					local protonPage = builder:get_object("protonPage")
-					if game.os_platform == "Windows" then
-						protonPage.visible = true
-					else
-						protonPage.visible = false
-					end
-					-- For that one comboRow
-					local comboRow = builder:get_object("gamescope_Filtering_Filter_ComboRow")
-					local model = comboRow:get_model()
-
-					lgiHelper.removeSignal(comboRow, "notify")
-
-					local filters = {"Linear","Nearest","FSR","NIS","Pixel"}
-					-- Iterate through the filters array
-					for index, filter in ipairs(filters) do
-						if gameSettings.gamescope.filtering.filter == filter then
-							comboRow:set_selected(index - 1)
-							break -- No need to continue
+					-- Windows only pages
+					local windowsPages = {"protonPage"}
+					for _, page in ipairs(windowsPages) do
+						page = builder:get_object(page)
+						if game.os_platform == "Windows" then
+							page.visible = true
+						else
+							page.visible = false
 						end
 					end
-
-					lgiHelper.replaceSignal(comboRow, "on_notify", function()
-						local setting = model:get_string(comboRow:get_selected())
-						configManager.modifyGameConfig(game.id, "gamescope.filtering.filter", setting)
-					end)
 
 					-- We finally push the settings page to the user.
 					mainView:push(gameSettingsInterface)

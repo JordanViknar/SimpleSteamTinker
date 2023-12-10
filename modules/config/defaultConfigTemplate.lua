@@ -8,6 +8,10 @@ return
 		enabled = true;
 	};
 
+	misc = {
+		sdl_wayland = true;
+	};
+
 	utilities = {
 		gamemode = {
 			enabled = true;

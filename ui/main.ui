@@ -106,7 +106,7 @@ Command may change depending on installation method.</property>
                                         <property name="margin-start">12</property>
                                         <property name="margin-top">12</property>
                                         <property name="orientation">1</property>
-                                        <property name="spacing">8</property>
+                                        <property name="spacing">12</property>
                                         <property name="valign">1</property>
                                         <child>
                                           <object class="GtkImage" id="gameSettingsSidebarIcon">
@@ -124,6 +124,9 @@ Command may change depending on installation method.</property>
                                               <class name="title-4"/>
                                             </style>
                                           </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSeparator"></object>
                                         </child>
                                       </object>
                                     </child>
@@ -153,6 +156,9 @@ Command may change depending on installation method.</property>
                                     <property name="child">
                                       <object class="GtkScrolledWindow">
                                         <property name="hscrollbar-policy">2</property>
+                                        <style>
+                                          <class name="background"/>
+                                        </style>
                                         <child>
                                           <object class="AdwClamp">
                                             <child>
@@ -162,12 +168,12 @@ Command may change depending on installation method.</property>
                                                 <property name="margin-start">12</property>
                                                 <property name="margin-top">16</property>
                                                 <property name="orientation">1</property>
-                                                <property name="spacing">16</property>
+                                                <property name="spacing">24</property>
                                                 <property name="vexpand">true</property>
                                                 <property name="vexpand-set">true</property>
                                                 <child>
                                                   <object class="AdwClamp">
-                                                    <property name="maximum-size">350</property>
+                                                    <property name="maximum-size">800</property>
                                                     <child>
                                                       <object class="GtkPicture" id="gameBanner">
                                                         <property name="height-request">200</property>
@@ -261,12 +267,12 @@ Command may change depending on installation method.</property>
                                                 </child>
                                                 <child>
                                                   <object class="AdwPreferencesGroup">
-                                                    <property name="description" translatable="true">Details about the game.</property>
-                                                    <property name="title" translatable="true">Game details</property>
+                                                    <property name="title" translatable="true">Details</property>
+                                                    <property name="description" translatable="true">Information about the game.</property>
                                                     <child>
                                                       <object class="AdwActionRow">
                                                         <property name="title" translatable="true">Steam AppID</property>
-                                                        <property name="subtitle" translatable="true">The game's Steam AppID.</property>
+                                                        <property name="subtitle" translatable="true">The unique ID of the game that identifies it in Steam.</property>
                                                         <property name="activatable-widget">gameID_copyButton</property>
                                                         <child type="suffix">
                                                           <object class="GtkBox">
@@ -299,8 +305,7 @@ Command may change depending on installation method.</property>
                                                     <child>
                                                       <object class="AdwActionRow">
                                                         <property name="title" translatable="true">Platform</property>
-                                                        <property name="subtitle" translatable="true">The platform the game was developed for.</property>
-                                                        <property name="subtitle-lines">1</property>
+                                                        <property name="subtitle" translatable="true">The intended platform for the installed game version.</property>
                                                         <child type="suffix">
                                                           <object class="GtkLabel" id="gamePlatform_Label">
                                                             <property name="halign">2</property>
@@ -315,7 +320,7 @@ Command may change depending on installation method.</property>
                                                     <child>
                                                       <object class="AdwActionRow">
                                                         <property name="title" translatable="true">Size</property>
-                                                        <property name="subtitle" translatable="true">The size of the game on the drive.</property>
+                                                        <property name="subtitle" translatable="true">The amount of space the game takes up on the system.</property>
                                                         <child type="suffix">
                                                           <object class="GtkLabel" id="gameSize_Label">
                                                             <property name="halign">2</property>
@@ -329,7 +334,9 @@ Command may change depending on installation method.</property>
                                                     </child>
                                                     <child>
                                                       <object class="AdwActionRow" id="gameLocation_ActionRow">
-                                                        <property name="title" translatable="true">Location</property>
+                                                        <property name="title" translatable="true">Install location</property>
+                                                        <property name="tooltip-text" translatable="true">The location of the game's files on the system.</property>
+                                                        <property name="has-tooltip">true</property>
                                                         <property name="activatable-widget">gameLocationButton</property>
                                                         <property name="subtitle-lines">2</property>
                                                         <child type="suffix">
@@ -350,7 +357,9 @@ Command may change depending on installation method.</property>
                                                     </child>
                                                     <child>
                                                       <object class="AdwActionRow" id="gameCompatdata_ActionRow">
-                                                        <property name="title" translatable="true">Proton filesystem location</property>
+                                                        <property name="title" translatable="true">Virtual filesystem location</property>
+                                                        <property name="tooltip-text" translatable="true">The location of the game's virtual filesystem assigned by Steam. (Only applies to Windows games)</property>
+                                                        <property name="has-tooltip">true</property>
                                                         <property name="activatable-widget">gameCompatdataButton</property>
                                                         <property name="subtitle-lines">2</property>
                                                         <child type="suffix">
@@ -373,7 +382,7 @@ Command may change depending on installation method.</property>
                                                 </child>
                                                 <child>
                                                   <object class="AdwPreferencesGroup">
-                                                    <property name="title" translatable="true">Links</property>
+                                                    <property name="title" translatable="true">Online help</property>
                                                     <property name="description" translatable="true">Links to useful pages related to the game.</property>
                                                     <child>
                                                       <object class="AdwActionRow">
@@ -462,7 +471,7 @@ Command may change depending on installation method.</property>
                                                 <property name="margin-start">12</property>
                                                 <property name="margin-top">16</property>
                                                 <property name="orientation">1</property>
-                                                <property name="spacing">18</property>
+                                                <property name="spacing">24</property>
                                                 <property name="vexpand">true</property>
                                                 <property name="vexpand-set">true</property>
                                                 <child>
@@ -482,6 +491,25 @@ Command may change depending on installation method.</property>
                                                           <object class="GtkSwitch" id="dGPU_Switch">
                                                             <property name="active">false</property>
                                                             <property name="sensitive">false</property>
+                                                            <property name="valign">3</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">Enable SDL's Wayland driver</property>
+                                                        <property name="subtitle" translatable="true">This option can give you smoother gameplay and performance in SDL-based games on Wayland. Useless on X11.</property>
+                                                        <property name="subtitle-lines">3</property>
+                                                        <property name="activatable-widget">SDL_Wayland_Switch</property>
+                                                        <property name="sensitive" bind-source="SDL_Wayland_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="visible" bind-source="SDL_Wayland_Switch" bind-property="visible" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="has-tooltip" bind-source="SDL_Wayland_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="tooltip-text" bind-source="SDL_Wayland_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                        <child>
+                                                          <object class="GtkSwitch" id="SDL_Wayland_Switch">
+                                                            <property name="active">false</property>
+                                                            <property name="sensitive">true</property>
                                                             <property name="valign">3</property>
                                                           </object>
                                                         </child>
@@ -512,8 +540,8 @@ Command may change depending on installation method.</property>
                                             <property name="spacing">18</property>
                                             <child>
                                               <object class="AdwPreferencesGroup">
-                                                <property name="description" translatable="true">Those are generally safe settings you may want enabled.</property>
-                                                <property name="title" translatable="true">Linux Utilities</property>
+                                                <property name="title">Recommended</property>
+                                                <property name="description" translatable="true">Utilities recommended to be enabled for the best experience.</property>
                                                 <child>
                                                   <object class="AdwActionRow">
                                                     <property name="subtitle" translatable="true">GameMode is a tool to optimize Linux system performance on demand.</property>
@@ -531,6 +559,12 @@ Command may change depending on installation method.</property>
                                                     </child>
                                                   </object>
                                                 </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="AdwPreferencesGroup">
+                                                <property name="title" translatable="true">Utilities</property>
+                                                <property name="description" translatable="true">Those are generally safe utilities you may want enabled.</property>
                                                 <child>
                                                   <object class="AdwActionRow">
                                                     <property name="subtitle" translatable="true">A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.</property>
@@ -587,6 +621,16 @@ Command may change depending on installation method.</property>
                                   </object>
                                 </child>
                                 <child>
+                                  <object class="GtkStackPage" id="protonPage">
+                                    <property name="title">Proton</property>
+                                    <property name="child">
+                                      <object class="GtkLabel">
+                                        <property name="label">Coming Soon</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                                <child>
                                   <object class="GtkStackPage" id="gamescopePage">
                                     <property name="title">Gamescope</property>
                                     <property name="child">
@@ -600,7 +644,7 @@ Command may change depending on installation method.</property>
                                                 <property name="margin-start">12</property>
                                                 <property name="margin-top">16</property>
                                                 <property name="orientation">1</property>
-                                                <property name="spacing">18</property>
+                                                <property name="spacing">24</property>
                                                 <property name="vexpand">true</property>
                                                 <property name="vexpand-set">true</property>
                                                 <child>
@@ -837,16 +881,6 @@ Command may change depending on installation method.</property>
                                             </child>
                                           </object>
                                         </child>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkStackPage" id="protonPage">
-                                    <property name="title">Proton</property>
-                                    <property name="child">
-                                      <object class="GtkLabel">
-                                        <property name="label">Coming Soon</property>
                                       </object>
                                     </property>
                                   </object>

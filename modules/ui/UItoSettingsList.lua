@@ -1,6 +1,7 @@
 local UIElements = {
 	-- Settings
 	["dGPU_Switch"] = {type= "Switch", tool = "switcherooctl", setting = "dgpu.enabled"},
+	["SDL_Wayland_Switch"] = {type= "Switch", setting = "misc.sdl_wayland", os_platform = "Linux"},
 
 	-- Utilities
 	["gamemode_Switch"] = {type= "Switch", tool = "gamemoderun", setting = "utilities.gamemode.enabled"},
@@ -22,7 +23,7 @@ local UIElements = {
 	-- Filtering
 	["gamescope_Filtering_Switch"] = {type= "Switch", tool = "gamescope", setting = "gamescope.filtering.enabled"},
 	["gamescope_Filtering_Sharpness_SpinRow"] = {type= "SpinRow", tool = "gamescope", setting = "gamescope.filtering.sharpness"},
-	--["gamescope_Filtering_Filter_ComboRow"] = {type= "ComboRow", tool = "gamescope", setting = "gamescope.filtering.filter"},
+	["gamescope_Filtering_Filter_ComboRow"] = {type= "ComboRow", tool = "gamescope", setting = "gamescope.filtering.filter", items = {"Linear","Nearest","FSR","NIS","Pixel"}},
 	-- Extras
 	["gamescope_Borderless_Toggle"] = {type= "Toggle", tool = "gamescope", setting = "gamescope.general.borderless"},
 	["gamescope_Fullscreen_Toggle"] = {type= "Toggle", tool = "gamescope", setting = "gamescope.general.fullscreen"},

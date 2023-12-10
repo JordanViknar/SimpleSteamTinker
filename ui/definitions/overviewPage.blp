@@ -8,6 +8,7 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 	child:
 	ScrolledWindow {
 		hscrollbar-policy: never;
+		styles ["background"]
 
 		Adw.Clamp {
 			Box {
@@ -16,13 +17,13 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 				margin-start: 12;
 				margin-top: 16;
 				orientation: vertical;
-				spacing: 16;
+				spacing: 24;
 				vexpand: true;
 				vexpand-set: true;
 
 				// Game banner
 				Adw.Clamp {
-					maximum-size: 350;
+					maximum-size: 800;
 					Picture gameBanner { //[MODIFIED IN LUA]
 						height-request: 200;
 						halign: fill;
@@ -89,7 +90,7 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 					]
 				}
 
-				// SimpleSteamMod Status
+				// SimpleSteamTinker Status
 				Adw.PreferencesGroup {
 					Adw.ActionRow {
 						title: _("SimpleSteamTinker Status");
@@ -110,12 +111,12 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 
 				// Game details
 				Adw.PreferencesGroup {
-					description: _("Details about the game.");
-					title: _("Game details");
+					title: _("Details");
+					description: _("Information about the game.");
 
 					Adw.ActionRow {
 						title: _("Steam AppID");
-						subtitle: _("The game's Steam AppID.");
+						subtitle: _("The unique ID of the game that identifies it in Steam.");
 						activatable-widget: gameID_copyButton;
 						[suffix]
 						Box {
@@ -141,8 +142,7 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 					}
 					Adw.ActionRow {
 						title: _("Platform");
-						subtitle: _("The platform the game was developed for.");
-						subtitle-lines: 1;
+						subtitle: _("The intended platform for the installed game version.");
 
 						[suffix]
 						Label gamePlatform_Label { //[MODIFIED IN LUA]
@@ -155,7 +155,7 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 					}
 					Adw.ActionRow {
 						title: _("Size");
-						subtitle: _("The size of the game on the drive.");
+						subtitle: _("The amount of space the game takes up on the system.");
 
 						[suffix]
 						Label gameSize_Label { //[MODIFIED IN LUA]
@@ -167,7 +167,9 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 						}
 					}
 					Adw.ActionRow gameLocation_ActionRow { //[MODIFIED IN LUA]
-						title: _("Location");
+						title: _("Install location");
+						tooltip-text: _("The location of the game's files on the system.");
+						has-tooltip: true;
 						activatable-widget: gameLocationButton;
 						subtitle-lines: 2;
 						[suffix]
@@ -183,7 +185,9 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 						}
 					}
 					Adw.ActionRow gameCompatdata_ActionRow { //[MODIFIED IN LUA]
-						title: _("Proton filesystem location");
+						title: _("Virtual filesystem location");
+						tooltip-text: _("The location of the game's virtual filesystem assigned by Steam. (Only applies to Windows games)");
+						has-tooltip: true;
 						activatable-widget: gameCompatdataButton;
 						subtitle-lines: 2;
 						[suffix]
@@ -202,7 +206,7 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 
 				// Links
 				Adw.PreferencesGroup {
-					title: _("Links");
+					title: _("Online help");
 					description: _("Links to useful pages related to the game.");
 
 					Adw.ActionRow {

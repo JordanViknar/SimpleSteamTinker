@@ -15,12 +15,8 @@ StackPage utilitiesPage {
 			spacing: 18;
 
 			Adw.PreferencesGroup {
-				description: _("Those are generally safe settings you may want enabled.");
-				title: _("Linux Utilities");
-
-				// Adw.SwitchRow seem to be buggy-ish. The value gets inverted, and clicking directly on the button
-				// doesn't send the signal I need to run the functions.
-
+				title: "Recommended";
+				description: _("Utilities recommended to be enabled for the best experience.");
 				Adw.ActionRow {
 					subtitle: _("GameMode is a tool to optimize Linux system performance on demand.");
 					title: "Feral GameMode";
@@ -35,6 +31,14 @@ StackPage utilitiesPage {
 						valign: center;
 					}
 				}
+			}
+
+			Adw.PreferencesGroup {
+				title: _("Utilities");
+				description: _("Those are generally safe utilities you may want enabled.");
+
+				// Adw.SwitchRow seem to be buggy-ish. The value gets inverted, and clicking directly on the button
+				// doesn't send the signal I need to run the functions.
 
 				Adw.ActionRow {
 					subtitle: _("A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.");

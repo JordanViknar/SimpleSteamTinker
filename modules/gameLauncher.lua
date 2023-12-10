@@ -42,7 +42,16 @@ function gameLauncher.prepareGameLaunch(game, command)
 		table.insert(environmentVars, "DRI_PRIME=0 __NV_PRIME_RENDER_OFFLOAD=0 __VK_LAYER_NV_optimus=none __GLX_VENDOR_LIBRARY_NAME=none")
 	end
 
-	-- Environment variables : Part 2
+	-- Environment variables not linked to a particular utility
+	if game.os_platform == "Linux" then
+		if gameConfig.misc.sdl_wayland == true then
+			table.insert(environmentVars, "SDL_VIDEODRIVER=\"wayland,x11\"")
+		else -- We force X11 to be used, just in case.
+			table.insert(environmentVars, "SDL_VIDEODRIVER=\"x11\"")
+		end
+	end
+
+	-- We convert the environment variables table to a string
 	if environmentVars ~= {} then
 		local envVarString = table.concat(environmentVars, " ")
 		command = "env "..envVarString.." "..command
