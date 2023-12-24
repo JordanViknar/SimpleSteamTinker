@@ -51,10 +51,6 @@ And finally, as a side goal : prove that Lua can *also* be used for developing m
 
 ## Installation
 
-### Local
-
-*(Not available yet, due to the project relying on LGI's latest development version, not the current release. Eventually, I'll have to find a way to bundle it with the project.)*
-
 ### Arch Linux-based distributions
 
 SimpleSteamTinker can be installed from Arch Linux, Manjaro, and variants through the provided [PKGBUILD](./install/archlinux/PKGBUILD).
@@ -74,6 +70,9 @@ Here are informations which might be useful to you :
 
 SimpleSteamTinker is meant to be installed in `/usr/share/SimpleSteamTinker` (except `sst` which goes into `/usr/bin`).
 The system desktop file goes in `/usr/share/applications` and the icons go in `/usr/share/icons` like many applications.
+
+Most of the file structure installation steps can be achieved with the Makefile.
+It is recommended to use it if possible in your packaging system.
 
 It depends on :
 - Lua 5.4
@@ -101,6 +100,8 @@ For example, in my case `/PATH/TO/CLONED/REPO/sst` is `/home/jordan/Programmatio
 
 Additionally, if you want to perform UI-related changes, you'll need [Blueprint](https://gitlab.gnome.org/jwestman/blueprint-compiler).
 If, in the future, LGI becomes stable enough with GTK4 to use it directly to generate the UI, Blueprint might be dropped.
+
+*Note : A desktop file won't be provided with this method, and icons won't be installed.*
 
 ## Comparison
 

@@ -42,14 +42,16 @@ pkgver() {
 
 package() {
 	cd SimpleSteamTinker
-	install -Dm755 sst -t "${pkgdir}/usr/bin/"
+	# Assets
  	install -Dm644 assets/desktop/system.desktop \
   		"${pkgdir}/usr/share/applications/SimpleSteamTinker.desktop"
-	install -Dm644 assets/icons/256x256/${pkgname%-git}.png -t \
- 		"${pkgdir}/usr/share/icons/hicolor/256x256/apps/"
-	install -Dm644 assets/icons/scalable/${pkgname%-git}.svg -t \
-		"${pkgdir}/usr/share/icons/hicolor/scalable/apps/"
+	install -Dm644 assets/icons/256x256.png -t \
+ 		"${pkgdir}/usr/share/icons/hicolor/256x256/apps/${pkgname%-git}.png"
+	install -Dm644 assets/icons/scalable.svg -t \
+		"${pkgdir}/usr/share/icons/hicolor/scalable/apps/${pkgname%-git}.svg"
 
+	# Program files
+	install -Dm755 sst -t "${pkgdir}/usr/bin/"
 	install -Dm644 main.lua -t "${pkgdir}/usr/share/SimpleSteamTinker/"
 	cp -r modules "${pkgdir}/usr/share/SimpleSteamTinker/modules"
 	install -Dm644 ui/main.ui -t "${pkgdir}/usr/share/SimpleSteamTinker/ui/"
