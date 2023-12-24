@@ -51,7 +51,7 @@ function SteamGame:new (id, name, library, location)
 		images = {
 			header = ifExists(steamImagesLocation..id.."_header.jpg"),
 			icon = ifExists(steamImagesLocation..id.."_icon.jpg"),
-			logo = ifExists(steamImagesLocation..id.."_logo.jpg"),
+			logo = ifExists(steamImagesLocation..id.."_logo.png"),
 			library = libraryIconPath,
 			library_hero = ifExists(steamImagesLocation..id.."_library_hero.jpg"),
 			library_hero_blur = ifExists(steamImagesLocation..id.."_library_hero_blur.jpg"),

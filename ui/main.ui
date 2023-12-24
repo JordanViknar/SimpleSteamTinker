@@ -85,7 +85,7 @@ Command may change depending on installation method.</property>
                     </child>
                     <child>
                       <object class="AdwOverlaySplitView" id="gameSettings_SplitView">
-                        <property name="min-sidebar-width">0</property>
+                        <property name="min-sidebar-width">200</property>
                         <property name="show-sidebar" bind-source="sidebarToggleButton" bind-property="active" bind-flags="sync-create|bidirectional"/>
                         <property name="sidebar">
                           <object class="AdwNavigationPage" id="gameSettingsSidebar">
@@ -98,36 +98,9 @@ Command may change depending on installation method.</property>
                                     <property name="vexpand">true</property>
                                     <property name="vexpand-set">true</property>
                                     <child>
-                                      <object class="GtkBox">
-                                        <property name="hexpand">true</property>
-                                        <property name="hexpand-set">true</property>
-                                        <property name="margin-bottom">12</property>
-                                        <property name="margin-end">12</property>
-                                        <property name="margin-start">12</property>
-                                        <property name="margin-top">12</property>
-                                        <property name="orientation">1</property>
-                                        <property name="spacing">12</property>
-                                        <property name="valign">1</property>
-                                        <child>
-                                          <object class="GtkImage" id="gameSettingsSidebarIcon">
-                                            <property name="icon-size">2</property>
-                                            <style>
-                                              <class name="lowres-icon"/>
-                                            </style>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="gameSettingsSidebarLabel">
-                                            <property name="justify">2</property>
-                                            <property name="wrap">true</property>
-                                            <style>
-                                              <class name="title-4"/>
-                                            </style>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSeparator"></object>
-                                        </child>
+                                      <object class="GtkPicture" id="Sidebar_Banner">
+                                        <property name="halign">0</property>
+                                        <property name="valign">0</property>
                                       </object>
                                     </child>
                                     <child>
@@ -160,137 +133,213 @@ Command may change depending on installation method.</property>
                                           <class name="background"/>
                                         </style>
                                         <child>
-                                          <object class="AdwClamp">
+                                          <object class="GtkBox">
+                                            <property name="orientation">1</property>
                                             <child>
-                                              <object class="GtkBox">
-                                                <property name="margin-bottom">16</property>
-                                                <property name="margin-end">12</property>
-                                                <property name="margin-start">12</property>
-                                                <property name="margin-top">16</property>
-                                                <property name="orientation">1</property>
-                                                <property name="spacing">24</property>
-                                                <property name="vexpand">true</property>
-                                                <property name="vexpand-set">true</property>
-                                                <child>
-                                                  <object class="AdwClamp">
-                                                    <property name="maximum-size">800</property>
-                                                    <child>
-                                                      <object class="GtkPicture" id="gameBanner">
-                                                        <property name="height-request">200</property>
-                                                        <property name="halign">0</property>
-                                                        <property name="valign">0</property>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
+                                              <object class="GtkPicture" id="Overview_Picture">
+                                                <property name="halign">0</property>
+                                                <property name="valign">0</property>
+                                                <property name="height-request">256</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="AdwClamp">
                                                 <child>
                                                   <object class="GtkBox">
+                                                    <property name="margin-bottom">16</property>
+                                                    <property name="margin-end">12</property>
+                                                    <property name="margin-start">12</property>
+                                                    <property name="margin-top">16</property>
                                                     <property name="orientation">1</property>
-                                                    <property name="spacing">8</property>
-                                                    <property name="halign">3</property>
+                                                    <property name="spacing">24</property>
+                                                    <property name="vexpand">true</property>
+                                                    <property name="vexpand-set">true</property>
                                                     <child>
-                                                      <object class="GtkLabel" id="gameTitle">
-                                                        <property name="halign">3</property>
-                                                        <property name="valign">2</property>
-                                                        <property name="wrap">true</property>
-                                                        <style>
-                                                          <class name="title-1"/>
-                                                        </style>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkBox" id="protonDBRating_Box">
-                                                        <property name="orientation">0</property>
+                                                      <object class="GtkBox">
+                                                        <property name="orientation">1</property>
                                                         <property name="spacing">8</property>
                                                         <property name="halign">3</property>
                                                         <child>
-                                                          <object class="GtkLabel">
-                                                            <property name="label" translatable="true">ProtonDB Rating :</property>
+                                                          <object class="GtkLabel" id="gameTitle">
                                                             <property name="halign">3</property>
                                                             <property name="valign">2</property>
+                                                            <property name="wrap">true</property>
                                                             <style>
-                                                              <class name="dim-label"/>
+                                                              <class name="title-1"/>
                                                             </style>
                                                           </object>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkLabel" id="protonDBRating_Label">
-                                                            <property name="label" translatable="true">Unavailable</property>
-                                                            <property name="halign">3</property>
-                                                            <property name="valign">2</property>
-                                                            <style>
-                                                              <class name="dim-label"/>
-                                                            </style>
-                                                          </object>
-                                                        </child>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkButton" id="gameLaunchButton">
-                                                    <property name="halign">3</property>
-                                                    <property name="valign">2</property>
-                                                    <child>
-                                                      <object class="AdwButtonContent">
-                                                        <property name="icon-name">media-playback-start-symbolic</property>
-                                                        <property name="label" translatable="true">Launch</property>
-                                                      </object>
-                                                    </child>
-                                                    <style>
-                                                      <class name="suggested-action"/>
-                                                      <class name="pill"/>
-                                                      <class name="image-button"/>
-                                                    </style>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="AdwPreferencesGroup">
-                                                    <child>
-                                                      <object class="AdwActionRow">
-                                                        <property name="title" translatable="true">SimpleSteamTinker Status</property>
-                                                        <property name="subtitle" translatable="true">Based on the game's launch options.</property>
-                                                        <property name="subtitle-lines">1</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkLabel" id="gameStatus_Label">
-                                                            <property name="label" translatable="true">Placeholder</property>
-                                                            <property name="halign">2</property>
-                                                            <property name="wrap">true</property>
-                                                            <style>
-                                                              <class name="dim-label"/>
-                                                            </style>
-                                                          </object>
-                                                        </child>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="AdwPreferencesGroup">
-                                                    <property name="title" translatable="true">Details</property>
-                                                    <property name="description" translatable="true">Information about the game.</property>
-                                                    <child>
-                                                      <object class="AdwActionRow">
-                                                        <property name="title" translatable="true">Steam AppID</property>
-                                                        <property name="subtitle" translatable="true">The unique ID of the game that identifies it in Steam.</property>
-                                                        <property name="activatable-widget">gameID_copyButton</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkBox">
+                                                          <object class="GtkBox" id="protonDBRating_Box">
+                                                            <property name="orientation">0</property>
                                                             <property name="spacing">8</property>
+                                                            <property name="halign">3</property>
                                                             <child>
-                                                              <object class="GtkLabel" id="gameID_Label">
-                                                                <property name="halign">2</property>
-                                                                <property name="wrap">true</property>
-                                                                <property name="selectable">true</property>
+                                                              <object class="GtkLabel">
+                                                                <property name="label" translatable="true">ProtonDB Rating :</property>
+                                                                <property name="halign">3</property>
+                                                                <property name="valign">2</property>
                                                                 <style>
                                                                   <class name="dim-label"/>
                                                                 </style>
                                                               </object>
                                                             </child>
                                                             <child>
-                                                              <object class="GtkButton" id="gameID_copyButton">
+                                                              <object class="GtkLabel" id="protonDBRating_Label">
+                                                                <property name="label" translatable="true">Unavailable</property>
+                                                                <property name="halign">3</property>
+                                                                <property name="valign">2</property>
+                                                                <style>
+                                                                  <class name="dim-label"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkButton" id="gameLaunchButton">
+                                                        <property name="halign">3</property>
+                                                        <property name="valign">2</property>
+                                                        <child>
+                                                          <object class="AdwButtonContent">
+                                                            <property name="icon-name">media-playback-start-symbolic</property>
+                                                            <property name="label" translatable="true">Launch</property>
+                                                          </object>
+                                                        </child>
+                                                        <style>
+                                                          <class name="suggested-action"/>
+                                                          <class name="image-button"/>
+                                                          <class name="pill"/>
+                                                        </style>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwPreferencesGroup">
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">SimpleSteamTinker Status</property>
+                                                            <property name="subtitle" translatable="true">Based on the game's launch options.</property>
+                                                            <property name="subtitle-lines">1</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkLabel" id="gameStatus_Label">
+                                                                <property name="label" translatable="true">Placeholder</property>
                                                                 <property name="halign">2</property>
-                                                                <property name="icon-name">edit-copy-symbolic</property>
+                                                                <property name="wrap">true</property>
+                                                                <style>
+                                                                  <class name="dim-label"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwPreferencesGroup">
+                                                        <property name="title" translatable="true">Details</property>
+                                                        <property name="description" translatable="true">Information about the game.</property>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Steam AppID</property>
+                                                            <property name="subtitle" translatable="true">The unique ID of the game that identifies it in Steam.</property>
+                                                            <property name="activatable-widget">gameID_copyButton</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkBox">
+                                                                <property name="spacing">8</property>
+                                                                <child>
+                                                                  <object class="GtkLabel" id="gameID_Label">
+                                                                    <property name="halign">2</property>
+                                                                    <property name="wrap">true</property>
+                                                                    <property name="selectable">true</property>
+                                                                    <style>
+                                                                      <class name="dim-label"/>
+                                                                    </style>
+                                                                  </object>
+                                                                </child>
+                                                                <child>
+                                                                  <object class="GtkButton" id="gameID_copyButton">
+                                                                    <property name="halign">2</property>
+                                                                    <property name="icon-name">edit-copy-symbolic</property>
+                                                                    <style>
+                                                                      <class name="image-button"/>
+                                                                      <class name="flat"/>
+                                                                      <class name="circular"/>
+                                                                    </style>
+                                                                  </object>
+                                                                </child>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Platform</property>
+                                                            <property name="subtitle" translatable="true">The intended platform for the installed game version.</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkLabel" id="gamePlatform_Label">
+                                                                <property name="halign">2</property>
+                                                                <property name="wrap">true</property>
+                                                                <style>
+                                                                  <class name="dim-label"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Size</property>
+                                                            <property name="subtitle" translatable="true">The amount of space the game takes up on the system.</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkLabel" id="gameSize_Label">
+                                                                <property name="halign">2</property>
+                                                                <property name="lines">1</property>
+                                                                <style>
+                                                                  <class name="dim-label"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwActionRow" id="gameLocation_ActionRow">
+                                                            <property name="title" translatable="true">Install location</property>
+                                                            <property name="tooltip-text" translatable="true">The location of the game's files on the system.</property>
+                                                            <property name="has-tooltip">true</property>
+                                                            <property name="activatable-widget">gameLocationButton</property>
+                                                            <property name="subtitle-lines">2</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkButton" id="gameLocationButton">
+                                                                <child>
+                                                                  <object class="AdwButtonContent">
+                                                                    <property name="icon-name">folder-open-symbolic</property>
+                                                                  </object>
+                                                                </child>
+                                                                <style>
+                                                                  <class name="image-button"/>
+                                                                  <class name="flat"/>
+                                                                  <class name="circular"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwActionRow" id="gameCompatdata_ActionRow">
+                                                            <property name="title" translatable="true">Virtual filesystem location</property>
+                                                            <property name="tooltip-text" translatable="true">The location of the game's virtual filesystem assigned by Steam. (Only applies to Windows games)</property>
+                                                            <property name="has-tooltip">true</property>
+                                                            <property name="activatable-widget">gameCompatdataButton</property>
+                                                            <property name="subtitle-lines">2</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkButton" id="gameCompatdataButton">
+                                                                <child>
+                                                                  <object class="AdwButtonContent">
+                                                                    <property name="icon-name">folder-open-symbolic</property>
+                                                                  </object>
+                                                                </child>
                                                                 <style>
                                                                   <class name="image-button"/>
                                                                   <class name="flat"/>
@@ -303,146 +352,70 @@ Command may change depending on installation method.</property>
                                                       </object>
                                                     </child>
                                                     <child>
-                                                      <object class="AdwActionRow">
-                                                        <property name="title" translatable="true">Platform</property>
-                                                        <property name="subtitle" translatable="true">The intended platform for the installed game version.</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkLabel" id="gamePlatform_Label">
-                                                            <property name="halign">2</property>
-                                                            <property name="wrap">true</property>
-                                                            <style>
-                                                              <class name="dim-label"/>
-                                                            </style>
-                                                          </object>
-                                                        </child>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="AdwActionRow">
-                                                        <property name="title" translatable="true">Size</property>
-                                                        <property name="subtitle" translatable="true">The amount of space the game takes up on the system.</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkLabel" id="gameSize_Label">
-                                                            <property name="halign">2</property>
-                                                            <property name="lines">1</property>
-                                                            <style>
-                                                              <class name="dim-label"/>
-                                                            </style>
-                                                          </object>
-                                                        </child>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="AdwActionRow" id="gameLocation_ActionRow">
-                                                        <property name="title" translatable="true">Install location</property>
-                                                        <property name="tooltip-text" translatable="true">The location of the game's files on the system.</property>
-                                                        <property name="has-tooltip">true</property>
-                                                        <property name="activatable-widget">gameLocationButton</property>
-                                                        <property name="subtitle-lines">2</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkButton" id="gameLocationButton">
-                                                            <child>
-                                                              <object class="AdwButtonContent">
-                                                                <property name="icon-name">folder-open-symbolic</property>
+                                                      <object class="AdwPreferencesGroup">
+                                                        <property name="title" translatable="true">Online help</property>
+                                                        <property name="description" translatable="true">Links to useful pages related to the game.</property>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">ProtonDB</property>
+                                                            <property name="subtitle" translatable="true">The game's ProtonDB page.</property>
+                                                            <property name="activatable-widget">protonDBPage_Button</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkButton" id="protonDBPage_Button">
+                                                                <child>
+                                                                  <object class="AdwButtonContent">
+                                                                    <property name="icon-name">help-browser-symbolic</property>
+                                                                  </object>
+                                                                </child>
+                                                                <style>
+                                                                  <class name="image-button"/>
+                                                                  <class name="flat"/>
+                                                                  <class name="circular"/>
+                                                                </style>
                                                               </object>
                                                             </child>
-                                                            <style>
-                                                              <class name="image-button"/>
-                                                              <class name="flat"/>
-                                                              <class name="circular"/>
-                                                            </style>
                                                           </object>
                                                         </child>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="AdwActionRow" id="gameCompatdata_ActionRow">
-                                                        <property name="title" translatable="true">Virtual filesystem location</property>
-                                                        <property name="tooltip-text" translatable="true">The location of the game's virtual filesystem assigned by Steam. (Only applies to Windows games)</property>
-                                                        <property name="has-tooltip">true</property>
-                                                        <property name="activatable-widget">gameCompatdataButton</property>
-                                                        <property name="subtitle-lines">2</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkButton" id="gameCompatdataButton">
-                                                            <child>
-                                                              <object class="AdwButtonContent">
-                                                                <property name="icon-name">folder-open-symbolic</property>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">PCGamingWiki</property>
+                                                            <property name="subtitle" translatable="true">The game's PCGamingWiki page.</property>
+                                                            <property name="activatable-widget">PCGamingWikiPage_Button</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkButton" id="PCGamingWikiPage_Button">
+                                                                <child>
+                                                                  <object class="AdwButtonContent">
+                                                                    <property name="icon-name">help-browser-symbolic</property>
+                                                                  </object>
+                                                                </child>
+                                                                <style>
+                                                                  <class name="image-button"/>
+                                                                  <class name="flat"/>
+                                                                  <class name="circular"/>
+                                                                </style>
                                                               </object>
                                                             </child>
-                                                            <style>
-                                                              <class name="image-button"/>
-                                                              <class name="flat"/>
-                                                              <class name="circular"/>
-                                                            </style>
                                                           </object>
                                                         </child>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="AdwPreferencesGroup">
-                                                    <property name="title" translatable="true">Online help</property>
-                                                    <property name="description" translatable="true">Links to useful pages related to the game.</property>
-                                                    <child>
-                                                      <object class="AdwActionRow">
-                                                        <property name="title" translatable="true">ProtonDB</property>
-                                                        <property name="subtitle" translatable="true">The game's ProtonDB page.</property>
-                                                        <property name="activatable-widget">protonDBPage_Button</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkButton" id="protonDBPage_Button">
-                                                            <child>
-                                                              <object class="AdwButtonContent">
-                                                                <property name="icon-name">help-browser-symbolic</property>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">SteamDB</property>
+                                                            <property name="subtitle" translatable="true">The game's SteamDB page.</property>
+                                                            <property name="activatable-widget">steamDBPage_Button</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkButton" id="steamDBPage_Button">
+                                                                <child>
+                                                                  <object class="AdwButtonContent">
+                                                                    <property name="icon-name">help-browser-symbolic</property>
+                                                                  </object>
+                                                                </child>
+                                                                <style>
+                                                                  <class name="image-button"/>
+                                                                  <class name="flat"/>
+                                                                  <class name="circular"/>
+                                                                </style>
                                                               </object>
                                                             </child>
-                                                            <style>
-                                                              <class name="image-button"/>
-                                                              <class name="flat"/>
-                                                              <class name="circular"/>
-                                                            </style>
-                                                          </object>
-                                                        </child>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="AdwActionRow">
-                                                        <property name="title" translatable="true">PCGamingWiki</property>
-                                                        <property name="subtitle" translatable="true">The game's PCGamingWiki page.</property>
-                                                        <property name="activatable-widget">PCGamingWikiPage_Button</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkButton" id="PCGamingWikiPage_Button">
-                                                            <child>
-                                                              <object class="AdwButtonContent">
-                                                                <property name="icon-name">help-browser-symbolic</property>
-                                                              </object>
-                                                            </child>
-                                                            <style>
-                                                              <class name="image-button"/>
-                                                              <class name="flat"/>
-                                                              <class name="circular"/>
-                                                            </style>
-                                                          </object>
-                                                        </child>
-                                                      </object>
-                                                    </child>
-                                                    <child>
-                                                      <object class="AdwActionRow">
-                                                        <property name="title" translatable="true">SteamDB</property>
-                                                        <property name="subtitle" translatable="true">The game's SteamDB page.</property>
-                                                        <property name="activatable-widget">steamDBPage_Button</property>
-                                                        <child type="suffix">
-                                                          <object class="GtkButton" id="steamDBPage_Button">
-                                                            <child>
-                                                              <object class="AdwButtonContent">
-                                                                <property name="icon-name">help-browser-symbolic</property>
-                                                              </object>
-                                                            </child>
-                                                            <style>
-                                                              <class name="image-button"/>
-                                                              <class name="flat"/>
-                                                              <class name="circular"/>
-                                                            </style>
                                                           </object>
                                                         </child>
                                                       </object>

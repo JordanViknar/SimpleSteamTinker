@@ -14,15 +14,14 @@ return function(application, interface, steamGameData)
 	--[[
 		SIDEBAR
 	]]
-	-- Set the game icon and name in the sidebar
-	interface:get_object("gameSettingsSidebarLabel").label = steamGameData.name
-	interface:get_object("gameSettingsSidebarIcon").file = steamGameData.images.icon
+	-- Set the game banner in the sidebar
+	interface:get_object("Sidebar_Banner"):set_filename(steamGameData.images.header)
 
 	--[[
 		OVERVIEW
 	]]
-	-- Sets the game image in the overview banner
-	interface:get_object("gameBanner"):set_filename(steamGameData.images.header)
+	-- Sets the game image in the overview area
+	interface:get_object("Overview_Picture"):set_filename(steamGameData.images.library)
 	-- Sets the game title in the overview area
 	interface:get_object("gameTitle").label = steamGameData.name
 

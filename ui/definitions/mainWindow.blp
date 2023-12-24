@@ -87,7 +87,7 @@ Adw.ApplicationWindow mainWindow {
 						/*
 							SIDEBAR
 						*/
-						min-sidebar-width: 0;
+						min-sidebar-width: 200;
 						show-sidebar: bind sidebarToggleButton.active bidirectional;
 						sidebar: 
 						Adw.NavigationPage gameSettingsSidebar {
@@ -100,31 +100,11 @@ Adw.ApplicationWindow mainWindow {
 									vexpand-set: true;
 
 									// This is the header of the sidebar of the game settings page.
-									Box {
-										hexpand: true;
-										hexpand-set: true;
-										margin-bottom: 12;
-										margin-end: 12;
-										margin-start: 12;
-										margin-top: 12;
-										orientation: vertical;
-										spacing: 12;
-										valign: start;
-
-										// This is the icon in the sidebar of the game settings page.
-										Image gameSettingsSidebarIcon { //[MODIFIED IN LUA]
-											icon-size: large;
-											styles ["lowres-icon"]
-										}
-										// This is the title in the sidebar of the game settings page.
-										Label gameSettingsSidebarLabel { //[MODIFIED IN LUA]
-											justify: center;
-											wrap: true;
-											styles ["title-4"]
-										}
-										Gtk.Separator {}
+									Picture Sidebar_Banner {
+										halign: fill;
+										valign: fill;
 									}
-
+									
 									// This is the list of pages in the sidebar of the game settings page.
 									StackSidebar {
 										vexpand: true;

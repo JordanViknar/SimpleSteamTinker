@@ -71,7 +71,6 @@ return function(app, steamGames)
 			-- The row
 			local row = Adw.ActionRow {
 				title = game.name,
-				subtitle = game.location,
 				use_markup = false, -- Used to escape the ampersand
 				activatable = true,
 				subtitle_lines = 1
