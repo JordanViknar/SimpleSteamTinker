@@ -1,7 +1,7 @@
 # Maintainer: JordanViknar
 
 pkgname=simplesteamtinker-git
-pkgver=r33.eab556b
+pkgver=r35.b0e0272
 pkgrel=1
 pkgdesc="A work-in-progress simple, fast and modern Adwaita alternative to SteamTinkerLaunch."
 arch=('x86_64' 'i686' 'armv7h' 'aarch64')
@@ -9,6 +9,7 @@ url=https://github.com/JordanViknar/SimpleSteamTinker
 license=('MPL2')
 makedepends=(
 	'git'
+	'make'
 )
 depends=(
 	'lua'
@@ -42,17 +43,6 @@ pkgver() {
 
 package() {
 	cd SimpleSteamTinker
-	# Assets
- 	install -Dm644 assets/desktop/system.desktop \
-  		"${pkgdir}/usr/share/applications/SimpleSteamTinker.desktop"
-	install -Dm644 assets/icons/256x256.png -t \
- 		"${pkgdir}/usr/share/icons/hicolor/256x256/apps/${pkgname%-git}.png"
-	install -Dm644 assets/icons/scalable.svg -t \
-		"${pkgdir}/usr/share/icons/hicolor/scalable/apps/${pkgname%-git}.svg"
-
-	# Program files
-	install -Dm755 sst -t "${pkgdir}/usr/bin/"
-	install -Dm644 main.lua -t "${pkgdir}/usr/share/SimpleSteamTinker/"
-	cp -r modules "${pkgdir}/usr/share/SimpleSteamTinker/modules"
-	install -Dm644 ui/main.ui -t "${pkgdir}/usr/share/SimpleSteamTinker/ui/"
+	make system
+	cp -r dist/* "${pkgdir}/"
 }
