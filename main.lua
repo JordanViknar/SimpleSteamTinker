@@ -51,7 +51,7 @@ if gameStartStatus == "steamGame" then
 
 	-- We notify the user that SimpleSteamTinker is running.
 	logSystem.log("info", "Starting "..game.name.."...")
-	systemUtils.sendNotification(programMetadata.name.." is starting...", "Detected "..game.name, "normal", true)
+	systemUtils.sendNotification(programMetadata.name.." is starting...", "Detected "..game.name, "information")
 
 	-- For every argument that is a path, we put \ next to the spaces
 	for i, v in ipairs(arg) do
@@ -69,13 +69,13 @@ if gameStartStatus == "steamGame" then
 	if os.execute(command) then
 		os.exit(0)
 	else
-		systemUtils.sendNotification(programMetadata.name.." crashed !", "Something bad happened while running "..game.name..".", "critical", true)
+		systemUtils.sendNotification(programMetadata.name.." crashed !", "Something bad happened while running "..game.name..".", "error")
 		os.exit(1)
 	end
 elseif gameStartStatus == "SteamTinkerLaunch" or (arg[3] and steamGames[arg[3]:gsub("AppId=", "")].status == "SteamTinkerLaunch") then
 	-- We notify the user that SteamTinkerLaunch is running.
 	logSystem.log("error", "Can't use "..programMetadata.name.." ! SteamTinkerLaunch detected.")
-	systemUtils.sendNotification("Can't use "..programMetadata.name.." !", "SteamTinkerLaunch detected.", "critical", true)
+	systemUtils.sendNotification("Can't use "..programMetadata.name.." !", "SteamTinkerLaunch detected.", "warning")
 
 	-- For every argument that is a path, we put \ next to the spaces
 	for i, v in ipairs(arg) do

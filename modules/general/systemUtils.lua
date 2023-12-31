@@ -1,6 +1,12 @@
 -- Custom modules
 local logSystem = require("modules.general.logSystem")
 local fsUtils = require("modules.general.fsUtils")
+local programMetadata = require("modules.extra.programMetadata")
+
+-- External modules
+local lgi = require("lgi")
+local Notify = lgi.Notify
+Notify.init(programMetadata.name)
 
 -- Module
 local systemUtils = {}
@@ -10,31 +16,22 @@ local systemUtils = {}
 	Description : Sends a notification using notify-send.
 	Arg 1 : title (string) : The notification's title.
 	Arg 2 : message (string) : The notification's message.
-	Arg 3 : urgency (string) : The notification's urgency. Default : nil
-	Arg 4 : transient (boolean) : Whether the notification should be transient. Default : false
-	Arg 5 : time (number) : The notification's time. Default : nil
+	Arg 3 : type (string) : The notification's type. Used only for icons right now. Can be "warning", "error" or "information".
 	Return : nil
 ]]
-function systemUtils.sendNotification(title, message, urgency, transient, time)
-	local command = "notify-send"
-	if (transient) then
-		command = command.." -e"
-	end
-	command = string.format('%s "%s" "%s"',
-		command,
-		title,
-		message
-	)
-	if (urgency) then
-		command = command.." -u "..urgency
-	end
-	if (time) then
-		command = command.." -t "..time
+function systemUtils.sendNotification(title, message, type)
+	-- Set icons
+	local icon
+	if type == "warning" then
+		icon = "dialog-warning-symbolic"
+	elseif type == "error" then
+		icon = "dialog-error-symbolic"
+	else
+		icon = "dialog-information"
 	end
 
-	if not os.execute(command) then
-		logSystem.log("error", "Unable to send notification using command : "..command)
-	end
+	local notification = Notify.Notification.new(title, message, icon)
+	notification:show()
 end
 
 --[[

@@ -15,7 +15,7 @@ function gameLauncher.prepareGameLaunch(game, command)
 
 	if not status then
 		logSystem.log("error", "Couldn't retrieve configuration for "..game.name..". Error : "..result)
-		systemUtils.sendNotification("Couldn't retrieve configuration for "..game.name.." !", result, "critical", true)
+		systemUtils.sendNotification("Couldn't retrieve configuration for "..game.name.." !", result, "error")
 		return command
 	end
 
