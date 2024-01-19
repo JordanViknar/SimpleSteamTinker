@@ -358,7 +358,6 @@ Command may change depending on installation method.</property>
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="title" translatable="true">ProtonDB</property>
-                                                            <property name="subtitle" translatable="true">The game's ProtonDB page.</property>
                                                             <property name="activatable-widget">protonDBPage_Button</property>
                                                             <child type="suffix">
                                                               <object class="GtkButton" id="protonDBPage_Button">
@@ -379,7 +378,6 @@ Command may change depending on installation method.</property>
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="title" translatable="true">PCGamingWiki</property>
-                                                            <property name="subtitle" translatable="true">The game's PCGamingWiki page.</property>
                                                             <property name="activatable-widget">PCGamingWikiPage_Button</property>
                                                             <child type="suffix">
                                                               <object class="GtkButton" id="PCGamingWikiPage_Button">
@@ -400,10 +398,29 @@ Command may change depending on installation method.</property>
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="title" translatable="true">SteamDB</property>
-                                                            <property name="subtitle" translatable="true">The game's SteamDB page.</property>
                                                             <property name="activatable-widget">steamDBPage_Button</property>
                                                             <child type="suffix">
                                                               <object class="GtkButton" id="steamDBPage_Button">
+                                                                <child>
+                                                                  <object class="AdwButtonContent">
+                                                                    <property name="icon-name">help-browser-symbolic</property>
+                                                                  </object>
+                                                                </child>
+                                                                <style>
+                                                                  <class name="image-button"/>
+                                                                  <class name="flat"/>
+                                                                  <class name="circular"/>
+                                                                </style>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Steambase</property>
+                                                            <property name="activatable-widget">SteambasePage_Button</property>
+                                                            <child type="suffix">
+                                                              <object class="GtkButton" id="SteambasePage_Button">
                                                                 <child>
                                                                   <object class="AdwButtonContent">
                                                                     <property name="icon-name">help-browser-symbolic</property>
@@ -500,7 +517,7 @@ Command may change depending on installation method.</property>
                                 </child>
                                 <child>
                                   <object class="GtkStackPage" id="utilitiesPage">
-                                    <property name="title" translatable="true">Utilities</property>
+                                    <property name="title" translatable="true">In-game utilities</property>
                                     <property name="child">
                                       <object class="AdwClampScrollable">
                                         <child>
@@ -595,10 +612,278 @@ Command may change depending on installation method.</property>
                                 </child>
                                 <child>
                                   <object class="GtkStackPage" id="protonPage">
-                                    <property name="title">Proton</property>
+                                    <property name="title">Proton / Wine</property>
                                     <property name="child">
-                                      <object class="GtkLabel">
-                                        <property name="label">Coming Soon</property>
+                                      <object class="GtkScrolledWindow">
+                                        <child>
+                                          <object class="AdwClamp">
+                                            <child>
+                                              <object class="GtkBox">
+                                                <property name="margin-bottom">16</property>
+                                                <property name="margin-end">12</property>
+                                                <property name="margin-start">12</property>
+                                                <property name="margin-top">16</property>
+                                                <property name="orientation">1</property>
+                                                <property name="spacing">24</property>
+                                                <property name="vexpand">true</property>
+                                                <property name="vexpand-set">true</property>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup">
+                                                    <property name="title">Direct3D</property>
+                                                    <property name="description" translatable="true">Configure Direct3D settings.</property>
+                                                    <child>
+                                                      <object class="AdwExpanderRow">
+                                                        <property name="title" translatable="true">Versions</property>
+                                                        <property name="subtitle" translatable="true">Control which versions of Direct3D can be used by this game. If you are unsure, leave all versions enabled.</property>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Direct3D 9</property>
+                                                            <property name="subtitle" translatable="true">Only applies to GE Proton.</property>
+                                                            <property name="activatable-widget">Direct3D9_Switch</property>
+                                                            <property name="sensitive" bind-source="Direct3D9_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                            <property name="has-tooltip" bind-source="Direct3D9_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                            <property name="tooltip-text" bind-source="Direct3D9_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                            <child>
+                                                              <object class="GtkSwitch" id="Direct3D9_Switch">
+                                                                <property name="active">true</property>
+                                                                <property name="valign">3</property>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Direct3D 10</property>
+                                                            <property name="activatable-widget">Direct3D10_Switch</property>
+                                                            <property name="sensitive" bind-source="Direct3D10_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                            <property name="has-tooltip" bind-source="Direct3D10_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                            <property name="tooltip-text" bind-source="Direct3D10_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                            <child>
+                                                              <object class="GtkSwitch" id="Direct3D10_Switch">
+                                                                <property name="active">true</property>
+                                                                <property name="valign">3</property>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Direct3D 11</property>
+                                                            <property name="activatable-widget">Direct3D11_Switch</property>
+                                                            <property name="sensitive" bind-source="Direct3D11_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                            <property name="has-tooltip" bind-source="Direct3D11_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                            <property name="tooltip-text" bind-source="Direct3D11_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                            <child>
+                                                              <object class="GtkSwitch" id="Direct3D11_Switch">
+                                                                <property name="active">true</property>
+                                                                <property name="valign">3</property>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Direct3D 12</property>
+                                                            <property name="subtitle" translatable="true">Only applies to GE Proton.</property>
+                                                            <property name="activatable-widget">Direct3D12_Switch</property>
+                                                            <property name="sensitive" bind-source="Direct3D12_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                            <property name="has-tooltip" bind-source="Direct3D12_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                            <property name="tooltip-text" bind-source="Direct3D12_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                            <child>
+                                                              <object class="GtkSwitch" id="Direct3D12_Switch">
+                                                                <property name="active">true</property>
+                                                                <property name="valign">3</property>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">Use WineD3D instead of DXVK</property>
+                                                        <property name="subtitle" translatable="true">Use OpenGL-based WineD3D instead of Vulkan-based DXVK for D3D11 and D3D10.</property>
+                                                        <property name="activatable-widget">WineD3D_Switch</property>
+                                                        <property name="sensitive" bind-source="WineD3D_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="has-tooltip" bind-source="WineD3D_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="tooltip-text" bind-source="WineD3D_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                        <child>
+                                                          <object class="GtkSwitch" id="WineD3D_Switch">
+                                                            <property name="active">false</property>
+                                                            <property name="valign">3</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup">
+                                                    <property name="title">AMD FidelityFX Super Resolution 1.0</property>
+                                                    <property name="description" translatable="true">Note : this feature requires GE Proton, and is not restricted to AMD GPUs.</property>
+                                                    <child type="header-suffix">
+                                                      <object class="GtkSwitch" id="Wine_FSR_Switch">
+                                                        <property name="active">false</property>
+                                                        <property name="sensitive">true</property>
+                                                        <property name="valign">3</property>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwSpinRow" id="Wine_FSR_Sharpness_SpinRow">
+                                                        <property name="title" translatable="true">Sharpness</property>
+                                                        <property name="subtitle" translatable="true">The strength of the filter. (0 = strongest, 5 = weakest)</property>
+                                                        <property name="sensitive" bind-source="Wine_FSR_Switch" bind-property="active" bind-flags="sync-create"/>
+                                                        <property name="numeric">true</property>
+                                                        <property name="adjustment">
+                                                          <object class="GtkAdjustment">
+                                                            <property name="lower">0</property>
+                                                            <property name="upper">5</property>
+                                                            <property name="step-increment">1</property>
+                                                          </object>
+                                                        </property>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwComboRow" id="Wine_FSR_Upscaling_Resolution_Mode_ComboRow">
+                                                        <property name="title" translatable="true">Upscaling resolution mode</property>
+                                                        <property name="subtitle" translatable="true">Depending on what preset value you choose and your system, Proton will set an upscaling resolution automatically.</property>
+                                                        <property name="sensitive" bind-source="Wine_FSR_Switch" bind-property="active" bind-flags="sync-create"/>
+                                                        <property name="model">
+                                                          <object class="GtkStringList">
+                                                            <items>
+                                                              <item>None</item>
+                                                              <item>Performance</item>
+                                                              <item>Balanced</item>
+                                                              <item>Quality</item>
+                                                              <item>Ultra</item>
+                                                            </items>
+                                                          </object>
+                                                        </property>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwExpanderRow">
+                                                        <property name="title" translatable="true">Custom resolution</property>
+                                                        <property name="subtitle" translatable="true">Note : overrides the upscaling resolution mode. This shouldn't be needed in most cases.</property>
+                                                        <property name="sensitive" bind-source="Wine_FSR_Switch" bind-property="active" bind-flags="sync-create"/>
+                                                        <child>
+                                                          <object class="AdwActionRow">
+                                                            <property name="title" translatable="true">Enable the usage of a custom resolution</property>
+                                                            <child>
+                                                              <object class="GtkSwitch" id="Wine_FSR_Resolution_Switch">
+                                                                <property name="active">false</property>
+                                                                <property name="sensitive" bind-source="Wine_FSR_Switch" bind-property="active" bind-flags="sync-create"/>
+                                                                <property name="valign">3</property>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwSpinRow" id="Wine_FSR_Resolution_External_Width_SpinRow">
+                                                            <property name="title" translatable="true">Width</property>
+                                                            <property name="sensitive" bind-source="Wine_FSR_Resolution_Switch" bind-property="active" bind-flags="sync-create"/>
+                                                            <property name="numeric">true</property>
+                                                            <property name="adjustment">
+                                                              <object class="GtkAdjustment">
+                                                                <property name="lower">0</property>
+                                                                <property name="upper">7680</property>
+                                                                <property name="step-increment">10</property>
+                                                              </object>
+                                                            </property>
+                                                          </object>
+                                                        </child>
+                                                        <child>
+                                                          <object class="AdwSpinRow" id="Wine_FSR_Resolution_External_Height_SpinRow">
+                                                            <property name="title" translatable="true">Height</property>
+                                                            <property name="sensitive" bind-source="Wine_FSR_Resolution_Switch" bind-property="active" bind-flags="sync-create"/>
+                                                            <property name="numeric">true</property>
+                                                            <property name="adjustment">
+                                                              <object class="GtkAdjustment">
+                                                                <property name="lower">0</property>
+                                                                <property name="upper">7680</property>
+                                                                <property name="step-increment">10</property>
+                                                              </object>
+                                                            </property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup">
+                                                    <property name="title" translatable="true">NVIDIA features</property>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">Disguise NVIDIA GPUs as AMD</property>
+                                                        <property name="subtitle" translatable="true">Force NVIDIA GPUs to always be reported as AMD GPUs. Some games require this if they depend on Windows-only NVIDIA driver functionality.</property>
+                                                        <property name="subtitle-lines">3</property>
+                                                        <property name="activatable-widget">Hide_NVIDIA_GPU_Switch</property>
+                                                        <property name="sensitive" bind-source="Hide_NVIDIA_GPU_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="has-tooltip" bind-source="Hide_NVIDIA_GPU_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="tooltip-text" bind-source="Hide_NVIDIA_GPU_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                        <child>
+                                                          <object class="GtkSwitch" id="Hide_NVIDIA_GPU_Switch">
+                                                            <property name="active">false</property>
+                                                            <property name="valign">3</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">Enable NVAPI</property>
+                                                        <property name="subtitle" translatable="true">Enable NVIDIA's NVAPI GPU support library.</property>
+                                                        <property name="subtitle-lines">3</property>
+                                                        <property name="activatable-widget">Enable_NVAPI_Switch</property>
+                                                        <property name="sensitive" bind-source="Enable_NVAPI_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="has-tooltip" bind-source="Enable_NVAPI_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                        <property name="tooltip-text" bind-source="Enable_NVAPI_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                        <child>
+                                                          <object class="GtkSwitch" id="Enable_NVAPI_Switch">
+                                                            <property name="active">false</property>
+                                                            <property name="valign">3</property>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwPreferencesGroup">
+                                                    <property name="title">Wine</property>
+                                                    <child>
+                                                      <object class="AdwActionRow">
+                                                        <property name="title" translatable="true">Synchronization</property>
+                                                        <child>
+                                                          <object class="GtkBox">
+                                                            <style>
+                                                              <class name="linked"/>
+                                                            </style>
+                                                            <child>
+                                                              <object class="GtkToggleButton" id="ESync_Toggle">
+                                                                <property name="label">ESync</property>
+                                                                <property name="valign">3</property>
+                                                                <property name="active">true</property>
+                                                              </object>
+                                                            </child>
+                                                            <child>
+                                                              <object class="GtkToggleButton" id="FSync_Toggle">
+                                                                <property name="label">FSync</property>
+                                                                <property name="valign">3</property>
+                                                                <property name="active">true</property>
+                                                              </object>
+                                                            </child>
+                                                          </object>
+                                                        </child>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
                                       </object>
                                     </property>
                                   </object>
@@ -797,7 +1082,7 @@ Command may change depending on installation method.</property>
                                                     <child>
                                                       <object class="AdwSpinRow" id="gamescope_Filtering_Sharpness_SpinRow">
                                                         <property name="title" translatable="true">Sharpness</property>
-                                                        <property name="subtitle" translatable="true">The sharpness of the filter. (20 is the maximum, 0 is the minimum)</property>
+                                                        <property name="subtitle" translatable="true">Sets the sharpness of the filter. (0 = maximum sharpness, 20 = minimum)</property>
                                                         <property name="sensitive" bind-source="gamescope_Filtering_Switch" bind-property="active" bind-flags="sync-create"/>
                                                         <property name="numeric">true</property>
                                                         <property name="adjustment">

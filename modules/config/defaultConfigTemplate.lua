@@ -23,7 +23,7 @@ return
 		},
 		zink = {
 			enabled = false;
-		},
+		}
 	},
 
 	-- GameScope
@@ -52,62 +52,36 @@ return
 		filtering = {
 			enabled = false;
 			filter = "FSR"; -- "Linear", "Nearest", "FSR", "NIS", "Pixel"
-			sharpness = 5; -- Ranges from 0 to 20
+			sharpness = 10; -- Ranges from 0 to 20
 		}
 	},
 
 	-- Settings exclusive to Windows games
 	proton = {
 		direct3d = {
+			enable_direct3d9 = true; -- Exclusive to Proton GE
 			enable_direct3d10 = true;
 			enable_direct3d11 = true;
+			enable_direct3d12 = true; -- Exclusive to Proton GE
 			use_wined3d = false;
 		};
 		sync = {
 			enable_esync = true;
 			enable_fsync = true;
-			use_winesync = true;
 		};
 		nvidia = {
-			enable_nvapi = true;
+			enable_nvapi = false;
 			hide_nvidia_gpu = false;
-			enable_dlss = true;
 		};
-		force_large_address_aware = false;
-		fsr = {
+		fsr = { -- Exclusive to Proton GE
 			enabled = false;
-			sharpening = 2;
+			sharpness = 2; -- Between 0 and 5, 0 = maximum, 5 = minimum
 			upscaling_mode = "none"; -- Can be "none", "performance", "balanced", "quality" or "ultra"
-			--[[
 			resolution = {
+				enabled = false;
 				width = 1920;
 				height = 1080;
 			};
-			]]
-		};
-
-		-- These settings are related to Wine in general
-		virtual_desktop = {
-			enabled = false;
-			--[[
-			resolution = {
-				width = 1920;
-				height = 1080;
-			};
-			]]
 		};
 	};
-
-	--[[
-	-- DXVK
-	dxvk = {
-		hud = 0;
-		loglevel = "none";
-		path = nil;
-		hud_scale = 1;
-		framerate_limit = nil;
-		async = false;
-		hdr = false;
-	}
-	]]
 }

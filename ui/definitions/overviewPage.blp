@@ -210,7 +210,6 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 
 						Adw.ActionRow {
 							title: _("ProtonDB");
-							subtitle: _("The game's ProtonDB page.");
 							activatable-widget: protonDBPage_Button;
 							[suffix]
 							Button protonDBPage_Button { //[MODIFIED IN LUA]
@@ -227,7 +226,6 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 
 						Adw.ActionRow {
 							title: _("PCGamingWiki");
-							subtitle: _("The game's PCGamingWiki page.");
 							activatable-widget: PCGamingWikiPage_Button;
 							[suffix]
 							Button PCGamingWikiPage_Button { //[MODIFIED IN LUA]
@@ -244,10 +242,25 @@ StackPage overviewPage { //[INTERACTS IN LUA]
 
 						Adw.ActionRow {
 							title: _("SteamDB");
-							subtitle: _("The game's SteamDB page.");
 							activatable-widget: steamDBPage_Button;
 							[suffix]
 							Button steamDBPage_Button { //[MODIFIED IN LUA]
+								Adw.ButtonContent {
+									icon-name: "help-browser-symbolic";
+								}
+								styles [
+									"image-button",
+									"flat",
+									"circular"
+								]
+							}
+						}
+
+						Adw.ActionRow {
+							title: _("Steambase");
+							activatable-widget: SteambasePage_Button;
+							[suffix]
+							Button SteambasePage_Button { //[MODIFIED IN LUA]
 								Adw.ButtonContent {
 									icon-name: "help-browser-symbolic";
 								}

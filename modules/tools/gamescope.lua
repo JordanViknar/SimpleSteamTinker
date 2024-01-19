@@ -44,7 +44,7 @@ local usage = function(command, config)
 			"%s --filter %s --sharpness %s",
 			options,
 			string.lower(config.gamescope.filtering.filter),
-			20 - config.gamescope.filtering.sharpness -- gamescope's sharpness is inverted
+			config.gamescope.filtering.sharpness -- gamescope's sharpness is inverted
 		)
 	end
 

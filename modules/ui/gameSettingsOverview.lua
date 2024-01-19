@@ -159,4 +159,9 @@ return function(application, interface, steamGameData)
 	lgiHelper.replaceSignal(PCGamingWikiPage_Button, "on_clicked", function()
 		os.execute("xdg-open 'https://www.pcgamingwiki.com/wiki/"..steamGameData.name:gsub(" ", "_").."' &> /dev/null")
 	end)
+
+	local SteambasePage_Button = interface:get_object("SteambasePage_Button")
+	lgiHelper.replaceSignal(SteambasePage_Button, "on_clicked", function()
+		os.execute("xdg-open 'https://steambase.io/apps/"..steamGameData.id.."' &> /dev/null")
+	end)
 end
