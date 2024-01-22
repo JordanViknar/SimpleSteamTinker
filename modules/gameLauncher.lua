@@ -76,6 +76,9 @@ function gameLauncher.prepareGameLaunch(game, command)
 					gameConfig.proton.fsr.resolution.height
 				))
 			end
+		else
+			-- Explictly disable FSR if it's not enabled, recent Proton GE versions enable it by default.
+			table.insert(environmentVars, "WINE_FULLSCREEN_FSR=0")
 		end
 	end
 
