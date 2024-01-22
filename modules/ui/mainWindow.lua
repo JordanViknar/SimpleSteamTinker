@@ -153,42 +153,47 @@ return function(app, steamGames)
 						end
 
 						-- Should they be active ? Is the related tool installed ?
-						if data.tool and not installedList[data.tool] then
-							installedList[data.tool] = systemUtils.isInstalled(data.tool)
-						end
-						if data.tool and installedList[data.tool] == false then
-							widget:set_sensitive(false)
-							widget.has_tooltip = true
-							widget.tooltip_text = data.tool.." is not present on your system."
-						else
-							widget:set_sensitive(true)
-
-							if data.type == "Switch" or data.type == "Toggle" then
-								widget:set_active(pointer[keys[#keys]])
-								lgiHelper.replaceSignal(widget, signal,function() configManager.modifyGameConfig(game.id, data.setting, widget:get_active()) end)
-							elseif data.type == "SpinRow" then
-								widget.value = pointer[keys[#keys]]
-								lgiHelper.replaceSignal(widget, signal,function() configManager.modifyGameConfig(game.id, data.setting, math.floor(widget:get_value())) end)
-							elseif data.type == "ComboRow" then
-								-- We grab the model used
-								local model = widget:get_model()
-
-								-- We select the item that's configured in the settings
-								for index, filter in ipairs(data.items) do
-									if gameSettings.gamescope.filtering.filter == filter then
-										widget:set_selected(index - 1)
-										break -- No need to continue
-									end
-								end
-
-								-- We connect to the setting
-								lgiHelper.replaceSignal(widget, "on_notify", function()
-									local setting = model:get_string(widget:get_selected())
-									configManager.modifyGameConfig(game.id, "gamescope.filtering.filter", setting)
-								end)
-							else
-								error("Unknown type '"..data.type.."' for UI element '"..widgetname.."'")
+						if data.tool then
+							if not installedList[data.tool] then
+								installedList[data.tool] = systemUtils.isInstalled(data.tool)
 							end
+							if installedList[data.tool] == false then
+								widget:set_sensitive(false)
+								widget.has_tooltip = true
+								widget.tooltip_text = data.tool.." is not present on your system."
+								goto skip
+							else
+								widget:set_sensitive(true)
+							end
+						end
+
+						-- We connect the UI element to the setting
+						if data.type == "Switch" or data.type == "Toggle" then
+							widget:set_active(pointer[keys[#keys]])
+							lgiHelper.replaceSignal(widget, signal,function() configManager.modifyGameConfig(game.id, data.setting, widget:get_active()) end)
+						elseif data.type == "SpinRow" then
+							widget.value = pointer[keys[#keys]]
+							lgiHelper.replaceSignal(widget, signal,function() configManager.modifyGameConfig(game.id, data.setting, math.floor(widget:get_value())) end)
+						elseif data.type == "ComboRow" then
+							-- We grab the model used
+							local model = widget:get_model()
+
+							-- We select the item that's already configured in the settings
+							for index, filter in ipairs(data.items) do
+								local currentFilter = configManager.grabInTableFromString(gameSettings, data.setting)
+								if currentFilter == filter then
+									widget:set_selected(index - 1)
+									break -- No need to continue
+								end
+							end
+
+							-- We connect to the setting
+							lgiHelper.replaceSignal(widget, signal, function()
+								local selected = model:get_string(widget:get_selected())
+								configManager.modifyGameConfig(game.id, data.setting, selected)
+							end)
+						else
+							error("Unknown type '"..data.type.."' for UI element '"..widgetname.."'")
 						end
 
 						::skip::

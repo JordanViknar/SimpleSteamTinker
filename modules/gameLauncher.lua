@@ -37,7 +37,7 @@ function gameLauncher.prepareGameLaunch(game, command)
 	end
 
 	-- Special case for switcherooctl, some Steam launch desktop files force the dGPU on games even when disabled.
-	if gameConfig.dgpu.enabled == false and utilities[2][1].isInstalled then
+	if gameConfig.dgpu.enabled == false and utilities[3][1].isInstalled then -- Should use names instead of indexes later
 		-- We add the environment variables to forcefully disable the dGPU
 		table.insert(environmentVars, "DRI_PRIME=0 __NV_PRIME_RENDER_OFFLOAD=0 __VK_LAYER_NV_optimus=none __GLX_VENDOR_LIBRARY_NAME=none")
 	end
@@ -48,6 +48,37 @@ function gameLauncher.prepareGameLaunch(game, command)
 			table.insert(environmentVars, "SDL_VIDEODRIVER=\"wayland,x11\"")
 		else -- We force X11 to be used, just in case.
 			table.insert(environmentVars, "SDL_VIDEODRIVER=\"x11\"")
+		end
+	elseif game.os_platform == "Windows" then
+		-- Direct3D
+		if gameConfig.proton.direct3d.enable_direct3d9 == false then table.insert(environmentVars, "PROTON_NO_D3D9=1") end
+		if gameConfig.proton.direct3d.enable_direct3d10 == false then table.insert(environmentVars, "PROTON_NO_D3D10=1") end
+		if gameConfig.proton.direct3d.enable_direct3d11 == false then table.insert(environmentVars, "PROTON_NO_D3D11=1") end
+		if gameConfig.proton.direct3d.enable_direct3d12 == false then table.insert(environmentVars, "PROTON_NO_D3D12=1") end
+		if gameConfig.proton.direct3d.use_wined3d == true then table.insert(environmentVars, "PROTON_USE_WINED3D=1") end
+		-- Sync
+		if gameConfig.proton.sync.enable_esync == false then table.insert(environmentVars, "PROTON_NO_ESYNC=1") end
+		if gameConfig.proton.sync.enable_fsync == false then table.insert(environmentVars, "PROTON_NO_FSYNC=1") end
+		-- NVIDIA
+		if gameConfig.proton.nvidia.enable_nvapi == true then table.insert(environmentVars, "PROTON_ENABLE_NVAPI=1") end
+		if gameConfig.proton.nvidia.hide_nvidia_gpu == true then table.insert(environmentVars, "PROTON_HIDE_NVIDIA_GPU=1") end
+		-- FSR
+		if gameConfig.proton.fsr.enabled == true then
+			table.insert(environmentVars, string.format(
+				"WINE_FULLSCREEN_FSR=1 WINE_FULLSCREEN_FSR_STRENGTH=%s WINE_FULLSCREEN_FSR_MODE=%s",
+				gameConfig.proton.fsr.sharpness,
+				string.lower(gameConfig.proton.fsr.upscaling_mode)
+			))
+			if gameConfig.proton.fsr.resolution.enabled == true then
+				table.insert(environmentVars, string.format(
+					"WINE_FULLSCREEN_FSR_CUSTOM_MODE=%sx%s",
+					gameConfig.proton.fsr.resolution.width,
+					gameConfig.proton.fsr.resolution.height
+				))
+			end
+		else
+			-- Explictly disable FSR if it's not enabled, recent Proton GE versions enable it by default.
+			table.insert(environmentVars, "WINE_FULLSCREEN_FSR=0")
 		end
 	end
 

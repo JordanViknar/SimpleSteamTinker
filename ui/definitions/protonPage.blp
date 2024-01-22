@@ -1,9 +1,225 @@
 using Gtk 4.0;
+using Adw 1;
 
 StackPage protonPage { //[MODIFIED IN LUA]: This page is only shown if the game is using Proton.
-	title: "Proton";
+	title: "Proton / Wine";
+
 	child:
-	Label {
-		label: "Coming Soon";
+	Gtk.ScrolledWindow {
+		Adw.Clamp {
+			Box {
+				margin-bottom: 16;
+				margin-end: 12;
+				margin-start: 12;
+				margin-top: 16;
+				orientation: vertical;
+				spacing: 24;
+				vexpand: true;
+				vexpand-set: true;
+
+				Adw.PreferencesGroup {
+					title: "Direct3D";
+					description: _("Configure Direct3D settings.");
+
+					Adw.ExpanderRow {
+						title: _("Versions");
+						subtitle: _("Control which versions of Direct3D can be used by this game. If you are unsure, leave all versions enabled.");
+						
+						Adw.ActionRow {
+							title: _("Direct3D 9");
+							subtitle: _("Only applies to GE Proton.");
+							activatable-widget: Direct3D9_Switch;
+							sensitive: bind Direct3D9_Switch.sensitive bidirectional;
+							has-tooltip: bind Direct3D9_Switch.has-tooltip bidirectional;
+							tooltip-text: bind Direct3D9_Switch.tooltip-text bidirectional;
+
+							Gtk.Switch Direct3D9_Switch {
+								active: true;
+								valign: center;
+							}
+						}
+						Adw.ActionRow {
+							title: _("Direct3D 10");
+							activatable-widget: Direct3D10_Switch;
+							sensitive: bind Direct3D10_Switch.sensitive bidirectional;
+							has-tooltip: bind Direct3D10_Switch.has-tooltip bidirectional;
+							tooltip-text: bind Direct3D10_Switch.tooltip-text bidirectional;
+
+							Gtk.Switch Direct3D10_Switch {
+								active: true;
+								valign: center;
+							}
+						}
+						Adw.ActionRow {
+							title: _("Direct3D 11");
+							activatable-widget: Direct3D11_Switch;
+							sensitive: bind Direct3D11_Switch.sensitive bidirectional;
+							has-tooltip: bind Direct3D11_Switch.has-tooltip bidirectional;
+							tooltip-text: bind Direct3D11_Switch.tooltip-text bidirectional;
+
+							Gtk.Switch Direct3D11_Switch {
+								active: true;
+								valign: center;
+							}
+						}
+						Adw.ActionRow {
+							title: _("Direct3D 12");
+							subtitle: _("Only applies to GE Proton.");
+							activatable-widget: Direct3D12_Switch;
+							sensitive: bind Direct3D12_Switch.sensitive bidirectional;
+							has-tooltip: bind Direct3D12_Switch.has-tooltip bidirectional;
+							tooltip-text: bind Direct3D12_Switch.tooltip-text bidirectional;
+
+							Gtk.Switch Direct3D12_Switch {
+								active: true;
+								valign: center;
+							}
+						}
+					}
+
+					Adw.ActionRow {
+						title: _("Use WineD3D instead of DXVK");
+						subtitle: _("Use OpenGL-based WineD3D instead of Vulkan-based DXVK for D3D11 and D3D10.");
+						activatable-widget: WineD3D_Switch;
+						sensitive: bind WineD3D_Switch.sensitive bidirectional;
+						has-tooltip: bind WineD3D_Switch.has-tooltip bidirectional;
+						tooltip-text: bind WineD3D_Switch.tooltip-text bidirectional;
+
+						Gtk.Switch WineD3D_Switch {
+							active: false;
+							valign: center;
+						}
+					}
+				}
+
+				Adw.PreferencesGroup {
+					title: "AMD FidelityFX Super Resolution 1.0";
+					description: _("Note : this feature requires GE Proton, and is not restricted to AMD GPUs.");
+
+					[header-suffix]
+					Switch Wine_FSR_Switch {
+						active: false;
+						sensitive: true;
+						valign: center;
+					}
+
+					Adw.SpinRow Wine_FSR_Sharpness_SpinRow {
+						title: _("Sharpness");
+						subtitle: _("The strength of the filter. (0 = strongest, 5 = weakest)");
+						sensitive: bind Wine_FSR_Switch.active;
+						numeric: true;
+						adjustment :
+						Gtk.Adjustment {
+							lower: 0;
+							upper: 5;
+							step-increment: 1;
+						};
+					}
+
+					Adw.ComboRow Wine_FSR_Upscaling_Resolution_Mode_ComboRow {
+						title: _("Upscaling resolution mode");
+						subtitle: _("Depending on what preset value you choose and your system, Proton will set an upscaling resolution automatically.");
+						sensitive: bind Wine_FSR_Switch.active;
+						model: Gtk.StringList {
+							strings ["None", "Performance", "Balanced", "Quality", "Ultra"]
+						};
+					}
+
+					Adw.ExpanderRow {
+						title: _("Custom resolution");
+						subtitle: _("Note : overrides the upscaling resolution mode. This shouldn't be needed in most cases.");
+						sensitive: bind Wine_FSR_Switch.active;
+
+						Adw.ActionRow {
+							title: _("Enable the usage of a custom resolution");
+							Switch Wine_FSR_Resolution_Switch {
+								active: false;
+								sensitive: bind Wine_FSR_Switch.active;
+								valign: center;
+							}
+						}
+						Adw.SpinRow Wine_FSR_Resolution_External_Width_SpinRow {
+							title: _("Width");
+							sensitive: bind Wine_FSR_Resolution_Switch.active;
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
+						}
+						Adw.SpinRow Wine_FSR_Resolution_External_Height_SpinRow {
+							title: _("Height");
+							sensitive: bind Wine_FSR_Resolution_Switch.active;
+							numeric: true;
+							adjustment :
+							Gtk.Adjustment {
+								lower: 0;
+								upper: 7680;
+								step-increment: 10;
+							};
+						}
+					}
+				}
+
+				Adw.PreferencesGroup {
+					title: _("NVIDIA features");
+
+					Adw.ActionRow {
+						title : _("Disguise NVIDIA GPUs as AMD");
+						subtitle: _("Force NVIDIA GPUs to always be reported as AMD GPUs. Some games require this if they depend on Windows-only NVIDIA driver functionality.");
+						subtitle-lines: 3;
+
+						activatable-widget: Hide_NVIDIA_GPU_Switch;
+						sensitive: bind Hide_NVIDIA_GPU_Switch.sensitive bidirectional;
+						has-tooltip: bind Hide_NVIDIA_GPU_Switch.has-tooltip bidirectional;
+						tooltip-text: bind Hide_NVIDIA_GPU_Switch.tooltip-text bidirectional;
+
+						Gtk.Switch Hide_NVIDIA_GPU_Switch {
+							active: false;
+							valign: center;
+						}
+					}
+					Adw.ActionRow {
+						title : _("Enable NVAPI");
+						subtitle: _("Enable NVIDIA's NVAPI GPU support library.");
+						subtitle-lines: 3;
+
+						activatable-widget: Enable_NVAPI_Switch;
+						sensitive: bind Enable_NVAPI_Switch.sensitive bidirectional;
+						has-tooltip: bind Enable_NVAPI_Switch.has-tooltip bidirectional;
+						tooltip-text: bind Enable_NVAPI_Switch.tooltip-text bidirectional;
+
+						Gtk.Switch Enable_NVAPI_Switch {
+							active: false;
+							valign: center;
+						}
+					}
+				}
+
+				Adw.PreferencesGroup {
+					title: "Wine";
+
+					Adw.ActionRow {
+						title: _("Synchronization");
+						Box {
+							styles ["linked"]
+
+							ToggleButton ESync_Toggle {
+								label: "ESync";
+								valign: center;
+								active: true;
+							}
+							ToggleButton FSync_Toggle {
+								label: "FSync";
+								valign: center;
+								active: true;
+							}
+						}
+					}
+				}
+			}
+		}
 	};
 }

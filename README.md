@@ -146,10 +146,9 @@ If, in the future, LGI becomes stable enough with GTK4 to use it directly to gen
 | Custom launch system | ✅ | 🚧 *(Planned, high priority)* |
 | Winetricks | ✅ | ❌ *(Planned ?)* |
 | Protontricks | ❌ | ❌ *(Planned ?)* |
-| Proton settings | ✅ | 🚧 *(Planned, high priority)* |
-| DXVK settings | ✅ | 🚧 *(Planned, high priority)* |
-| VKD3D settings | ✅ | 🚧 *(Planned, high priority)* |
-| FSR settings | ✅ | 🚧 *(Planned, high priority)* |
+| Proton settings | ✅ | ✅ |
+| DXVK settings | ✅ | 🚧 *(Planned)* |
+| VKD3D settings | ✅ | 🚧 *(Planned)* |
 | MangoHud | ✅ | ✅ |
 | Gamescope | ✅ | ✅ |
 | Shader support (ReShade/vkBasalt) | ✅ | ❌ *(Planned, low priority)* |

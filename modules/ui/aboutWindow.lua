@@ -59,6 +59,9 @@ return function(application, interface, win)
 			"MangoHud https://github.com/flightlessmango/MangoHud",
 			"Zink https://docs.mesa3d.org/drivers/zink.html",
 			"ProtonDB https://www.protondb.com/",
+			"PCGamingWiki https://www.pcgamingwiki.com/",
+			"SteamDB https://steamdb.info/",
+			"switcheroo-control https://gitlab.freedesktop.org/hadess/switcheroo-control",
 			"Gamescope https://github.com/ValveSoftware/gamescope"
 		})
 

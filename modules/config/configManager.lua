@@ -54,12 +54,10 @@ function configManager.getGameConfig(gameId)
 	local defaultConfig = require("modules.config.defaultConfigTemplate")
 	local function updateConfig(config, template)
 		for key, value in pairs(template) do
-			if type(value) == "table" then
-				if config[key] == nil then
-					config[key] = value
-				else
-					updateConfig(config[key], value)
-				end
+			if config[key] == nil then
+				config[key] = value
+			elseif type(value) == "table" then
+				updateConfig(config[key], value)
 			end
 		end
 	end
@@ -101,6 +99,27 @@ function configManager.modifyGameConfig(gameId, dataToChange, value)
 	file:close()
 
 	return gameConfig
+end
+
+--[[
+	Name : function configManager.grabInTableFromString(table, string)
+	Description : Grabs a value in a table from a string.
+	Arg 1 : table (table) : The table to grab the value from.
+	Arg 2 : string (string) : The string to parse. Example : "gamescope.general.resolution.internal.width"
+	Return : The value.
+]]
+function configManager.grabInTableFromString(table, string)
+	local keys = {}
+	for substring in string:gmatch("[^.]+") do
+		keys[#keys + 1] = substring
+	end
+
+	local pointer = table
+	for i = 1, #keys do
+		pointer = pointer[keys[i]] or {}
+	end
+
+	return pointer
 end
 
 return configManager
