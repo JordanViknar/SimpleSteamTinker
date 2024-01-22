@@ -149,7 +149,6 @@ If, in the future, LGI becomes stable enough with GTK4 to use it directly to gen
 | Proton settings | ✅ | ✅ |
 | DXVK settings | ✅ | 🚧 *(Planned)* |
 | VKD3D settings | ✅ | 🚧 *(Planned)* |
-| FSR settings | ✅ | ✅ |
 | MangoHud | ✅ | ✅ |
 | Gamescope | ✅ | ✅ |
 | Shader support (ReShade/vkBasalt) | ✅ | ❌ *(Planned, low priority)* |

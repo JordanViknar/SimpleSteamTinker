@@ -67,7 +67,7 @@ function gameLauncher.prepareGameLaunch(game, command)
 			table.insert(environmentVars, string.format(
 				"WINE_FULLSCREEN_FSR=1 WINE_FULLSCREEN_FSR_STRENGTH=%s WINE_FULLSCREEN_FSR_MODE=%s",
 				gameConfig.proton.fsr.sharpness,
-				gameConfig.proton.fsr.upscaling_mode
+				string.lower(gameConfig.proton.fsr.upscaling_mode)
 			))
 			if gameConfig.proton.fsr.resolution.enabled == true then
 				table.insert(environmentVars, string.format(
