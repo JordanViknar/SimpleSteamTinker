@@ -1,7 +1,7 @@
 # Maintainer: JordanViknar
 
 pkgname=simplesteamtinker-git
-pkgver=r35.b0e0272
+pkgver=r44.84be422
 pkgrel=1
 pkgdesc="A work-in-progress simple, fast and modern Adwaita alternative to SteamTinkerLaunch."
 arch=('x86_64' 'i686' 'armv7h' 'aarch64')

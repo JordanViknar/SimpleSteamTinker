@@ -7,6 +7,7 @@ return {
 	["gamemode_Switch"] = {type= "Switch", tool = "gamemoderun", setting = "utilities.gamemode.enabled"},
 	["mangohud_Switch"] = {type= "Switch", tool = "mangohud", setting = "utilities.mangohud.enabled"},
 	["zink_Switch"] = {type= "Switch", tool = "/usr/lib/dri/zink_dri.so", setting = "utilities.zink.enabled"},
+	["obs_gamecapture_Switch"] = {type= "Switch", tool = "obs-gamecapture", setting = "utilities.obs_gamecapture.enabled"},
 
 	-- Gamescope
 	["gamescope_Switch"] = {type= "Switch", tool = "gamescope", setting = "gamescope.enabled"},

@@ -12,11 +12,11 @@ StackPage utilitiesPage {
 			margin-start: 12;
 			margin-top: 16;
 			orientation: vertical;
-			spacing: 18;
+			spacing: 24;
 
 			Adw.PreferencesGroup {
 				title: "Recommended";
-				description: _("Utilities recommended to be enabled for the best experience.");
+				description: _("Utilities recommended for the best experience.");
 				Adw.ActionRow {
 					subtitle: _("GameMode is a tool to optimize Linux system performance on demand.");
 					title: "Feral GameMode";
@@ -35,7 +35,7 @@ StackPage utilitiesPage {
 
 			Adw.PreferencesGroup {
 				title: _("Utilities");
-				description: _("Those are generally safe utilities you may want enabled.");
+				description: _("Utilities that can be used while the game is running, depending on your needs.");
 
 				// Adw.SwitchRow seem to be buggy-ish. The value gets inverted, and clicking directly on the button
 				// doesn't send the signal I need to run the functions.
@@ -66,6 +66,22 @@ StackPage utilitiesPage {
 					sensitive: bind zink_Switch.sensitive bidirectional;
 
 					Switch zink_Switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
+						active: false;
+						sensitive: false;
+						valign: center;
+					}
+				}
+
+				Adw.ActionRow {
+					subtitle: _("obs-gamecapture is a tool that captures a game window and plugs it into OBS Studio as a source with minimal overhead.");
+					subtitle-lines: 2;
+					title: _("OBS Game Capture");
+					activatable-widget: obs_gamecapture_Switch;
+					has-tooltip: bind obs_gamecapture_Switch.has-tooltip bidirectional;
+					tooltip-text: bind obs_gamecapture_Switch.tooltip-text bidirectional;
+					sensitive: bind obs_gamecapture_Switch.sensitive bidirectional;
+
+					Switch obs_gamecapture_Switch { //[MODIFIED IN LUA][INTERACTS WITH LUA]
 						active: false;
 						sensitive: false;
 						valign: center;

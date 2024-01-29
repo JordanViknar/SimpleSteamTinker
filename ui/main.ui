@@ -467,7 +467,7 @@ Command may change depending on installation method.</property>
                                                 <child>
                                                   <object class="AdwPreferencesGroup">
                                                     <property name="title">Recommended</property>
-                                                    <property name="description" translatable="true">Settings recommended to be used for the best experience.</property>
+                                                    <property name="description" translatable="true">Settings recommended for the best experience.</property>
                                                     <child>
                                                       <object class="AdwActionRow">
                                                         <property name="title" translatable="true">Use dedicated graphics card</property>
@@ -527,11 +527,11 @@ Command may change depending on installation method.</property>
                                             <property name="margin-start">12</property>
                                             <property name="margin-top">16</property>
                                             <property name="orientation">1</property>
-                                            <property name="spacing">18</property>
+                                            <property name="spacing">24</property>
                                             <child>
                                               <object class="AdwPreferencesGroup">
                                                 <property name="title">Recommended</property>
-                                                <property name="description" translatable="true">Utilities recommended to be enabled for the best experience.</property>
+                                                <property name="description" translatable="true">Utilities recommended for the best experience.</property>
                                                 <child>
                                                   <object class="AdwActionRow">
                                                     <property name="subtitle" translatable="true">GameMode is a tool to optimize Linux system performance on demand.</property>
@@ -554,7 +554,7 @@ Command may change depending on installation method.</property>
                                             <child>
                                               <object class="AdwPreferencesGroup">
                                                 <property name="title" translatable="true">Utilities</property>
-                                                <property name="description" translatable="true">Those are generally safe utilities you may want enabled.</property>
+                                                <property name="description" translatable="true">Utilities that can be used while the game is running, depending on your needs.</property>
                                                 <child>
                                                   <object class="AdwActionRow">
                                                     <property name="subtitle" translatable="true">A Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more... May not work on some native OpenGL games.</property>
@@ -584,6 +584,24 @@ Command may change depending on installation method.</property>
                                                     <property name="sensitive" bind-source="zink_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
                                                     <child>
                                                       <object class="GtkSwitch" id="zink_Switch">
+                                                        <property name="active">false</property>
+                                                        <property name="sensitive">false</property>
+                                                        <property name="valign">3</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="AdwActionRow">
+                                                    <property name="subtitle" translatable="true">obs-gamecapture is a tool that captures a game window and plugs it into OBS Studio as a source with minimal overhead.</property>
+                                                    <property name="subtitle-lines">2</property>
+                                                    <property name="title" translatable="true">OBS Game Capture</property>
+                                                    <property name="activatable-widget">obs_gamecapture_Switch</property>
+                                                    <property name="has-tooltip" bind-source="obs_gamecapture_Switch" bind-property="has-tooltip" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="tooltip-text" bind-source="obs_gamecapture_Switch" bind-property="tooltip-text" bind-flags="sync-create|bidirectional"/>
+                                                    <property name="sensitive" bind-source="obs_gamecapture_Switch" bind-property="sensitive" bind-flags="sync-create|bidirectional"/>
+                                                    <child>
+                                                      <object class="GtkSwitch" id="obs_gamecapture_Switch">
                                                         <property name="active">false</property>
                                                         <property name="sensitive">false</property>
                                                         <property name="valign">3</property>

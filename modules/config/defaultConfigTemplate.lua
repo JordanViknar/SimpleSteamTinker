@@ -23,7 +23,10 @@ return
 		},
 		zink = {
 			enabled = false;
-		}
+		},
+		obs_gamecapture = {
+			enabled = false;
+		},
 	},
 
 	-- GameScope
