@@ -1,3 +1,7 @@
+> [!WARNING]
+> This project may be deprecated in the future, as I have been recently working on a **massive** rewrite, avoiding LGI and focusing more on portability and stability this time around.
+___
+
 > [!IMPORTANT]
 > SimpleSteamTinker is still in ***HEAVY*** development and very unfinished.
 > Expect an incomplete interface and lots of missing/unstable features.
