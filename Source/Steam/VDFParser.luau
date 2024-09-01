@@ -1,37 +1,79 @@
 --!nocheck
 --Note : Temporary
-
-local vdfParser = {}
-
--- Lune Modules
 local fs = require("@lune/fs")
 
---[[
-	Name : function vdfParser.parseString(input, stopKeyList)
-	Description : Parses a VDF string into a table.
-	Arg 1 : input (string) : The VDF string to parse.
-	Arg 2 : stopKeyList (table) : A list of keys to stop the parsing at. Default : nil
-	Return : result (table) : The parsed table.
-]]
+local VDFParser = {}
+VDFParser.Private = {}
+--[=[
+	Contains functions for parsing VDF files and strings.
+	Lune does not support VDF files natively at the moment.
+]=]
+VDFParser.Public = {}
 
--- Status :
--- keyWait : We wait for a key
--- readingKey : We are reading a key
--- valueWait : We wait for a value
--- readingValue : We are reading a value
--- readingTableValue : We are reading a table value
-type ReadStatus = "keyWait" | "readingKey" | "valueWait" | "readingTableValue" | "readingValue"
+-- Public
 
-function vdfParser.parseString(input, stopKeyList: {string}?): {[string]: any}
+--[=[
+	Parses a VDF file into a table.
+	
+	@param path string -- The path to the file.
+	@param stopKeyList {string}? -- Limits the parsing to the given key path.
+	@param wordsFromLinesToRemove {string}? -- A list of words that, if found in a line, will remove the line. Used for (bad) optimization.
+	@return The parsed table if successful.
+]=]
+function VDFParser.Public.parseFile(path: string, stopKeyList: {string}?, wordsFromLinesToRemove: {string}?): table
+	return VDFParser.Public.parseString(fs.readFile(path), stopKeyList, wordsFromLinesToRemove)
+end
+
+--[=[
+	Parses a VDF string into a table.
+	
+	@param input string -- The VDF string to parse.
+	@param stopKeyList {string}? -- Limits the parsing to the given key path.
+	@param wordsFromLinesToRemove {string}? -- A list of words that, if found in a line, will remove the line. Used for (bad) optimization.
+	@return The parsed table if successful.
+]=]
+function VDFParser.Public.parseString(input: string, stopKeyList: {string}?, wordsFromLinesToRemove: {string}?): table
+	-- Remove every line that contains a word from wordsFromLinesToRemove
+	if wordsFromLinesToRemove then
+		local lines = {}
+		for line in input:gmatch("[^\r\n]+") do
+			local removeLine = false
+			for _, word in pairs(wordsFromLinesToRemove) do
+				if line:find(word) then
+					removeLine = true
+					break
+				end
+			end
+			if not removeLine then
+				table.insert(lines, line)
+			end
+		end
+		input = table.concat(lines, "\n")
+	end
+
+	return VDFParser.Private.parse(input, stopKeyList)
+end
+
+-- Private
+
+--[=[
+	Parses a VDF string into a table. Private side of the parser.
+	
+	@param input string -- The VDF string to parse.
+	@param stopKeyList {string}? -- Limits the parsing to the given key path.
+	@return The parsed table if successful.
+]=]
+function VDFParser.Private.parse(input: string, stopKeyList: {string}?): table
 	local result = {}
 
+	type ReadStatus = "keyWait" | "readingKey" | "valueWait" | "readingTableValue" | "readingValue"
 	local status: ReadStatus = "keyWait"
 
 	-- Temp Values
-	local tempKey: string, tempValue: string, tempRecursiveInput: string = "", "", ""
+	local tempKey, tempValue, tempRecursiveInput = "", "", ""
 
-	local indent: number = 0
-	local previousChar: string = nil
+	local indent = 0
+	local previousChar = nil
 
 	-- Until we reached the end of the file
 	for i = 1, #input do
@@ -104,7 +146,7 @@ function vdfParser.parseString(input, stopKeyList: {string}?): {[string]: any}
 					local actualKey: any
 					if tonumber(tempKey) then actualKey = tonumber(tempKey)
 					else actualKey = tempKey end
-					result[actualKey] = vdfParser.parseString(tempRecursiveInput, newStopKeyList)
+					result[actualKey] = VDFParser.Private.parse(tempRecursiveInput, newStopKeyList)
 				end
 
 				if stopKeyList and tempKey == stopKeyList[1] then
@@ -139,39 +181,4 @@ function vdfParser.parseString(input, stopKeyList: {string}?): {[string]: any}
 	return result
 end
 
---[[
-	Name : function vdfParser.parseFile(path, stopKeyList, wordsFromLinesToRemove)
-	Description : Parses a VDF file into a table.
-	Arg 1 : path (string) : The path to the file to parse.
-	Arg 2 : stopKeyList (table) : A list of keys to stop the parsing at. Default : nil
-	Arg 3 : wordsFromLinesToRemove (table) : A list of words that, if found in a line, will remove the line. Default : nil
-	Return : result (table) : The parsed table.
-
-	Note : Arg 2 and Arg 3 are critical for optimization in big files. Do not hesitate to use them.
-	Results such as going from 0.5 seconds to 0.04 seconds are possible.
-]]
-function vdfParser.parseFile(path: string, stopKeyList: {string}?, wordsFromLinesToRemove: {string}?): {[string]: any}
-	local content = fs.readFile(path)
-
-	-- Remove every line that contains a word from wordsFromLinesToRemove
-	if wordsFromLinesToRemove then
-		local lines = {}
-		for line in content:gmatch("[^\r\n]+") do
-			local removeLine = false
-			for _, word in pairs(wordsFromLinesToRemove) do
-				if line:find(word) then
-					removeLine = true
-					break
-				end
-			end
-			if not removeLine then
-				table.insert(lines, line)
-			end
-		end
-		content = table.concat(lines, "\n")
-	end
-
-	return vdfParser.parseString(content, stopKeyList)
-end
-
-return vdfParser
+return VDFParser.Public

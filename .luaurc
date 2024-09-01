@@ -1,0 +1,8 @@
+{
+	"languageMode": "strict",
+	"aliases": {
+		"Metadata": "./Source/Metadata",
+		"Steam" : "./Source/Steam",
+		"Utilities" : "./Source/Utilities"
+	}
+}

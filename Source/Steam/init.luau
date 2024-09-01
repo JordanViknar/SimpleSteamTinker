@@ -1,0 +1,3 @@
+return {
+	Configuration = require("Configuration")
+}
