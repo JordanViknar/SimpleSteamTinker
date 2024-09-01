@@ -1,25 +1,10 @@
+--!nocheck
+--Note : Temporary
+
 local vdfParser = {}
 
---[[
-	Name : function vdfParser.printArray(data, indent)
-	Description : Prints a table in a human-readable way. Used for testing.
-	Arg 1 : data (table) : The table to print.
-	Arg 2 : indent (number) : The indentation level. Default : 0
-]]
-function vdfParser.printArray(data, indent)
-	indent = indent or 0
-	local spaces = string.rep("  ", indent)
-
-	for key, value in pairs(data) do
-		if type(value) == "table" then
-			print(spaces .. key .. ": {")
-			vdfParser.printArray(value, indent + 1)
-			print(spaces .. "}")
-		else
-			print(spaces .. key .. ": " .. tostring(value))
-		end
-	end
-end
+-- Lune Modules
+local fs = require("@lune/fs")
 
 --[[
 	Name : function vdfParser.parseString(input, stopKeyList)
@@ -28,50 +13,74 @@ end
 	Arg 2 : stopKeyList (table) : A list of keys to stop the parsing at. Default : nil
 	Return : result (table) : The parsed table.
 ]]
-function vdfParser.parseString(input, stopKeyList)
+
+-- Status :
+-- keyWait : We wait for a key
+-- readingKey : We are reading a key
+-- valueWait : We wait for a value
+-- readingValue : We are reading a value
+-- readingTableValue : We are reading a table value
+type ReadStatus = "keyWait" | "readingKey" | "valueWait" | "readingTableValue" | "readingValue"
+
+function vdfParser.parseString(input, stopKeyList: {string}?): {[string]: any}
 	local result = {}
 
-	local status = "keyWait"
+	local status: ReadStatus = "keyWait"
 
 	-- Temp Values
-	local tempKey, tempValue, tempRecursiveInput = "", "", ""
+	local tempKey: string, tempValue: string, tempRecursiveInput: string = "", "", ""
 
-	local indent = 0
-	local previousChar = nil
+	local indent: number = 0
+	local previousChar: string = nil
 
 	-- Until we reached the end of the file
 	for i = 1, #input do
 		local char = input:sub(i, i)
 
-		-- Status :
-		-- keyWait : We wait for a key
-		-- readingKey : We are reading a key
-		-- valueWait : We wait for a value
-		-- readingValue : We are reading a value
-		-- readingTableValue : We are reading a table value
-
-		-- String management
+		-- String key/value management
 		if char == '"' and previousChar ~= "\\" then
 			if status == "keyWait" then
+				-- We reached the key and start reading it.
 				status = "readingKey"
 			elseif status == "readingKey" then
+				-- We finished reading the key and are now waiting for the value.
 				status = "valueWait"
 			elseif status == "valueWait" then
+				-- We begin reading the value.
 				status = "readingValue"
 			elseif status == "readingValue" then
-				result[tempKey] = tempValue
+				-- We finished reading the value.
+
+				-- Convert value into extra, more practical types
+				local actualValue: any
+				if tempValue == "0" then actualValue = false
+				elseif tempValue == "1" then actualValue = true
+				elseif tonumber(tempValue) then actualValue = tonumber(tempValue)
+				else actualValue = tempValue end
+
+				-- Same for key
+				local actualKey: any
+				if tonumber(tempKey) then actualKey = tonumber(tempKey)
+				else actualKey = tempKey end
+
+				result[actualKey] = actualValue
+
 				-- We stop the parsing if we reached the stopKeyList entry
 				if stopKeyList and tempKey == stopKeyList[1] then
 					return result
 				end
+
 				tempKey = ""
 				tempValue = ""
 				status = "keyWait"
 			elseif status == "readingTableValue" then
+				-- We are currently reading a table. Not stopping until we reached its end.
 				tempRecursiveInput = tempRecursiveInput..char
 			end
 
 		-- Subtable management
+
+		-- We reach the beginning of a table.
 		elseif char == '{'  and previousChar ~= "\\" and (status == "valueWait" or status == "readingTableValue") then
 			if status == "valueWait" then
 				status = "readingTableValue"
@@ -79,7 +88,9 @@ function vdfParser.parseString(input, stopKeyList)
 				tempRecursiveInput = tempRecursiveInput..char
 				indent = indent + 1
 			end
-		elseif char == '}'  and previousChar ~= "\\" and status == "readingTableValue" then
+		
+		-- We reach the end of a table.
+		elseif char == '}'  and previousChar ~= "\\" and (status == "readingTableValue") then
 			if indent == 0 then
 				local newStopKeyList = nil
 				if stopKeyList then
@@ -90,7 +101,10 @@ function vdfParser.parseString(input, stopKeyList)
 				end
 
 				if stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1] then
-					result[tempKey] = vdfParser.parseString(tempRecursiveInput, newStopKeyList)
+					local actualKey: any
+					if tonumber(tempKey) then actualKey = tonumber(tempKey)
+					else actualKey = tempKey end
+					result[actualKey] = vdfParser.parseString(tempRecursiveInput, newStopKeyList)
 				end
 
 				if stopKeyList and tempKey == stopKeyList[1] then
@@ -109,9 +123,11 @@ function vdfParser.parseString(input, stopKeyList)
 		-- While reading a key
 		elseif status == "readingKey" then
 			tempKey = tempKey..char
+		
 		-- While reading a value
 		elseif status == "readingValue" and (stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1]) then
 			tempValue = tempValue..char
+		
 		-- While reading a table value, before sending it through the function again to parse it
 		elseif status == "readingTableValue" and (stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1]) then
 			tempRecursiveInput = tempRecursiveInput..char
@@ -134,14 +150,8 @@ end
 	Note : Arg 2 and Arg 3 are critical for optimization in big files. Do not hesitate to use them.
 	Results such as going from 0.5 seconds to 0.04 seconds are possible.
 ]]
-function vdfParser.parseFile(path, stopKeyList, wordsFromLinesToRemove)
-	local file = io.open(path, "r")
-	if not file then
-		error("File not found : "..path)
-	end
-
-	local content = file:read("*all")
-	file:close()
+function vdfParser.parseFile(path: string, stopKeyList: {string}?, wordsFromLinesToRemove: {string}?): {[string]: any}
+	local content = fs.readFile(path)
 
 	-- Remove every line that contains a word from wordsFromLinesToRemove
 	if wordsFromLinesToRemove then
