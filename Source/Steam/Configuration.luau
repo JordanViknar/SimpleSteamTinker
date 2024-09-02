@@ -3,6 +3,7 @@ local process = require("@lune/process")
 local Logging = require("../Utilities").Logging
 local SteamUtilities = require("./Utilities")
 local VDFParser = require("./VDFParser")
+local Filesystem = require("../Utilities/Filesystem")
 
 type loginusers_vdf = {
 	users : {
@@ -66,7 +67,6 @@ function Configuration.Public.getSteamConfiguration() : string?
 		Chapter 2 : We recover the user config to get which games have the tool enabled.
 	]]
 	local localconfig_vdf = Configuration.Private.getLocalConfigVDF(userParameters.SteamID3)
-
 	local userGameConfigurations = localconfig_vdf.UserLocalConfigStore.Software.Valve.Steam.apps
 
 	--[[
@@ -74,8 +74,6 @@ function Configuration.Public.getSteamConfiguration() : string?
 		We can't use just libraryfolders.vdf to get the game IDs, as Steam seems to not always update it immediately.
 	]]
 	local libraries = Configuration.Private.getLibraries()
-
-	print(userParameters, userGameConfigurations, libraries)
 
 	return
 end

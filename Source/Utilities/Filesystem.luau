@@ -1,4 +1,6 @@
 local fs = require("@lune/fs")
+local process = require("@lune/process")
+
 local Logging = require("./Logging")
 
 --[=[
@@ -21,13 +23,28 @@ function Filesystem.createOrUseDirectory(path: string): string
 end
 
 --[=[
-	Gets the size of a file or directory. Unimplemented.
+	Gets the size of a file or directory.
+	If Lune gets a function for size, it'll become used here in the future.
 
 	@param path The path to get the size of.
 ]=]
 function Filesystem.getSize(path: string): number
-	return 0 -- Unimplemented
+	path = path:gsub("'", "'\\''")
+	
+	local handle = process.spawn("du",{"-sb",path})
+	
+	if not handle.ok then
+		error("Failed to get size of path "..path..": "..handle.stderr)
+	end
+
+	local result = tonumber(handle.stdout:match("^(%d+)")) -- Grab only the number
+	if not result then
+		error("Failed to parse size for output ("..handle.stdout..")")
+	else
+		return result
+	end
 end
+
 
 --[=[
 	Converts a size in bytes to a human-readable size.
@@ -37,12 +54,14 @@ end
 ]=]
 function Filesystem.sizeToUnit(size: number): string
 	local units = {"B", "KB", "MB", "GB", "TB"}
+	local unit = units[1]  -- Default to "B" (bytes)
 
-	local unit
-	for i = 1, 5 do
-		if size > 1024 then
+	for i = 2, #units do
+		if size >= 1024 then
 			size = size / 1024
 			unit = units[i]
+		else
+			break
 		end
 	end
 

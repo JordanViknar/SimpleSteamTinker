@@ -41,8 +41,6 @@ type VDFValue = string | VDFTable
 --[=[
 	Parses a VDF string into a table. Private side of the parser.
 	
-	Note : I was a complete idiot for not using a stack to do this FAST. Feel free to laugh at me.
-	
 	@param input The VDF string to parse.
 	@return The parsed table if successful.
 ]=]
