@@ -1,5 +1,3 @@
---!nocheck
---Note : Temporary
 local fs = require("@lune/fs")
 
 local VDFParser = {}
@@ -20,8 +18,8 @@ VDFParser.Public = {}
 	@param wordsFromLinesToRemove {string}? -- A list of words that, if found in a line, will remove the line. Used for (bad) optimization.
 	@return The parsed table if successful.
 ]=]
-function VDFParser.Public.parseFile(path: string, stopKeyList: {string}?, wordsFromLinesToRemove: {string}?): table
-	return VDFParser.Public.parseString(fs.readFile(path), stopKeyList, wordsFromLinesToRemove)
+function VDFParser.Public.parseFile(path: string)
+	return VDFParser.Public.parseString(fs.readFile(path))
 end
 
 --[=[
@@ -32,150 +30,158 @@ end
 	@param wordsFromLinesToRemove {string}? -- A list of words that, if found in a line, will remove the line. Used for (bad) optimization.
 	@return The parsed table if successful.
 ]=]
-function VDFParser.Public.parseString(input: string, stopKeyList: {string}?, wordsFromLinesToRemove: {string}?): table
-	-- Remove every line that contains a word from wordsFromLinesToRemove
-	if wordsFromLinesToRemove then
-		local lines = {}
-		for line in input:gmatch("[^\r\n]+") do
-			local removeLine = false
-			for _, word in pairs(wordsFromLinesToRemove) do
-				if line:find(word) then
-					removeLine = true
-					break
-				end
-			end
-			if not removeLine then
-				table.insert(lines, line)
-			end
-		end
-		input = table.concat(lines, "\n")
-	end
-
-	return VDFParser.Private.parse(input, stopKeyList)
+function VDFParser.Public.parseString(input: string)
+	return VDFParser.Private.sanitize(VDFParser.Private.parse(input))
 end
 
 -- Private
+type VDFTable = { [string]: VDFValue }
+type VDFValue = string | VDFTable
 
 --[=[
 	Parses a VDF string into a table. Private side of the parser.
 	
-	@param input string -- The VDF string to parse.
-	@param stopKeyList {string}? -- Limits the parsing to the given key path.
+	Note : I was a complete idiot for not using a stack to do this FAST. Feel free to laugh at me.
+	
+	@param input The VDF string to parse.
 	@return The parsed table if successful.
 ]=]
-function VDFParser.Private.parse(input: string, stopKeyList: {string}?): table
-	local result = {}
+function VDFParser.Private.parse(input: string): VDFTable
+	-- Trim function to remove whitespace
+	local function trim(s: string): string?
+		return s:match("^%s*(.-)%s*$")
+	end
 
-	type ReadStatus = "keyWait" | "readingKey" | "valueWait" | "readingTableValue" | "readingValue"
-	local status: ReadStatus = "keyWait"
-
-	-- Temp Values
-	local tempKey, tempValue, tempRecursiveInput = "", "", ""
-
-	local indent = 0
-	local previousChar = nil
-
-	-- Until we reached the end of the file
-	for i = 1, #input do
-		local char = input:sub(i, i)
-
-		-- String key/value management
-		if char == '"' and previousChar ~= "\\" then
-			if status == "keyWait" then
-				-- We reached the key and start reading it.
-				status = "readingKey"
-			elseif status == "readingKey" then
-				-- We finished reading the key and are now waiting for the value.
-				status = "valueWait"
-			elseif status == "valueWait" then
-				-- We begin reading the value.
-				status = "readingValue"
-			elseif status == "readingValue" then
-				-- We finished reading the value.
-
-				-- Convert value into extra, more practical types
-				local actualValue: any
-				if tempValue == "0" then actualValue = false
-				elseif tempValue == "1" then actualValue = true
-				elseif tonumber(tempValue) then actualValue = tonumber(tempValue)
-				else actualValue = tempValue end
-
-				-- Same for key
-				local actualKey: any
-				if tonumber(tempKey) then actualKey = tonumber(tempKey)
-				else actualKey = tempKey end
-
-				result[actualKey] = actualValue
-
-				-- We stop the parsing if we reached the stopKeyList entry
-				if stopKeyList and tempKey == stopKeyList[1] then
-					return result
-				end
-
-				tempKey = ""
-				tempValue = ""
-				status = "keyWait"
-			elseif status == "readingTableValue" then
-				-- We are currently reading a table. Not stopping until we reached its end.
-				tempRecursiveInput = tempRecursiveInput..char
-			end
-
-		-- Subtable management
-
-		-- We reach the beginning of a table.
-		elseif char == '{'  and previousChar ~= "\\" and (status == "valueWait" or status == "readingTableValue") then
-			if status == "valueWait" then
-				status = "readingTableValue"
-			elseif status == "readingTableValue" then
-				tempRecursiveInput = tempRecursiveInput..char
-				indent = indent + 1
-			end
-		
-		-- We reach the end of a table.
-		elseif char == '}'  and previousChar ~= "\\" and (status == "readingTableValue") then
-			if indent == 0 then
-				local newStopKeyList = nil
-				if stopKeyList then
-					newStopKeyList = {table.unpack(stopKeyList, 2)}
-					if next(newStopKeyList) == nil then
-						newStopKeyList = nil
+	-- Handle escape sequences
+	local function parseString(input: string, pos: number): (string, number)
+		local result = ""
+		local len = #input
+		while pos <= len do
+			local char = input:sub(pos, pos)
+			if char == "\\" then
+				pos = pos + 1
+				if pos <= len then
+					local nextChar = input:sub(pos, pos)
+					if nextChar == "\"" then
+						result = result .. "\""
+					elseif nextChar == "\\" then
+						result = result .. "\\"
+					elseif nextChar == "n" then
+						result = result .. "\n"
+					elseif nextChar == "t" then
+						result = result .. "\t"
+					else
+						result = result .. "\\" .. nextChar
 					end
 				end
-
-				if stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1] then
-					local actualKey: any
-					if tonumber(tempKey) then actualKey = tonumber(tempKey)
-					else actualKey = tempKey end
-					result[actualKey] = VDFParser.Private.parse(tempRecursiveInput, newStopKeyList)
-				end
-
-				if stopKeyList and tempKey == stopKeyList[1] then
-					return result
-				end
-
-				tempKey = ""
-				tempValue = ""
-				tempRecursiveInput = ""
-				status = "keyWait"
+			elseif char == "\"" then
+				break
 			else
-				tempRecursiveInput = tempRecursiveInput..char
-				indent = indent - 1
+				result = result .. char
+			end
+			pos = pos + 1
+		end
+		return result, pos
+	end
+
+	-- Parsing logic
+	local pos = 1
+	local len = #input
+	local stack: {VDFValue} = {}
+	local currentTable: VDFTable = {}
+	local currentKey: string? = nil
+
+	while pos <= len do
+		local char = input:sub(pos, pos)
+
+		if char == '"' then
+			-- Extract the key or value with escape sequence handling
+			pos = pos + 1
+			local parsedString
+			parsedString, pos = parseString(input, pos)
+			parsedString = trim(parsedString) or parsedString
+			pos = pos + 1 -- Skip the closing quote
+
+			if currentKey == nil then
+				-- It's a key
+				currentKey = parsedString
+			else
+				-- It's a value
+				currentTable[currentKey] = parsedString
+				currentKey = nil
+			end
+		
+		elseif char == '{' then
+			-- Start a new table
+			local newTable: VDFTable = {}
+			if currentKey ~= nil then
+				currentTable[currentKey] = newTable
+				currentKey = nil
+			else
+				error("Malformed VDF: encountered '{' without a preceding key")
+			end
+			table.insert(stack, currentTable)
+			currentTable = newTable
+
+		elseif char == '}' then
+			-- End the current table
+			if #stack == 0 then
+				error("Malformed VDF: encountered '}' without a matching '{'")
 			end
 
-		-- While reading a key
-		elseif status == "readingKey" then
-			tempKey = tempKey..char
-		
-		-- While reading a value
-		elseif status == "readingValue" and (stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1]) then
-			tempValue = tempValue..char
-		
-		-- While reading a table value, before sending it through the function again to parse it
-		elseif status == "readingTableValue" and (stopKeyList == nil or stopKeyList[1] == nil or tempKey == stopKeyList[1]) then
-			tempRecursiveInput = tempRecursiveInput..char
-		end
+			local data = table.remove(stack)
+			if not data or typeof(data) == "string" then
+				error("Malformed VDF")
+			end
+			currentTable = data
 
-		previousChar = char
+		elseif char == '\n' or char == '\t' or char == ' ' then
+			-- Skip whitespace
+		else
+			error("Malformed VDF: unexpected character '" .. char .. "'")
+		end
+	
+		pos = pos + 1
+	end
+	
+	if #stack > 0 then
+		error("Malformed VDF: unclosed '{'")
+	end
+	
+	return currentTable
+end
+
+--[=[
+	Sanitizes a VDF table by converting string values to their proper types.
+	
+	@param input The VDF table to sanitize.
+	@return The sanitized table.
+]=]
+function VDFParser.Private.sanitize(input: VDFTable)
+	local function convert(value: any): any
+		if type(value) == "string" then
+			-- Check for number values (integers or floats)
+			local numberValue = tonumber(value)
+			if numberValue ~= nil then
+				return numberValue
+			end
+
+			-- If it's neither, return the original string
+			return value
+		elseif type(value) == "table" then
+			-- Recursively sanitize nested tables
+			return VDFParser.Private.sanitize(value)
+		else
+			-- Return the value as-is for unsupported types (shouldn't happen in a VDF)
+			return value
+		end
+	end
+
+	local result: {any: any} = {}
+
+	for key, value in pairs(input) do
+		-- Convert both the key and the value
+		result[convert(key)] = convert(value)
 	end
 
 	return result

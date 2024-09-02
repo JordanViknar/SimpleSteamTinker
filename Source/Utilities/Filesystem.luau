@@ -1,5 +1,5 @@
 local fs = require("@lune/fs")
-local Logging = require("Logging")
+local Logging = require("./Logging")
 
 --[=[
 	Utilities for filesystem operations. Mostly a remnant from SimpleSteamTinker.

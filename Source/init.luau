@@ -3,10 +3,10 @@ local Application = {}
 local process = require("@lune/process")
 local fs = require("@lune/fs")
 
-local metadata = require("Metadata")
-local Filesystem = require("Utilities").Filesystem
-local Logging = require("Utilities").Logging
-local Steam = require("Steam")
+local metadata = require("./Metadata")
+local Filesystem = require("./Utilities").Filesystem
+local Logging = require("./Utilities").Logging
+local Steam = require("./Steam")
 
 function Application.start()
 	-- Startup time
@@ -17,7 +17,7 @@ function Application.start()
 		We need to create the config folder if it doesn't exist.
 	]]
 	
-	-- Create folders
+	-- Prepare folders if necessary
 	for _, folder in ipairs({metadata.folders.config, metadata.folders.gamesConfig, metadata.folders.cache}) do
 		Filesystem.createOrUseDirectory(folder)
 	end
@@ -34,7 +34,8 @@ function Application.start()
 		What's the Steam config ? Is this being started through Steam or alone ? What to do ?!
 	]]
 
-	local steamConfig = require("Steam").Configuration.getSteamConfiguration()
+	local steamConfig = Steam.Configuration.getSteamConfiguration()
+	Logging.write("speed", totalStartupTimeVar)
 end
 
 return Application

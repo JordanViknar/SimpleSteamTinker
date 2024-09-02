@@ -1,4 +1,4 @@
 return {
-	Logging = require("Logging"),
-	Filesystem = require("Filesystem"),
+	Logging = require("./Logging"),
+	Filesystem = require("./Filesystem"),
 }
