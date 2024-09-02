@@ -26,4 +26,4 @@ run:
 # -------------- Cleaning --------------
 clean:
 	@echo "Cleaning up..."
-	rm -rf "$(BUILD_FOLDER)*"
+	rm -rf "$(BUILD_FOLDER)"

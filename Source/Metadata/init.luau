@@ -1,3 +1,4 @@
+--!strict
 local process = require("@lune/process")
 
 return {

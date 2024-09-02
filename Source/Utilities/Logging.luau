@@ -1,3 +1,4 @@
+--!strict
 type LogColor = "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "grey" | "orange" | "reset"
 type LogType = "info" | "warning" | "error" | "debug" | "download" | "data" | "speed"
 
@@ -19,32 +20,37 @@ Logging.Public = {}
 ]=]
 function Logging.Public.write(type: LogType, message: string | number)
 	local color = Logging.Private.colorText
+	local dateTime = Logging.Private.getCurrentDateTime()
 
 	local logFunctions = {
 		info = function(text)
-			print("["..color("blue","Info").."] "..text)
+			print(dateTime.." - ["..color("blue","Info").."] : "..text)
 		end,
 		warning = function(text)
-			print("["..color("yellow","Warning").."] "..color("yellow",text))
+			print(dateTime.." - ["..color("yellow","Warning").."] : "..color("yellow",text))
 		end,
 		error = function(text)
-			print(color("red","[Error]").." "..color("red",text))
+			print(dateTime.." - "..color("red","[Error] : "..text))
 		end,
 		debug = function(text)
-			print("["..color("grey","Debug").."] "..color("grey",text))
+			print(dateTime.." - ["..color("grey","Debug").."] : "..color("grey",text))
 		end,
 		download = function (text)
-			print("["..color("green","Download").."] "..text)
+			print(dateTime.." - ["..color("green","Download").."] : "..text)
 		end,
 		data = function (text)
-			print("["..color("magenta","Data").."] "..text)
+			print(dateTime.." - ["..color("magenta","Data").."] : "..text)
 		end,
 		speed = function (startTime)
-			print("["..color("grey","Speed").."] ".."Done in "..os.clock()-startTime.." seconds.")
+			print(dateTime.." - ["..color("grey","Speed").."] : ".."Done in "..os.clock()-startTime.." seconds.")
 		end
 	}
 	
 	logFunctions[type](message)
+end
+
+function Logging.Public.separator()
+	print("---------------------------------------------------------------------------------------------")
 end
 
 -- Private
@@ -70,6 +76,15 @@ function Logging.Private.colorText(colorName: string, text: string): string
 		reset = "\27[0m"
 	}
 	return colorList[colorName]..text..colorList["reset"]
+end
+
+--[=[
+	Gets the current date and time as a string.
+
+	@return string -- The formatted date-time string.
+]=]
+function Logging.Private.getCurrentDateTime(): string
+	return os.date("%Y-%m-%d %H:%M:%S")
 end
 
 return Logging.Public

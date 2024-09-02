@@ -1,3 +1,4 @@
+--!strict
 local fs = require("@lune/fs")
 
 local VDFParser = {}
@@ -162,6 +163,11 @@ function VDFParser.Private.sanitize(input: VDFTable)
 			local numberValue = tonumber(value)
 			if numberValue ~= nil then
 				return numberValue
+			end
+
+			-- Check for empty strings
+			if value == "" then
+				return value
 			end
 
 			-- If it's neither, return the original string

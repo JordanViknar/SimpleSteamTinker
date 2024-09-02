@@ -1,16 +1,30 @@
+--!strict
 local process = require("@lune/process")
+local fs = require("@lune/fs")
+local task = require("@lune/task")
 
 local Logging = require("../Utilities").Logging
+local Async = require("../Utilities").Async
 local SteamUtilities = require("./Utilities")
 local VDFParser = require("./VDFParser")
 local Filesystem = require("../Utilities/Filesystem")
+local SteamApp = require("../Classes").SteamApp
+
+----------------------------- Definitions -----------------------------
+
+-- Note : Most of the entries are unused and simply for informative purposes.
 
 type loginusers_vdf = {
 	users : {
 		[number] : {
 			AccountName : string,
+			PersonaName : string,
+			RememberPassword : number,
+			WantsOfflineMode : number,
+			SkipOfflineModeWarning : number,
+			AllowAutoLogon : number,
 			MostRecent : number,
-			SteamID3 : number -- Added manually later on
+			Timestamp : number
 		}
 	}
 }
@@ -21,8 +35,23 @@ type localconfig_vdf = {
 				Steam : {
 					apps : {
 						[number] : {
-							-- Note : More options are available, but unused by STweaker
-							LaunchOptions : string?
+							cloud : {
+								last_sync_state : ("synchronized" | "changesincloud")?,
+								quota_bytes : number?,
+								quota_files : number?,
+								used_bytes : number?,
+								used_files : number?
+							}?,
+							LastPlayed : number?,
+							Playtime : number?,
+							Playtime2wks : number?,
+							LaunchOptions : string?, -- IMPORTANT !
+							autocloud : {
+								lastlaunch : number,
+								lastexit : number
+							}?,
+							ViewedSteamPlay : number?,
+							BadgeData : string?
 						}
 					}
 				}
@@ -33,18 +62,69 @@ type localconfig_vdf = {
 type libraryfolders_vdf = {
 	libraryfolders : {
 		[number] : {
+			path : string,
+			label : string?,
+			contentid : number,
+			totalsize : number,
+			update_clean_bytes_tally : number,
+			time_last_update_corruption : number,
 			apps : {
 				[number] : number
 			},
-			--contentid : number,
-			--label : string,
-			path : string,
-			--time_last_update_corruption : number | boolean,
-			--totalsize : boolean,
-			--update_clean_bytes_tally : number | boolean
 		}
 	}
 }
+
+type appmanifest_vdf = {
+	AppState : {
+		appid : number,
+		Universe : number,
+		name : string,
+		StateFlags : number,
+		installdir : string,
+		LastUpdated : number,
+		LastPlayed : number,
+		SizeOnDisk : number,
+		StagingSize : number,
+		buildid : number,
+		LastOwner : number,
+		UpdateResult : number?,
+		BytesToDownload : number?,
+		BytesDownloaded : number?,
+		BytesToStage : number?,
+		BytesStaged : number?,
+		TargetBuildID : number?,
+		AutoUpdateBehavior : number,
+		AllowOtherDownloadsWhileRunning : number,
+		ScheduledAutoUpdate : number,
+		InstalledDepots : {
+			[number] : {
+				manifest : number,
+				size : number
+			}
+		},
+		InstallScripts : {
+			[number]: number
+		}?,
+		SharedDepots : {
+			[number] : number
+		}?,
+		UserConfig : {
+			language : string?,
+			BetaKey : string?,
+			platform_override_dest : "linux"?,
+			platform_override_source : ("linux" | "windows")?,
+		},
+		MountedConfig : {
+			language : string?,
+			BetaKey : string?,
+			platform_override_dest : "linux"?,
+			platform_override_source : ("linux" | "windows")? -- IMPORTANT !
+		},
+	}
+}
+
+----------------------------- Script -----------------------------
 
 local Configuration = {}
 
@@ -58,37 +138,73 @@ function Configuration.Public.getSteamConfiguration() : string?
 		Chapter 1 : We recover the Steam user config so we can get the last active user.
 		And also the SteamID3 to access their settings folder.
 	]]
+	Logging.separator()
 	local userConfiguration = Configuration.Private.getUsersConfiguration()
-
-	local activeUserID = Configuration.Private.getMostRecentUserID(userConfiguration)
-	local userParameters = userConfiguration.users[activeUserID]
+	local activeUserSteamID3 = SteamUtilities.convertToSteamID3(Configuration.Private.getMostRecentUserID(userConfiguration))
+	Logging.write("info", "Active user SteamID3 : " .. activeUserSteamID3)
+	Logging.separator()
 
 	--[[
 		Chapter 2 : We recover the user config to get which games have the tool enabled.
+
+		Note : Error handling should be added for the scenario where the configuration can't be loaded.
 	]]
-	local localconfig_vdf = Configuration.Private.getLocalConfigVDF(userParameters.SteamID3)
+	local localconfig_vdf = Configuration.Private.getLocalConfigVDF(activeUserSteamID3)
 	local userGameConfigurations = localconfig_vdf.UserLocalConfigStore.Software.Valve.Steam.apps
+	Logging.write("info", "User game configurations loaded.")
+	Logging.separator()
 
 	--[[
 		Chapter 3 : We recover the Steam library config to get the list of games.
 		We can't use just libraryfolders.vdf to get the game IDs, as Steam seems to not always update it immediately.
 	]]
 	local libraries = Configuration.Private.getLibraries()
+	Logging.write("info", "Steam libraries loaded.")
+	Logging.separator()
+
+	--print(userGameConfigurations, libraries)
+
+	local steamGames = {}
+
+	for _, library in pairs(libraries.libraryfolders) do
+		-- We check if the folder exists
+		if not fs.metadata(library.path).exists then
+			Logging.write("warning", "Steam library "..library.path.." doesn't exist. Skipping...")
+		else
+			Logging.write("data", "Checking library "..library.path)
+			local appManifestFilenames = Filesystem.getFilenamePatternInDirectory(library.path.."/steamapps", "appmanifest_")
+
+			Async.asyncForEach(appManifestFilenames, function (_, appManifestFilename)
+				local appManifestPath = library.path.."/steamapps/"..appManifestFilename
+				local appManifest: appmanifest_vdf = Configuration.Private.VDFHandler(appManifestPath, "Failed to parse "..appManifestPath..".", false)
+				Logging.write("info", "Found "..appManifest.AppState.name)
+			end)
+		end
+	end
+
+	Logging.separator()
 
 	return
 end
 
 -- Private
 
-function Configuration.Private.VDFHandler(filePath: string, errorMessage: string): any
-	Logging.write("data", "Parsing VDF file : " .. filePath)
-	local timeStart = os.clock()
+function Configuration.Private.VDFHandler(filePath: string, errorMessage: string, logging: boolean?): any
+	if logging == nil then logging = true end
+
+	local timeStart
+	if logging then
+		timeStart = os.clock()
+		Logging.write("data", "Parsing VDF file : " .. filePath)
+	end
 
 	local result, parsedData = pcall(VDFParser.parseFile, filePath)
 	if not result then
 		error(errorMessage)
 	else
-		Logging.write("speed", timeStart)
+		if logging then
+			Logging.write("speed", timeStart)
+		end
 		return parsedData
 	end
 end
@@ -101,10 +217,6 @@ function Configuration.Private.getUsersConfiguration() : loginusers_vdf
 		process.env.HOME.."/.local/share/Steam/config/loginusers.vdf", 
 		"Failed to parse loginusers.vdf file."
 	)
-
-	for userID, userParameters in pairs(usersData.users) do
-		userParameters.SteamID3 = SteamUtilities.convertToSteamID3(userID)
-	end
 
 	return usersData
 end
