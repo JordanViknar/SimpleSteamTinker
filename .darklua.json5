@@ -1,0 +1,16 @@
+{
+	"generator": { "name": "dense", "column_span": 150},
+	"bundle": {
+		"require_mode": "path",
+		"excludes": ["@lune/**"]
+	},
+	"rules": [
+		"remove_comments",
+		"remove_spaces",
+		"remove_nil_declaration",
+		"compute_expression",
+		"remove_unused_if_branch",
+		"filter_after_early_return",
+		"remove_empty_do"
+	]
+}

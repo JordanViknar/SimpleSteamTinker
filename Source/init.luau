@@ -33,7 +33,6 @@ function Application.start()
 		Chapter 1 : Game management
 		What's the Steam config ? Is this being started through Steam or alone ? What to do ?!
 	]]
-
 	local steamConfig = Steam.Configuration.getSteamConfiguration()
 	Logging.write("speed", totalStartupTimeVar)
 end

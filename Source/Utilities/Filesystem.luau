@@ -25,8 +25,8 @@ end
 
 	@param path The path to get the size of.
 ]=]
-function Filesystem.getSize(path: string): ()
-	--TODO
+function Filesystem.getSize(path: string): number
+	return 0 -- Unimplemented
 end
 
 --[=[

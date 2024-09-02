@@ -1,3 +1,1 @@
-local Application = require("./Source")
-
-return Application.start()
+return require("./Source").start()
