@@ -1,9 +1,8 @@
 {
 	"languageMode": "strict",
 	"lint": {
-    	"*": true
+    	"*": false
 	},
-	"typeErrors": true,
 	"globals": [
 		"warn"
 	]

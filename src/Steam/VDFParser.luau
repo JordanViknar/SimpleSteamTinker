@@ -48,15 +48,15 @@ function VDFParser.Private.parse(input: string): VDFTable
 	end
 
 	-- Handle escape sequences
-	local function parseString(input: string, pos: number): (string, number)
+	local function parseString(string: string, pos: number): (string, number)
 		local result = ""
-		local len = #input
+		local len = #string
 		while pos <= len do
-			local char = input:sub(pos, pos)
+			local char = string:sub(pos, pos)
 			if char == "\\" then
 				pos = pos + 1
 				if pos <= len then
-					local nextChar = input:sub(pos, pos)
+					local nextChar = string:sub(pos, pos)
 					if nextChar == '"' then
 						result = result .. '"'
 					elseif nextChar == "\\" then
@@ -127,9 +127,7 @@ function VDFParser.Private.parse(input: string): VDFTable
 				error("Malformed VDF")
 			end
 			currentTable = data
-		elseif char == "\n" or char == "\t" or char == " " then
-			-- Skip whitespace
-		else
+		elseif not (char == "\n" or char == "\t" or char == " ") then
 			error("Malformed VDF: unexpected character '" .. char .. "'")
 		end
 

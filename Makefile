@@ -25,9 +25,13 @@ run:
 	lune run init
 
 # -------------- Extra --------------
-style:
+check:
 	@echo "Running linter..."
-	stylua .
+	selene src/
+
+style:
+	@echo "Running code formatter..."
+	stylua src/
 
 clean:
 	@echo "Cleaning up..."

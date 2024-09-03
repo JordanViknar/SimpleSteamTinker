@@ -1,10 +1,10 @@
 local fs = require("@lune/fs")
 local process = require("@lune/process")
-local task = require("@lune/task")
 
-local Logging = require("../Utilities").Logging
-local Async = require("../Utilities").Async
-local Filesystem = require("../Utilities").Filesystem
+local Utilities = require("../Utilities")
+local Logging = Utilities.Logging
+local Async = Utilities.Async
+local Filesystem = Utilities.Filesystem
 local SteamUtilities = require("./Utilities")
 local VDFParser = require("./VDFParser")
 local SteamApp = require("../Classes").SteamApp
