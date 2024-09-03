@@ -16,7 +16,6 @@ function Application.start()
 		Chapter 0 : Preparing the environment
 		We need to create the config folder if it doesn't exist.
 	]]
-	
 	-- Prepare folders if necessary
 	for _, folder in ipairs({metadata.folders.config, metadata.folders.gamesConfig, metadata.folders.cache}) do
 		Filesystem.createOrUseDirectory(folder)

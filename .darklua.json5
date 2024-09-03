@@ -1,5 +1,5 @@
 {
-	"generator": { "name": "dense", "column_span": 150},
+	"generator": { "name": "dense", "column_span": 175},
 	"bundle": {
 		"require_mode": "path",
 		"excludes": ["@lune/**"]
