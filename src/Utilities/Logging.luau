@@ -1,12 +1,13 @@
---!strict
 type LogColor = "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "grey" | "orange" | "reset"
-type LogType = "info" | "warning" | "error" | "debug" | "download" | "data" | "speed"
+type LogType = "info" | "warning" | "error" | "debug" | "download" | "data" | "speed" | "special"
 
-local Logging = {}
-Logging.Private = {}
 --[=[
+	@class Utilities.Logging
+
 	Contains functions for logging to the console.
 ]=]
+local Logging = {}
+Logging.Private = {}
 Logging.Public = {}
 
 -- Public
@@ -20,29 +21,33 @@ Logging.Public = {}
 ]=]
 function Logging.Public.write(type: LogType, message: string | number)
 	local color = Logging.Private.colorText
-	local dateTime = Logging.Private.getCurrentDateTime()
+	local time = os.date("%H:%M:%S")
 
 	local logFunctions = {
 		info = function(text)
-			print(dateTime.." - ["..color("blue","Info").."] : "..text)
+			print(time.." - ["..color("blue","Info").."] : "..text)
 		end,
 		warning = function(text)
-			print(dateTime.." - ["..color("yellow","Warning").."] : "..color("yellow",text))
+			print(time.." - ["..color("yellow","Warning").."] : "..color("yellow",text))
 		end,
 		error = function(text)
-			print(dateTime.." - "..color("red","[Error] : "..text))
+			print(time.." - "..color("red","[Error] : "..text))
 		end,
 		debug = function(text)
-			print(dateTime.." - ["..color("grey","Debug").."] : "..color("grey",text))
+			print(time.." - ["..color("grey","Debug").."] : "..color("grey",text))
 		end,
 		download = function (text)
-			print(dateTime.." - ["..color("green","Download").."] : "..text)
+			print(time.." - ["..color("green","Download").."] : "..text)
 		end,
 		data = function (text)
-			print(dateTime.." - ["..color("magenta","Data").."] : "..text)
+			print(time.." - ["..color("magenta","Data").."] : "..text)
 		end,
 		speed = function (startTime)
-			print(dateTime.." - ["..color("grey","Speed").."] : ".."Done in "..os.clock()-startTime.." seconds.")
+			print(time.." - ["..color("grey","Speed").."] : ".."Done in "..os.clock()-startTime.." seconds.")
+		end,
+		-- Might be used for an easter egg feature in the future...
+		special = function (text)
+			print(time.." - ["..color("orange","!!!!").."] : "..text)
 		end
 	}
 	
@@ -76,15 +81,6 @@ function Logging.Private.colorText(colorName: string, text: string): string
 		reset = "\27[0m"
 	}
 	return colorList[colorName]..text..colorList["reset"]
-end
-
---[=[
-	Gets the current date and time as a string.
-
-	@return string -- The formatted date-time string.
-]=]
-function Logging.Private.getCurrentDateTime(): string
-	return os.date("%Y-%m-%d %H:%M:%S")
 end
 
 return Logging.Public

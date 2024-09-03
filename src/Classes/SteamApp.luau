@@ -1,17 +1,16 @@
---!strict
 local process = require("@lune/process")
 local steamImageLocation = process.env.HOME.."/.local/share/Steam/appcache/librarycache/"
 
 local SteamApp = {}
 
 SteamApp.Interface = {}
-SteamApp.Prototype = {}
+SteamApp.Object = {}
 
 function SteamApp.Interface.new()
 
 end
 
-export type SteamApp = typeof(SteamApp.Prototype) & {
+export type SteamApp = typeof(SteamApp.Object) & {
 	id: number,
 	name: string,
 	library: string,

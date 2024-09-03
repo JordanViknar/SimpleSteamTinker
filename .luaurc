@@ -1,8 +1,11 @@
 {
 	"languageMode": "strict",
-	"aliases": {
-		"Metadata": "./Source/Metadata",
-		"Steam" : "./Source/Steam",
-		"Utilities" : "./Source/Utilities"
-	}
+	"lint": {
+    	"*": true
+	},
+	"lintErrors": true,
+	"typeErrors": true,
+	"globals": [
+		"warn"
+	]
 }

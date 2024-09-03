@@ -1,7 +1,8 @@
---!strict
 local process = require("@lune/process")
 
 --[=[
+	@class Utilities
+
 	Minor Steam-related helper functions.
 ]=]
 local Utilities = {}
@@ -10,7 +11,7 @@ local Utilities = {}
 	Checks if the arguments are from Steam or not.
 	Non-Steam game support later on will probably necessitate changes.
 
-	@return If the program was launched from Steam.
+	@return boolean -- Returns true if the arguments are from Steam, aka Steam launched the application.
 ]=]
 function Utilities.isSteamLaunch(): boolean
 	local arguments = process.args
@@ -31,9 +32,12 @@ end
 
 --[=[
 	Converts SteamID64 to SteamID3.
+
+	@param steamID64 number -- The SteamID64 to convert.
+	@return number -- Returns the corresponding SteamID3.
 ]=]
-function Utilities.convertToSteamID3(steamID: number): number
-	local offset_id = steamID - 76561197960265728
+function Utilities.convertToSteamID3(steamID64: number): number
+	local offset_id = steamID64 - 76561197960265728
 	local account_type = offset_id % 2
 	local account_id = math.floor((offset_id - account_type) / 2) + account_type
 	

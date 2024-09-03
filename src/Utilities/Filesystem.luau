@@ -1,10 +1,11 @@
---!strict
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 
 local Logging = require("./Logging")
 
 --[=[
+	@class Utilities.Filesystem
+
 	Utilities for filesystem operations. Mostly a remnant from SimpleSteamTinker.
 ]=]
 local Filesystem = {}
@@ -12,8 +13,8 @@ local Filesystem = {}
 --[=[
 	Creates a directory if it doesn't exist, or uses it if it does.
 
-	@param path The path to create or use.
-	@return The path to the created or used directory.
+	@param path string -- The path to create or use.
+	@return string -- The path to the created or used directory.
 ]=]
 function Filesystem.createOrUseDirectory(path: string): string
 	if not fs.isDir(path) then
@@ -27,7 +28,8 @@ end
 	Gets the size of a file or directory.
 	If Lune gets a function for size, it'll become used here in the future.
 
-	@param path The path to get the size of.
+	@param path string -- The path to get the size of.
+	@return number -- The size of the file or directory.
 ]=]
 function Filesystem.getSize(path: string): number
 	path = path:gsub("'", "'\\''")
@@ -50,8 +52,8 @@ end
 --[=[
 	Converts a size in bytes to a human-readable size.
 	
-	@param size The size to convert.
-	@return The human-readable size.
+	@param size number -- The size to convert.
+	@return string -- The human-readable size.
 ]=]
 function Filesystem.sizeToUnit(size: number): string
 	local units = {"B", "KB", "MB", "GB", "TB"}
@@ -72,9 +74,9 @@ end
 --[=[
 	Returns a table containing every filename matching a pattern in a directory.
 	
-	@param directory The directory to search in.
-	@param pattern The pattern to search for.
-	@return A table containing every filename matching the pattern.
+	@param directory string -- The directory to search in.
+	@param pattern string -- The pattern to search for.
+	@return {string} -- A table containing every filename matching the pattern.
 ]=]
 function Filesystem.getFilenamePatternInDirectory(directory: string, pattern: string): {string}
 	local result = {}

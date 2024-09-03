@@ -1,12 +1,12 @@
---!strict
 local fs = require("@lune/fs")
 
-local VDFParser = {}
-VDFParser.Private = {}
 --[=[
 	Contains functions for parsing VDF files and strings.
-	Lune does not support VDF files natively at the moment.
+	Lune does not support VDF files natively.
 ]=]
+local VDFParser = {}
+
+VDFParser.Private = {}
 VDFParser.Public = {}
 
 -- Public
@@ -15,9 +15,7 @@ VDFParser.Public = {}
 	Parses a VDF file into a table.
 	
 	@param path string -- The path to the file.
-	@param stopKeyList {string}? -- Limits the parsing to the given key path.
-	@param wordsFromLinesToRemove {string}? -- A list of words that, if found in a line, will remove the line. Used for (bad) optimization.
-	@return The parsed table if successful.
+	@return The parsed file if successful.
 ]=]
 function VDFParser.Public.parseFile(path: string)
 	return VDFParser.Public.parseString(fs.readFile(path))
@@ -27,8 +25,6 @@ end
 	Parses a VDF string into a table.
 	
 	@param input string -- The VDF string to parse.
-	@param stopKeyList {string}? -- Limits the parsing to the given key path.
-	@param wordsFromLinesToRemove {string}? -- A list of words that, if found in a line, will remove the line. Used for (bad) optimization.
 	@return The parsed table if successful.
 ]=]
 function VDFParser.Public.parseString(input: string)
@@ -167,7 +163,7 @@ function VDFParser.Private.sanitize(input: VDFTable)
 
 			-- Check for empty strings
 			if value == "" then
-				return value
+				return nil
 			end
 
 			-- If it's neither, return the original string

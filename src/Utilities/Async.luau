@@ -1,23 +1,26 @@
---!strict
 local task = require("@lune/task")
 
+--[=[
+	@class Utilities.Async
+]=]
 local Async = {}
 
 --[=[
-	Executes a function asynchronously over all elements in a table.
+	Executes a function in parallel over all elements in a table.
 	It's similar to Rust's rayon.
+	Pretty big upgrade compared to the previous implementation.
 
 	@param tbl The table to iterate over.
-	@param asyncFunc The asynchronous function to execute for each element.
+	@param func The function to execute in parallel for each element.
 ]=]
-function Async.asyncForEach(tbl: {any}, asyncFunc: (any, any) -> ())
+function Async.asyncForEach(tbl: {any}, func: (any, any) -> ())
 	local total = 0
 	local completed = 0
 	
 	for key, item in pairs(tbl) do
 		total += 1
 		task.spawn(function()
-			asyncFunc(key, item)
+			func(key, item)
 			completed += 1
 		end)
 	end

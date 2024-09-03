@@ -1,2 +1,1 @@
---!strict
-return require("./Source").start()
+return require("./src").start()

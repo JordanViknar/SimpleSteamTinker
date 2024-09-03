@@ -1,4 +1,3 @@
---!strict
 local Application = {}
 
 local process = require("@lune/process")
@@ -25,7 +24,8 @@ function Application.start()
 
 	-- Development version detection
 	if metadata.version:find("dev") then
-		Logging.write("warning", "DEVELOPMENT VERSION")
+		Logging.write("warning", "This is a development version of "..metadata.name.." !")
+		Logging.separator()
 		-- Put the arguments inside the cache folder for testing purposes
 		fs.writeFile(metadata.folders.cache.."/arguments.txt", table.concat(process.args, "\n"))
 	end

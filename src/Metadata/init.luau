@@ -1,7 +1,10 @@
---!strict
 local process = require("@lune/process")
 
-return {
+--[=[
+	@class Metadata
+	Application constants used throughout the program.
+]=]
+local Metadata = {
 	name ="STweaks",
 	description = "A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch.",
 	version="indev",
@@ -12,3 +15,5 @@ return {
 		cache = process.env.HOME.."/.cache/Stweaks"
 	}
 }
+
+return Metadata
