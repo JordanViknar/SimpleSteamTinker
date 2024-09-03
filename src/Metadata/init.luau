@@ -8,6 +8,7 @@ local Metadata = {
 	name = "STweaks",
 	description = "A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch.",
 	version = "indev",
+	executable = "stweaks",
 	folders = {
 		config = process.env.HOME .. "/.config/Stweaks",
 		gamesConfig = process.env.HOME .. "/.config/Stweaks/games",

@@ -71,7 +71,7 @@ type libraryfolders_vdf = {
 			apps: {
 				[number]: number,
 			},
-		},
+		}?,
 	},
 }
 
@@ -165,16 +165,14 @@ function Configuration.Public.getSteamConfiguration(): string?
 		Chapter 3 : We recover the Steam library config to get the list of games.
 		We can't use just libraryfolders.vdf to get the game IDs, as Steam seems to not always update it immediately.
 	]]
-	local libraries: libraryfolders_vdf = Configuration.Private.VDFHandler(
-		process.env.HOME .. "/.local/share/Steam/config/libraryfolders.vdf",
-		"Failed to parse libraryfolders.vdf file."
-	)
+	local libraries: libraryfolders_vdf =
+		Configuration.Private.VDFHandler(process.env.HOME .. "/.local/share/Steam/config/libraryfolders.vdf", "Failed to parse libraryfolders.vdf file.")
 	Logging.write("info", "Steam libraries loaded.")
 	Logging.separator()
 
 	--print(userGameConfigurations, libraries)
 
-	local steamGames = {}
+	local steamApps = {}
 
 	Async.asyncForEach(libraries.libraryfolders, function(_, library)
 		-- We check if the folder exists
@@ -186,15 +184,33 @@ function Configuration.Public.getSteamConfiguration(): string?
 
 			Async.asyncForEach(appManifestFilenames, function(_, appManifestFilename)
 				local appManifestPath: string = library.path .. "/steamapps/" .. appManifestFilename
-				local appManifest: appmanifest_vdf =
-					Configuration.Private.VDFHandler(appManifestPath, "Failed to parse " .. appManifestPath .. ".", false)
+				local appManifest: appmanifest_vdf = Configuration.Private.VDFHandler(appManifestPath, "Failed to parse " .. appManifestPath .. ".", false)
 
 				Logging.write("info", "Found " .. appManifest.AppState.appid .. " : " .. appManifest.AppState.name)
+
+				local configuration = userGameConfigurations[appManifest.AppState.appid]
+				local launchOptions
+				if configuration then
+					launchOptions = configuration.LaunchOptions
+				end
+
+				local steamApp = SteamApp.new(
+					appManifest.AppState.appid,
+					appManifest.AppState.name,
+					library.path,
+					library.path .. "/steamapps/common/" .. appManifest.AppState.installdir,
+					appManifest.AppState.MountedConfig.platform_override_source,
+					launchOptions
+				)
+
+				table.insert(steamApps, steamApp)
 			end)
 		end
 	end)
 
 	Logging.separator()
+
+	print(steamApps)
 
 	return
 end
