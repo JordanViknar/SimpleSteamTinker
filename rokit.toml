@@ -6,3 +6,5 @@
 [tools]
 lune = "lune-org/lune@0.8.8"
 darklua = "seaofvoices/darklua@0.13.1"
+selene = "Kampfkarren/selene@0.27.1"
+StyLua = "JohnnyMorganz/StyLua@0.20.0"

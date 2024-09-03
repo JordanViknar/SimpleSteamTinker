@@ -13,10 +13,10 @@ local Async = {}
 	@param tbl The table to iterate over.
 	@param func The function to execute in parallel for each element.
 ]=]
-function Async.asyncForEach(tbl: {any}, func: (any, any) -> ())
+function Async.asyncForEach(tbl: { any }, func: (any, any) -> ())
 	local total = 0
 	local completed = 0
-	
+
 	for key, item in pairs(tbl) do
 		total += 1
 		task.spawn(function()

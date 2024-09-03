@@ -1,12 +1,12 @@
-local process = require("@lune/process")
 local fs = require("@lune/fs")
+local process = require("@lune/process")
 local task = require("@lune/task")
 
 local Logging = require("../Utilities").Logging
 local Async = require("../Utilities").Async
+local Filesystem = require("../Utilities").Filesystem
 local SteamUtilities = require("./Utilities")
 local VDFParser = require("./VDFParser")
-local Filesystem = require("../Utilities/Filesystem")
 local SteamApp = require("../Classes").SteamApp
 
 -- --------------------------- Definitions -----------------------------
@@ -15,113 +15,113 @@ local SteamApp = require("../Classes").SteamApp
 -- Note : Most of the entries are unused and simply for informative purposes.
 
 type loginusers_vdf = {
-	users : {
-		[number] : {
-			AccountName : string,
-			PersonaName : string,
-			RememberPassword : number,
-			WantsOfflineMode : number,
-			SkipOfflineModeWarning : number,
-			AllowAutoLogon : number,
-			MostRecent : number,
-			Timestamp : number
-		}
-	}
+	users: {
+		[number]: {
+			AccountName: string,
+			PersonaName: string,
+			RememberPassword: number,
+			WantsOfflineMode: number,
+			SkipOfflineModeWarning: number,
+			AllowAutoLogon: number,
+			MostRecent: number,
+			Timestamp: number,
+		},
+	},
 }
 type localconfig_vdf = {
-	UserLocalConfigStore : {
-		Software : {
-			Valve : {
-				Steam : {
-					apps : {
-						[number] : {
-							cloud : {
-								last_sync_state : ("synchronized" | "changesincloud")?,
-								quota_bytes : number?,
-								quota_files : number?,
-								used_bytes : number?,
-								used_files : number?
+	UserLocalConfigStore: {
+		Software: {
+			Valve: {
+				Steam: {
+					apps: {
+						[number]: {
+							cloud: {
+								last_sync_state: ("synchronized" | "changesincloud")?,
+								quota_bytes: number?,
+								quota_files: number?,
+								used_bytes: number?,
+								used_files: number?,
 							}?,
-							LastPlayed : number?,
-							Playtime : number?,
-							Playtime2wks : number?,
-							LaunchOptions : string?, -- IMPORTANT !
-							autocloud : {
-								lastlaunch : number,
-								lastexit : number
+							LastPlayed: number?,
+							Playtime: number?,
+							Playtime2wks: number?,
+							LaunchOptions: string?, -- IMPORTANT !
+							autocloud: {
+								lastlaunch: number,
+								lastexit: number,
 							}?,
-							ViewedSteamPlay : number?,
-							BadgeData : string?
-						}
-					}
-				}
-			}
-		}
-	}
+							ViewedSteamPlay: number?,
+							BadgeData: string?,
+						},
+					},
+				},
+			},
+		},
+	},
 }
 type libraryfolders_vdf = {
-	libraryfolders : {
-		[number] : {
-			path : string,
-			label : string?,
-			contentid : number,
-			totalsize : number,
-			update_clean_bytes_tally : number,
-			time_last_update_corruption : number,
-			apps : {
-				[number] : number
+	libraryfolders: {
+		[number]: {
+			path: string,
+			label: string?,
+			contentid: number,
+			totalsize: number,
+			update_clean_bytes_tally: number,
+			time_last_update_corruption: number,
+			apps: {
+				[number]: number,
 			},
-		}
-	}
+		},
+	},
 }
 
 type appmanifest_vdf = {
-	AppState : {
-		appid : number,
-		Universe : number,
-		name : string,
-		StateFlags : number,
-		installdir : string,
-		LastUpdated : number,
-		LastPlayed : number,
-		SizeOnDisk : number,
-		StagingSize : number,
-		buildid : number,
-		LastOwner : number,
-		UpdateResult : number?,
-		BytesToDownload : number?,
-		BytesDownloaded : number?,
-		BytesToStage : number?,
-		BytesStaged : number?,
-		TargetBuildID : number?,
-		AutoUpdateBehavior : number,
-		AllowOtherDownloadsWhileRunning : number,
-		ScheduledAutoUpdate : number,
-		InstalledDepots : {
-			[number] : {
-				manifest : number,
-				size : number
-			}
+	AppState: {
+		appid: number,
+		Universe: number,
+		name: string,
+		StateFlags: number,
+		installdir: string,
+		LastUpdated: number,
+		LastPlayed: number,
+		SizeOnDisk: number,
+		StagingSize: number,
+		buildid: number,
+		LastOwner: number,
+		UpdateResult: number?,
+		BytesToDownload: number?,
+		BytesDownloaded: number?,
+		BytesToStage: number?,
+		BytesStaged: number?,
+		TargetBuildID: number?,
+		AutoUpdateBehavior: number,
+		AllowOtherDownloadsWhileRunning: number,
+		ScheduledAutoUpdate: number,
+		InstalledDepots: {
+			[number]: {
+				manifest: number,
+				size: number,
+			},
 		},
-		InstallScripts : {
-			[number]: number
+		InstallScripts: {
+			[number]: number,
 		}?,
-		SharedDepots : {
-			[number] : number
+		SharedDepots: {
+			[number]: number,
 		}?,
-		UserConfig : {
-			language : string?,
-			BetaKey : string?,
-			platform_override_dest : "linux"?,
-			platform_override_source : ("linux" | "windows")?,
+		UserConfig: {
+			language: string?,
+			BetaKey: string?,
+			platform_override_dest: "linux"?,
+			platform_override_source: ("linux" | "windows")?,
 		},
-		MountedConfig : {
-			language : string?,
-			BetaKey : string?,
-			platform_override_dest : "linux"?,
-			platform_override_source : ("linux" | "windows")? -- IMPORTANT ! (Too bad it seems to never be present in Linux games, and sometimes not in Windows games... :/)
+		MountedConfig: {
+			language: string?,
+			BetaKey: string?,
+			platform_override_dest: "linux"?,
+			platform_override_source: ("linux" | "windows")?, -- IMPORTANT ! (Too bad it seems to never be present in Linux games, and sometimes not in Windows games... :/)
 		},
-	}
+	},
 }
 
 -- STweaker
@@ -137,15 +137,13 @@ Configuration.Public = {}
 
 -- Public
 
-function Configuration.Public.getSteamConfiguration() : string?
+function Configuration.Public.getSteamConfiguration(): string?
 	--[[
 		Chapter 1 : We recover the Steam user config so we can get the last active user.
 		And also the SteamID3 to access their settings folder.
 	]]
-	local userConfiguration: loginusers_vdf = Configuration.Private.VDFHandler (
-		process.env.HOME.."/.local/share/Steam/config/loginusers.vdf", 
-		"Failed to parse loginusers.vdf file."
-	)
+	local userConfiguration: loginusers_vdf =
+		Configuration.Private.VDFHandler(process.env.HOME .. "/.local/share/Steam/config/loginusers.vdf", "Failed to parse loginusers.vdf file.")
 	local activeUserSteamID3 = SteamUtilities.convertToSteamID3(Configuration.Private.getMostRecentUserID(userConfiguration))
 	Logging.write("info", "Active user SteamID3 : " .. activeUserSteamID3)
 	Logging.separator()
@@ -155,8 +153,8 @@ function Configuration.Public.getSteamConfiguration() : string?
 
 		Note : Error handling should be added for the scenario where the configuration can't be loaded.
 	]]
-	local localconfig_vdf: localconfig_vdf = Configuration.Private.VDFHandler (
-		process.env.HOME.."/.local/share/Steam/userdata/"..activeUserSteamID3.."/config/localconfig.vdf", 
+	local localconfig_vdf: localconfig_vdf = Configuration.Private.VDFHandler(
+		process.env.HOME .. "/.local/share/Steam/userdata/" .. activeUserSteamID3 .. "/config/localconfig.vdf",
 		"Failed to parse active user localconfig.vdf file with SteamID3: " .. activeUserSteamID3
 	)
 	local userGameConfigurations = localconfig_vdf.UserLocalConfigStore.Software.Valve.Steam.apps
@@ -167,8 +165,8 @@ function Configuration.Public.getSteamConfiguration() : string?
 		Chapter 3 : We recover the Steam library config to get the list of games.
 		We can't use just libraryfolders.vdf to get the game IDs, as Steam seems to not always update it immediately.
 	]]
-	local libraries: libraryfolders_vdf = Configuration.Private.VDFHandler (
-		process.env.HOME.."/.local/share/Steam/config/libraryfolders.vdf", 
+	local libraries: libraryfolders_vdf = Configuration.Private.VDFHandler(
+		process.env.HOME .. "/.local/share/Steam/config/libraryfolders.vdf",
 		"Failed to parse libraryfolders.vdf file."
 	)
 	Logging.write("info", "Steam libraries loaded.")
@@ -181,16 +179,17 @@ function Configuration.Public.getSteamConfiguration() : string?
 	Async.asyncForEach(libraries.libraryfolders, function(_, library)
 		-- We check if the folder exists
 		if not fs.metadata(library.path).exists then
-			Logging.write("warning", "Steam library "..library.path.." doesn't exist. Skipping...")
+			Logging.write("warning", "Steam library " .. library.path .. " doesn't exist. Skipping...")
 		else
-			Logging.write("data", "Checking library "..library.path)
-			local appManifestFilenames = Filesystem.getFilenamePatternInDirectory(library.path.."/steamapps", "appmanifest_")
+			Logging.write("data", "Checking library " .. library.path)
+			local appManifestFilenames = Filesystem.getFilenamePatternInDirectory(library.path .. "/steamapps", "appmanifest_")
 
-			Async.asyncForEach(appManifestFilenames, function (_, appManifestFilename)
-				local appManifestPath: string = library.path.."/steamapps/"..appManifestFilename
-				local appManifest: appmanifest_vdf = Configuration.Private.VDFHandler(appManifestPath, "Failed to parse "..appManifestPath..".", false)
+			Async.asyncForEach(appManifestFilenames, function(_, appManifestFilename)
+				local appManifestPath: string = library.path .. "/steamapps/" .. appManifestFilename
+				local appManifest: appmanifest_vdf =
+					Configuration.Private.VDFHandler(appManifestPath, "Failed to parse " .. appManifestPath .. ".", false)
 
-				Logging.write("info", "Found "..appManifest.AppState.appid.." : "..appManifest.AppState.name)
+				Logging.write("info", "Found " .. appManifest.AppState.appid .. " : " .. appManifest.AppState.name)
 			end)
 		end
 	end)
@@ -203,7 +202,9 @@ end
 -- Private
 
 function Configuration.Private.VDFHandler(filePath: string, errorMessage: string, logging: boolean?): any
-	if logging == nil then logging = true end
+	if logging == nil then
+		logging = true
+	end
 
 	local timeStart
 	if logging then
@@ -222,12 +223,11 @@ function Configuration.Private.VDFHandler(filePath: string, errorMessage: string
 	end
 end
 
-
 -- loginuser.vdf
 
-function Configuration.Private.getMostRecentUserID(userData : loginusers_vdf) : number
+function Configuration.Private.getMostRecentUserID(userData: loginusers_vdf): number
 	local activeUserID
-	for id,data in pairs(userData.users) do
+	for id, data in pairs(userData.users) do
 		if data.MostRecent == 1 then
 			activeUserID = id
 		end

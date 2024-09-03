@@ -25,32 +25,32 @@ function Logging.Public.write(type: LogType, message: string | number)
 
 	local logFunctions = {
 		info = function(text)
-			print(time.." - ["..color("blue","Info").."] : "..text)
+			print(time .. " - [" .. color("blue", "Info") .. "] : " .. text)
 		end,
 		warning = function(text)
-			print(time.." - ["..color("yellow","Warning").."] : "..color("yellow",text))
+			print(time .. " - [" .. color("yellow", "Warning") .. "] : " .. color("yellow", text))
 		end,
 		error = function(text)
-			print(time.." - "..color("red","[Error] : "..text))
+			print(time .. " - " .. color("red", "[Error] : " .. text))
 		end,
 		debug = function(text)
-			print(time.." - ["..color("grey","Debug").."] : "..color("grey",text))
+			print(time .. " - [" .. color("grey", "Debug") .. "] : " .. color("grey", text))
 		end,
-		download = function (text)
-			print(time.." - ["..color("green","Download").."] : "..text)
+		download = function(text)
+			print(time .. " - [" .. color("green", "Download") .. "] : " .. text)
 		end,
-		data = function (text)
-			print(time.." - ["..color("magenta","Data").."] : "..text)
+		data = function(text)
+			print(time .. " - [" .. color("magenta", "Data") .. "] : " .. text)
 		end,
-		speed = function (startTime)
-			print(time.." - ["..color("grey","Speed").."] : ".."Done in "..os.clock()-startTime.." seconds.")
+		speed = function(startTime)
+			print(time .. " - [" .. color("grey", "Speed") .. "] : " .. "Done in " .. os.clock() - startTime .. " seconds.")
 		end,
 		-- Might be used for an easter egg feature in the future...
-		special = function (text)
-			print(time.." - ["..color("orange","!!!!").."] : "..text)
-		end
+		special = function(text)
+			print(time .. " - [" .. color("orange", "!!!!") .. "] : " .. text)
+		end,
 	}
-	
+
 	logFunctions[type](message)
 end
 
@@ -67,7 +67,7 @@ end
 	@param text string -- The text to color.
 	@return string -- The colored text.
 ]=]
-function Logging.Private.colorText(colorName: string, text: string): string 
+function Logging.Private.colorText(colorName: string, text: string): string
 	local colorList = {
 		red = "\27[31m",
 		green = "\27[32m",
@@ -78,9 +78,9 @@ function Logging.Private.colorText(colorName: string, text: string): string
 		white = "\27[37m",
 		grey = "\27[90m",
 		orange = "\27[91m",
-		reset = "\27[0m"
+		reset = "\27[0m",
 	}
-	return colorList[colorName]..text..colorList["reset"]
+	return colorList[colorName] .. text .. colorList["reset"]
 end
 
 return Logging.Public

@@ -1,3 +1,3 @@
 return {
-	Configuration = require("./Configuration")
+	Configuration = require("./Configuration"),
 }

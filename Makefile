@@ -19,11 +19,16 @@ build: $(BUILD_FOLDER)stweaks.luau
 	@echo "Compiling project..."
 	lune build $(BUILD_FOLDER)stweaks.luau
 
+# -------------- Run --------------
 run:
 	@echo "Running project..."
 	lune run init
 
-# -------------- Cleaning --------------
+# -------------- Extra --------------
+style:
+	@echo "Running linter..."
+	stylua .
+
 clean:
 	@echo "Cleaning up..."
 	rm -rf "$(BUILD_FOLDER)"

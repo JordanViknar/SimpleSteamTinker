@@ -1,7 +1,7 @@
 local Application = {}
 
-local process = require("@lune/process")
 local fs = require("@lune/fs")
+local process = require("@lune/process")
 
 local metadata = require("./Metadata")
 local Filesystem = require("./Utilities").Filesystem
@@ -17,16 +17,20 @@ function Application.start()
 		We need to create the config folder if it doesn't exist.
 	]]
 	-- Prepare folders if necessary
-	for _, folder in ipairs({metadata.folders.config, metadata.folders.gamesConfig, metadata.folders.cache}) do
+	for _, folder in ipairs({
+		metadata.folders.config,
+		metadata.folders.gamesConfig,
+		metadata.folders.cache,
+	}) do
 		Filesystem.createOrUseDirectory(folder)
 	end
 
 	-- Development version detection
 	if metadata.version:find("dev") then
-		Logging.write("warning", "This is a development version of "..metadata.name.." !")
+		Logging.write("warning", "This is a development version of " .. metadata.name .. " !")
 		Logging.separator()
 		-- Put the arguments inside the cache folder for testing purposes
-		fs.writeFile(metadata.folders.cache.."/arguments.txt", table.concat(process.args, "\n"))
+		fs.writeFile(metadata.folders.cache .. "/arguments.txt", table.concat(process.args, "\n"))
 	end
 
 	--[[

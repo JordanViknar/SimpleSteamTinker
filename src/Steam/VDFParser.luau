@@ -57,8 +57,8 @@ function VDFParser.Private.parse(input: string): VDFTable
 				pos = pos + 1
 				if pos <= len then
 					local nextChar = input:sub(pos, pos)
-					if nextChar == "\"" then
-						result = result .. "\""
+					if nextChar == '"' then
+						result = result .. '"'
 					elseif nextChar == "\\" then
 						result = result .. "\\"
 					elseif nextChar == "n" then
@@ -69,7 +69,7 @@ function VDFParser.Private.parse(input: string): VDFTable
 						result = result .. "\\" .. nextChar
 					end
 				end
-			elseif char == "\"" then
+			elseif char == '"' then
 				break
 			else
 				result = result .. char
@@ -82,7 +82,7 @@ function VDFParser.Private.parse(input: string): VDFTable
 	-- Parsing logic
 	local pos = 1
 	local len = #input
-	local stack: {VDFValue} = {}
+	local stack: { VDFValue } = {}
 	local currentTable: VDFTable = {}
 	local currentKey: string? = nil
 
@@ -105,8 +105,7 @@ function VDFParser.Private.parse(input: string): VDFTable
 				currentTable[currentKey] = parsedString
 				currentKey = nil
 			end
-		
-		elseif char == '{' then
+		elseif char == "{" then
 			-- Start a new table
 			local newTable: VDFTable = {}
 			if currentKey ~= nil then
@@ -117,8 +116,7 @@ function VDFParser.Private.parse(input: string): VDFTable
 			end
 			table.insert(stack, currentTable)
 			currentTable = newTable
-
-		elseif char == '}' then
+		elseif char == "}" then
 			-- End the current table
 			if #stack == 0 then
 				error("Malformed VDF: encountered '}' without a matching '{'")
@@ -129,20 +127,19 @@ function VDFParser.Private.parse(input: string): VDFTable
 				error("Malformed VDF")
 			end
 			currentTable = data
-
-		elseif char == '\n' or char == '\t' or char == ' ' then
+		elseif char == "\n" or char == "\t" or char == " " then
 			-- Skip whitespace
 		else
 			error("Malformed VDF: unexpected character '" .. char .. "'")
 		end
-	
+
 		pos = pos + 1
 	end
-	
+
 	if #stack > 0 then
 		error("Malformed VDF: unclosed '{'")
 	end
-	
+
 	return currentTable
 end
 
@@ -177,7 +174,7 @@ function VDFParser.Private.sanitize(input: VDFTable)
 		end
 	end
 
-	local result: {any: any} = {}
+	local result: { any: any } = {}
 
 	for key, value in pairs(input) do
 		-- Convert both the key and the value

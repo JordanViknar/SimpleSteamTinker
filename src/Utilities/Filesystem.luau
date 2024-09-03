@@ -18,7 +18,7 @@ local Filesystem = {}
 ]=]
 function Filesystem.createOrUseDirectory(path: string): string
 	if not fs.isDir(path) then
-		Logging.write("debug", "Directory "..path.." not found. Creating it...")
+		Logging.write("debug", "Directory " .. path .. " not found. Creating it...")
 		fs.writeDir(path)
 	end
 	return path
@@ -33,21 +33,20 @@ end
 ]=]
 function Filesystem.getSize(path: string): number
 	path = path:gsub("'", "'\\''")
-	
-	local handle = process.spawn("du",{"-sb",path})
-	
+
+	local handle = process.spawn("du", { "-sb", path })
+
 	if not handle.ok then
-		error("Failed to get size of path "..path..": "..handle.stderr)
+		error("Failed to get size of path " .. path .. ": " .. handle.stderr)
 	end
 
 	local result = tonumber(handle.stdout:match("^(%d+)")) -- Grab only the number
 	if not result then
-		error("Failed to parse size for output ("..handle.stdout..")")
+		error("Failed to parse size for output (" .. handle.stdout .. ")")
 	else
 		return result
 	end
 end
-
 
 --[=[
 	Converts a size in bytes to a human-readable size.
@@ -56,8 +55,8 @@ end
 	@return string -- The human-readable size.
 ]=]
 function Filesystem.sizeToUnit(size: number): string
-	local units = {"B", "KB", "MB", "GB", "TB"}
-	local unit = units[1]  -- Default to "B" (bytes)
+	local units = { "B", "KB", "MB", "GB", "TB" }
+	local unit = units[1] -- Default to "B" (bytes)
 
 	for i = 2, #units do
 		if size >= 1024 then
@@ -68,7 +67,7 @@ function Filesystem.sizeToUnit(size: number): string
 		end
 	end
 
-	return string.format("%.2f", size).." "..unit
+	return string.format("%.2f", size) .. " " .. unit
 end
 
 --[=[
@@ -78,7 +77,7 @@ end
 	@param pattern string -- The pattern to search for.
 	@return {string} -- A table containing every filename matching the pattern.
 ]=]
-function Filesystem.getFilenamePatternInDirectory(directory: string, pattern: string): {string}
+function Filesystem.getFilenamePatternInDirectory(directory: string, pattern: string): { string }
 	local result = {}
 
 	for _, file in fs.readDir(directory) do

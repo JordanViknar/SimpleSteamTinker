@@ -5,15 +5,15 @@ local process = require("@lune/process")
 	Application constants used throughout the program.
 ]=]
 local Metadata = {
-	name ="STweaks",
+	name = "STweaks",
 	description = "A work-in-progress fast, simple and modern Libadwaita alternative to SteamTinkerLaunch.",
-	version="indev",
+	version = "indev",
 	folders = {
-		config = process.env.HOME.."/.config/Stweaks",
-		gamesConfig = process.env.HOME.."/.config/Stweaks/games",
-		storage = process.env.HOME.."/.local/share/Stweaks",
-		cache = process.env.HOME.."/.cache/Stweaks"
-	}
+		config = process.env.HOME .. "/.config/Stweaks",
+		gamesConfig = process.env.HOME .. "/.config/Stweaks/games",
+		storage = process.env.HOME .. "/.local/share/Stweaks",
+		cache = process.env.HOME .. "/.cache/Stweaks",
+	},
 }
 
 return Metadata

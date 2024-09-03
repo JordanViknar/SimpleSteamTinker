@@ -1,5 +1,5 @@
 return {
 	Logging = require("./Logging"),
 	Filesystem = require("./Filesystem"),
-	Async = require("./Async")
+	Async = require("./Async"),
 }

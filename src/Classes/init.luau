@@ -1,3 +1,3 @@
 return {
-	SteamApp = require("./SteamApp")
+	SteamApp = require("./SteamApp"),
 }
