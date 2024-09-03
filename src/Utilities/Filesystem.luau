@@ -89,4 +89,21 @@ function Filesystem.getFilenamePatternInDirectory(directory: string, pattern: st
 	return result
 end
 
+function Filesystem.directoryContainsLinuxData(path: string): boolean
+	local files = fs.readDir(path)
+	for _, file in ipairs(files) do
+		if file:find(".sh") or not file:find(".") and not fs.isDir(path) then
+			file = path .. "/" .. file
+
+			Logging.write("data", "Checking file " .. file)
+			local contents = fs.readFile(file)
+
+			if contents:find("Linux") or contents:find("shell") then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 return Filesystem

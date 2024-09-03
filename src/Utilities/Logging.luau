@@ -1,5 +1,5 @@
 type LogColor = "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "grey" | "orange" | "reset"
-type LogType = "info" | "warning" | "error" | "debug" | "download" | "data" | "speed" | "special"
+type LogType = "info" | "warn" | "error" | "debug" | "data" | "speed" | "special"
 
 --[=[
 	@class Utilities.Logging
@@ -27,17 +27,14 @@ function Logging.Public.write(type: LogType, message: string | number)
 		info = function(text)
 			print(time .. " - [" .. color("blue", "Info") .. "] : " .. text)
 		end,
-		warning = function(text)
-			print(time .. " - [" .. color("yellow", "Warning") .. "] : " .. color("yellow", text))
+		warn = function(text)
+			print(time .. " - [" .. color("yellow", "Warn") .. "] : " .. color("yellow", text))
 		end,
 		error = function(text)
 			print(time .. " - " .. color("red", "[Error] : " .. text))
 		end,
 		debug = function(text)
 			print(time .. " - [" .. color("grey", "Debug") .. "] : " .. color("grey", text))
-		end,
-		download = function(text)
-			print(time .. " - [" .. color("green", "Download") .. "] : " .. text)
 		end,
 		data = function(text)
 			print(time .. " - [" .. color("magenta", "Data") .. "] : " .. text)

@@ -10,7 +10,14 @@ local SteamApp = {}
 
 SteamApp.Interface = {}
 
-function SteamApp.Interface.new(appID: number, name: string, library: string, location: string, platform: ("windows" | "linux")?, launchArguments: string?): SteamApp
+function SteamApp.Interface.new(
+	appID: number,
+	name: string,
+	library: string,
+	location: string,
+	platform: ("windows" | "linux")?,
+	launchArguments: string?
+): SteamApp
 	-- Is the app configured to use STweaks ?
 	local tweaksEnabled = false
 	if launchArguments and launchArguments:find(Metadata.executable) then

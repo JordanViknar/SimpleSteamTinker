@@ -124,6 +124,15 @@ type appmanifest_vdf = {
 	},
 }
 
+type compat_vdf = {
+	platform_overrides: {
+		[number]: {
+			dest: "windows" | "linux",
+			src: "windows" | "linux",
+		},
+	},
+}
+
 -- STweaker
 
 -- TODO
@@ -162,6 +171,18 @@ function Configuration.Public.getSteamConfiguration(): string?
 	Logging.separator()
 
 	--[[
+		Chapter 2.5 : We recover compat.vdf to know if a game has ever used its Windows version.
+		We can't use it directly to get the platform details, as games that have previously used Proton will still be set to "windows" here.
+		Logically, a game completely absent from this list is a native Linux game.
+	]]
+	local compat_vdf: compat_vdf = Configuration.Private.VDFHandler(
+		process.env.HOME .. "/.local/share/Steam/userdata/" .. activeUserSteamID3 .. "/config/compat.vdf",
+		"Failed to parse compat.vdf file."
+	)
+	Logging.write("info", "Compatibility data loaded.")
+	Logging.separator()
+
+	--[[
 		Chapter 3 : We recover the Steam library config to get the list of games.
 		We can't use just libraryfolders.vdf to get the game IDs, as Steam seems to not always update it immediately.
 	]]
@@ -170,14 +191,13 @@ function Configuration.Public.getSteamConfiguration(): string?
 	Logging.write("info", "Steam libraries loaded.")
 	Logging.separator()
 
-	--print(userGameConfigurations, libraries)
-
 	local steamApps = {}
+	local steamAppCount = 0
 
 	Async.asyncForEach(libraries.libraryfolders, function(_, library)
 		-- We check if the folder exists
 		if not fs.metadata(library.path).exists then
-			Logging.write("warning", "Steam library " .. library.path .. " doesn't exist. Skipping...")
+			Logging.write("warn", "Steam library " .. library.path .. " doesn't exist. Skipping...")
 		else
 			Logging.write("data", "Checking library " .. library.path)
 			local appManifestFilenames = Filesystem.getFilenamePatternInDirectory(library.path .. "/steamapps", "appmanifest_")
@@ -188,22 +208,39 @@ function Configuration.Public.getSteamConfiguration(): string?
 
 				Logging.write("info", "Found " .. appManifest.AppState.appid .. " : " .. appManifest.AppState.name)
 
+				local location = library.path .. "/steamapps/common/" .. appManifest.AppState.installdir
+
+				-- Does the game have launch options set ?
 				local configuration = userGameConfigurations[appManifest.AppState.appid]
 				local launchOptions
 				if configuration then
 					launchOptions = configuration.LaunchOptions
 				end
 
-				local steamApp = SteamApp.new(
-					appManifest.AppState.appid,
-					appManifest.AppState.name,
-					library.path,
-					library.path .. "/steamapps/common/" .. appManifest.AppState.installdir,
-					appManifest.AppState.MountedConfig.platform_override_source,
-					launchOptions
-				)
+				-- Do we know the game's platform
+				local osPlatform: ("windows" | "linux")? = appManifest.AppState.MountedConfig.platform_override_source
+				if not osPlatform then
+					local compat = compat_vdf.platform_overrides[appManifest.AppState.appid]
+					-- The app being absent from the compat.vdf list means it can only be a native Linux game
+					if not compat then
+						osPlatform = "linux"
+					else
+						-- Gah ! We still don't have the platform... time to check manually.
+						Logging.write(
+							"warn",
+							"Platform not found for " .. appManifest.AppState.appid .. " : " .. appManifest.AppState.name .. ". Using manual check..."
+						)
+						if not Filesystem.directoryContainsLinuxData(location) then
+							osPlatform = "windows"
+						else
+							osPlatform = "linux"
+						end
+					end
+				end
 
-				table.insert(steamApps, steamApp)
+				local steamApp = SteamApp.new(appManifest.AppState.appid, appManifest.AppState.name, library.path, location, osPlatform, launchOptions)
+				steamApps[steamApp.appID] = steamApp
+				steamAppCount += 1
 			end)
 		end
 	end)
@@ -211,6 +248,8 @@ function Configuration.Public.getSteamConfiguration(): string?
 	Logging.separator()
 
 	print(steamApps)
+
+	Logging.write("info", "Loaded " .. steamAppCount .. " Steam apps.")
 
 	return
 end
