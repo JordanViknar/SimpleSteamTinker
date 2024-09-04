@@ -8,7 +8,7 @@ ifeq ($(PREFIX),)
 endif
 BUILD_FOLDER := dist/
 
-.PHONY: system install uninstall clean local
+.PHONY: build run check style clean
 
 # -------------- Packaging --------------
 $(BUILD_FOLDER)stweaks.luau:
