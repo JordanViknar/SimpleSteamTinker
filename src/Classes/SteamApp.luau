@@ -20,7 +20,7 @@ function SteamApp.Interface.new(
 ): SteamApp
 	-- Is the app configured to use STweaks ?
 	local tweaksEnabled = false
-	if launchArguments and launchArguments:find(Metadata.executable) then
+	if launchArguments and launchArguments:find(Metadata.executable .. " ") then
 		tweaksEnabled = true
 	end
 

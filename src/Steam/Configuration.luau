@@ -245,11 +245,10 @@ function Configuration.Public.getSteamConfiguration(): string?
 		end
 	end)
 
-	Logging.separator()
-
 	print(steamApps)
 
 	Logging.write("info", "Loaded " .. steamAppCount .. " Steam apps.")
+	Logging.separator()
 
 	return
 end
