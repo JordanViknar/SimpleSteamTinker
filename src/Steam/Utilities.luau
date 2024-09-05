@@ -11,22 +11,22 @@ local Utilities = {}
 	Checks if the arguments are from Steam or not.
 	Non-Steam game support later on will probably necessitate changes.
 
-	@return boolean -- Returns true if the arguments are from Steam, aka Steam launched the application.
+	@return number -- Returns the launched AppID if the arguments are from Steam, otherwise nil.
 ]=]
-function Utilities.isSteamLaunch(): boolean
-	local arguments = process.args
+function Utilities.isSteamLaunch(): number?
+	local appIDArgumentIndex
+	for index, argument in ipairs(process.args) do
+		-- Locate the SteamLaunch argument, our AppID will be the next argument.
+		if argument == "SteamLaunch" then
+			appIDArgumentIndex = index + 1
+			break
+		end
+	end
 
-	if
-		--arguments[1] == process.env.HOME.."/.local/share/Steam/ubuntu12_32/reaper" and
-		arguments[2] == "SteamLaunch"
-		and arguments[3]:match("AppId=%d+")
-		and arguments[4] == "--"
-		--arguments[5] == process.env.HOME.."/.local/share/Steam/ubuntu12_32/steam-launch-wrapper" and
-		and arguments[6] == "--"
-	then
-		return true
+	if appIDArgumentIndex then
+		return tonumber(process.args[appIDArgumentIndex]:match("AppId=(%d+)"))
 	else
-		return false
+		return nil
 	end
 end
 

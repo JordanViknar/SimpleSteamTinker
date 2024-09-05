@@ -9,11 +9,11 @@ local VDFParser = {}
 VDFParser.Private = {}
 VDFParser.Public = {}
 
--- Public
+-- ---------------------------------- Public
 
 --[=[
 	Parses a VDF file into a table.
-	
+
 	@param path string -- The path to the file.
 	@return The parsed file if successful.
 ]=]
@@ -23,7 +23,7 @@ end
 
 --[=[
 	Parses a VDF string into a table.
-	
+
 	@param input string -- The VDF string to parse.
 	@return The parsed table if successful.
 ]=]
@@ -31,13 +31,14 @@ function VDFParser.Public.parseString(input: string)
 	return VDFParser.Private.sanitize(VDFParser.Private.parse(input))
 end
 
--- Private
+-- ---------------------------------- Private
+
 type VDFTable = { [string]: VDFValue }
 type VDFValue = string | VDFTable
 
 --[=[
 	Parses a VDF string into a table. Private side of the parser.
-	
+
 	@param input The VDF string to parse.
 	@return The parsed table if successful.
 ]=]
@@ -143,43 +144,46 @@ end
 
 --[=[
 	Sanitizes a VDF table by converting string values to their proper types.
-	
-	@param input The VDF table to sanitize.
+
+	@param input -- The VDF table to sanitize.
 	@return The sanitized table.
 ]=]
 function VDFParser.Private.sanitize(input: VDFTable)
-	local function convert(value: any): any
-		if type(value) == "string" then
-			-- Check for number values (integers or floats)
-			local numberValue = tonumber(value)
-			if numberValue ~= nil then
-				return numberValue
-			end
-
-			-- Check for empty strings
-			if value == "" then
-				return nil
-			end
-
-			-- If it's neither, return the original string
-			return value
-		elseif type(value) == "table" then
-			-- Recursively sanitize nested tables
-			return VDFParser.Private.sanitize(value)
-		else
-			-- Return the value as-is for unsupported types (shouldn't happen in a VDF)
-			return value
-		end
-	end
-
-	local result: { any: any } = {}
+	local result = {}
 
 	for key, value in pairs(input) do
-		-- Convert both the key and the value
-		result[convert(key)] = convert(value)
+		result[VDFParser.Private.convertValue(key)] = VDFParser.Private.convertValue(value)
 	end
 
 	return result
+end
+
+--[=[
+	Converts a VDF value to its proper type.
+
+	@param value -- The value to convert.
+	@return The converted value.
+]=]
+function VDFParser.Private.convertValue(value: any): any
+	if type(value) == "string" then
+		-- Check for number values (integers or floats)
+		local numberValue = tonumber(value)
+		if numberValue ~= nil then
+			return numberValue
+		end
+		-- Check for empty strings
+		if value == "" then
+			return nil
+		end
+		-- If it's neither, return the original string
+		return value
+	elseif type(value) == "table" then
+		-- Recursively sanitize nested tables
+		return VDFParser.Private.sanitize(value)
+	else
+		-- Return the value as-is for unsupported types (shouldn't happen in a VDF)
+		return value
+	end
 end
 
 return VDFParser.Public

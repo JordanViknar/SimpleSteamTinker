@@ -49,13 +49,10 @@ function SteamApp.Interface.new(
 		name = name,
 		library = library,
 		location = location,
-
 		size = nil,
 		protonDBData = nil,
-
 		type = type,
 		osPlatform = osPlatform,
-
 		protonConfig = nil,
 		tweaksEnabled = tweaksEnabled,
 	}
@@ -64,17 +61,14 @@ end
 export type SteamApp = {
 	appID: number,
 	name: string,
+	tweaksEnabled: boolean?,
 	library: string,
 	location: string,
-
-	size: number?, -- Slow, done in UI (Currently unused)
-	protonDBData: { any }?, -- Slow, done in UI (Currently unused)
-
 	type: "Game" | "Other" | "Proton",
 	osPlatform: ("Windows" | "Linux")?,
-
+	size: number?, -- Slow, done in UI (Currently unused)
+	protonDBData: { any }?, -- Slow, done in UI (Currently unused)
 	protonConfig: ProtonConfig?, -- (Currently unused)
-	tweaksEnabled: boolean?,
 }
 
 type ProtonConfig = {

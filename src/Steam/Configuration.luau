@@ -146,7 +146,7 @@ Configuration.Public = {}
 
 -- Public
 
-function Configuration.Public.getSteamConfiguration(): string?
+function Configuration.Public.getSteamConfiguration()
 	--[[
 		Chapter 1 : We recover the Steam user config so we can get the last active user.
 		And also the SteamID3 to access their settings folder.
@@ -206,7 +206,7 @@ function Configuration.Public.getSteamConfiguration(): string?
 				local appManifestPath: string = library.path .. "/steamapps/" .. appManifestFilename
 				local appManifest: appmanifest_vdf = Configuration.Private.VDFHandler(appManifestPath, "Failed to parse " .. appManifestPath .. ".", false)
 
-				Logging.write("info", "Found " .. appManifest.AppState.appid .. " : " .. appManifest.AppState.name)
+				Logging.write("info", 'Found "' .. appManifest.AppState.name .. '" (' .. appManifest.AppState.appid .. ")")
 
 				local location = library.path .. "/steamapps/common/" .. appManifest.AppState.installdir
 
@@ -228,7 +228,7 @@ function Configuration.Public.getSteamConfiguration(): string?
 						-- Gah ! We still don't have the platform... time to check manually.
 						Logging.write(
 							"warn",
-							"Platform not found for " .. appManifest.AppState.appid .. " : " .. appManifest.AppState.name .. ". Using manual check..."
+							'Platform not found for "' .. appManifest.AppState.name .. '" (' .. appManifest.AppState.appid .. "). Using manual check..."
 						)
 						if not Filesystem.directoryContainsLinuxData(location) then
 							osPlatform = "windows"
@@ -245,12 +245,10 @@ function Configuration.Public.getSteamConfiguration(): string?
 		end
 	end)
 
-	print(steamApps)
-
-	Logging.write("info", "Loaded " .. steamAppCount .. " Steam apps.")
+	Logging.write("info", "Found " .. steamAppCount .. " Steam apps.")
 	Logging.separator()
 
-	return
+	return steamApps
 end
 
 -- Private
@@ -280,13 +278,12 @@ end
 -- loginuser.vdf
 
 function Configuration.Private.getMostRecentUserID(userData: loginusers_vdf): number
-	local activeUserID
 	for id, data in pairs(userData.users) do
 		if data.MostRecent == 1 then
-			activeUserID = id
+			return id
 		end
 	end
-	return activeUserID
+	error("No most recent user found in loginusers.vdf. What ?!")
 end
 
 return Configuration.Public

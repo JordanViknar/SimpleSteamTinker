@@ -11,7 +11,7 @@ BUILD_FOLDER := dist/
 .PHONY: build run check style clean
 
 # -------------- Packaging --------------
-$(BUILD_FOLDER)stweaks.luau:
+$(BUILD_FOLDER)stweaks.luau: clean
 	@echo "Using DarkLua to bundle Luau code..."
 	darklua process init.luau $(BUILD_FOLDER)stweaks.luau -v
 

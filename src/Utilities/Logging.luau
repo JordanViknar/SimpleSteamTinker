@@ -1,5 +1,7 @@
-type LogColor = "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "grey" | "orange" | "reset"
-type LogType = "info" | "warn" | "error" | "debug" | "data" | "speed" | "special"
+local stdio = require("@lune/stdio")
+
+type LogColor = "black" | "blue" | "cyan" | "green" | "purple" | "red" | "reset" | "white" | "yellow"
+type LogType = "info" | "warn" | "error" | "debug" | "data" | "speed" | "special" | "success"
 
 --[=[
 	@class Utilities.Logging
@@ -34,17 +36,20 @@ function Logging.Public.write(type: LogType, message: string | number)
 			print(time .. " - " .. color("red", "[Error] : " .. text))
 		end,
 		debug = function(text)
-			print(time .. " - [" .. color("grey", "Debug") .. "] : " .. color("grey", text))
+			print(time .. " - [" .. color("white", "Debug") .. "] : " .. color("white", text))
 		end,
 		data = function(text)
-			print(time .. " - [" .. color("magenta", "Data") .. "] : " .. text)
+			print(time .. " - [" .. color("purple", "Data") .. "] : " .. text)
 		end,
 		speed = function(startTime)
-			print(time .. " - [" .. color("grey", "Speed") .. "] : " .. "Done in " .. os.clock() - startTime .. " seconds.")
+			print(time .. " - [" .. color("white", "Speed") .. "] : " .. "Done in " .. os.clock() - startTime .. " seconds.")
+		end,
+		success = function(text)
+			print(time .. " - [" .. color("green", "Success") .. "] : " .. text)
 		end,
 		-- Might be used for an easter egg feature in the future...
 		special = function(text)
-			print(time .. " - [" .. color("orange", "!!!!") .. "] : " .. text)
+			print(time .. " - [" .. color("red", "!!!!") .. "] : " .. text)
 		end,
 	}
 
@@ -64,20 +69,8 @@ end
 	@param text string -- The text to color.
 	@return string -- The colored text.
 ]=]
-function Logging.Private.colorText(colorName: string, text: string): string
-	local colorList = {
-		red = "\27[31m",
-		green = "\27[32m",
-		yellow = "\27[33m",
-		blue = "\27[34m",
-		magenta = "\27[35m",
-		cyan = "\27[36m",
-		white = "\27[37m",
-		grey = "\27[90m",
-		orange = "\27[91m",
-		reset = "\27[0m",
-	}
-	return colorList[colorName] .. text .. colorList["reset"]
+function Logging.Private.colorText(colorName: LogColor, text: string): string
+	return stdio.color(colorName) .. text .. stdio.color("reset")
 end
 
 return Logging.Public

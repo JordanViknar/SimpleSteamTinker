@@ -50,7 +50,7 @@ end
 
 --[=[
 	Converts a size in bytes to a human-readable size.
-	
+
 	@param size number -- The size to convert.
 	@return string -- The human-readable size.
 ]=]
@@ -72,7 +72,7 @@ end
 
 --[=[
 	Returns a table containing every filename matching a pattern in a directory.
-	
+
 	@param directory string -- The directory to search in.
 	@param pattern string -- The pattern to search for.
 	@return {string} -- A table containing every filename matching the pattern.
@@ -92,7 +92,7 @@ end
 function Filesystem.directoryContainsLinuxData(path: string): boolean
 	local files = fs.readDir(path)
 	for _, file in ipairs(files) do
-		if file:find(".sh") or not file:find(".") and not fs.isDir(path) then
+		if not fs.isDir(path) and (file:find(".sh") or not file:find(".")) then
 			file = path .. "/" .. file
 
 			Logging.write("data", "Checking file " .. file)
