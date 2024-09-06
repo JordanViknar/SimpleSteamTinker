@@ -133,10 +133,6 @@ type compat_vdf = {
 	},
 }
 
--- STweaker
-
--- TODO
-
 -- --------------------------- Script -----------------------------
 
 local Configuration = {}

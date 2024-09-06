@@ -11,7 +11,7 @@ local Metadata = {
 	executable = "stweaks",
 	folders = {
 		config = process.env.HOME .. "/.config/Stweaks",
-		gamesConfig = process.env.HOME .. "/.config/Stweaks/games",
+		gamesConfig = process.env.HOME .. "/.config/Stweaks/Games",
 		storage = process.env.HOME .. "/.local/share/Stweaks",
 		cache = process.env.HOME .. "/.cache/Stweaks",
 	},

@@ -1,0 +1,3 @@
+return {
+	Games = require("./Games")
+}

@@ -9,12 +9,9 @@ local Filesystem = Utilities.Filesystem
 local Logging = Utilities.Logging
 local System = Utilities.System
 local Steam = require("./Steam")
+local Launcher = require("./Launcher")
 
 function Application.start()
-	--[[
-		Chapter 0 : Preparing the environment
-		We need to create the config folder if it doesn't exist.
-	]]
 	-- Prepare folders if necessary
 	for _, folder in ipairs({
 		metadata.folders.config,
@@ -31,11 +28,7 @@ function Application.start()
 		fs.writeFile(metadata.folders.cache .. "/arguments.txt", table.concat(process.args, "\n"))
 	end
 
-	--[[
-		Chapter 1 : Game management
-		Is this being started through Steam or alone ?
-		What's the Steam config then ?
-	]]
+	-- Check if we're launched through Steam, start the game with its settings if so
 	local launchedAppID = Steam.Utilities.isSteamLaunch()
 	if launchedAppID then
 		Logging.write("info", "Launched through Steam (AppID " .. launchedAppID .. ").")
@@ -57,10 +50,17 @@ function Application.start()
 			process.exit(1)
 		end
 
+		-- Tell the user we found the game
 		Logging.write("success", 'Detected "' .. gameData.name .. '" (' .. gameData.appID .. ") !")
 		System.sendNotification(metadata.name, "Detected " .. gameData.name .. ".", "normal", true)
+
+		-- Go into the Game Launcher module.
+		local command: {string} = Launcher.prepareLaunchCommand(gameData)
+		print(command)
 	else
 		Logging.write("info", "Launched without Steam.")
+
+		-- :( - Lune FFI is not implemented yet, so no interface.
 		System.sendNotification(metadata.name, "No graphical interface implemented yet.", "critical", true)
 		error("No graphical interface implemented yet.")
 	end
