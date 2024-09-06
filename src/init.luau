@@ -3,9 +3,11 @@ local Application = {}
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 
+local Utilities = require("./Utilities")
 local metadata = require("./Metadata")
-local Filesystem = require("./Utilities").Filesystem
-local Logging = require("./Utilities").Logging
+local Filesystem = Utilities.Filesystem
+local Logging = Utilities.Logging
+local System = Utilities.System
 local Steam = require("./Steam")
 
 function Application.start()
@@ -43,6 +45,7 @@ function Application.start()
 		local ok, steamConfig = pcall(Steam.Configuration.getSteamConfiguration)
 		if not ok then
 			Logging.write("error", "Failed to load Steam games.")
+			System.sendNotification(metadata.name, "Failed to load Steam games.", "critical", true)
 			process.exit(1)
 		end
 
@@ -50,12 +53,15 @@ function Application.start()
 		local gameData = steamConfig[launchedAppID]
 		if not gameData then
 			Logging.write("error", "No data found for game with AppID " .. launchedAppID .. ".")
+			System.sendNotification(metadata.name, "No data found for game with AppID " .. launchedAppID .. ".", "critical", true)
 			process.exit(1)
 		end
 
 		Logging.write("success", 'Detected "' .. gameData.name .. '" (' .. gameData.appID .. ") !")
+		System.sendNotification(metadata.name, "Detected " .. gameData.name .. ".", "normal", true)
 	else
 		Logging.write("info", "Launched without Steam.")
+		System.sendNotification(metadata.name, "No graphical interface implemented yet.", "critical", true)
 		error("No graphical interface implemented yet.")
 	end
 end
