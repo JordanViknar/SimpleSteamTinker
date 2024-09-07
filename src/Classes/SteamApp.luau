@@ -1,7 +1,7 @@
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 
-local Metadata = require("../Metadata")
+local Metadata = require("@Metadata/")
 
 local SteamApp = {}
 

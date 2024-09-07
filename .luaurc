@@ -3,7 +3,12 @@
 	"lint": {
     	"*": false
 	},
-	"globals": [
-		"warn"
-	]
+	"aliases": {
+		"Classes": "./src/Classes",
+		"Configuration": "./src/Configuration",
+		"Launcher" : "./src/Launcher",
+		"Steam": "./src/Steam",
+		"Utilities": "./src/Utilities",
+		"Metadata": "./src/Metadata"
+	}
 }

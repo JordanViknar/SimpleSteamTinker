@@ -1,7 +1,17 @@
 {
 	"generator": { "name": "dense", "column_span": 175},
 	"bundle": {
-		"require_mode": "path",
+		"require_mode": {
+			"name" : "path",
+			"sources": {
+				"@Classes": "./src/Classes",
+				"@Configuration": "./src/Configuration",
+				"@Launcher" : "./src/Launcher",
+				"@Steam": "./src/Steam",
+				"@Utilities": "./src/Utilities",
+				"@Metadata": "./src/Metadata"
+			}
+		},
 		"excludes": ["@lune/**"]
 	},
 	"rules": [

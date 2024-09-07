@@ -1,13 +1,12 @@
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 
-local Utilities = require("../Utilities")
-local Logging = Utilities.Logging
-local Async = Utilities.Async
-local Filesystem = Utilities.Filesystem
+local Logging = require("@Utilities/Logging")
+local Async = require("@Utilities/Async")
+local Filesystem = require("@Utilities/Filesystem")
 local SteamUtilities = require("./Utilities")
 local VDFParser = require("./VDFParser")
-local SteamApp = require("../Classes").SteamApp
+local SteamApp = require("@Classes/SteamApp")
 
 local function VDFHandler(filePath: string, errorMessage: string, logging: boolean?): any
 	if logging == nil then
@@ -168,6 +167,8 @@ type compat_vdf = {
 local Configuration = {}
 
 function Configuration.getSteamConfiguration()
+	local timeStart = os.clock()
+
 	--[[
 		Chapter 1 : We recover the Steam user config so we can get the last active user.
 		And also the SteamID3 to access their settings folder.
@@ -267,6 +268,7 @@ function Configuration.getSteamConfiguration()
 	end)
 
 	Logging.write("info", "Found " .. steamAppCount .. " Steam apps.")
+	Logging.write("speed", timeStart)
 	Logging.separator()
 
 	return steamApps

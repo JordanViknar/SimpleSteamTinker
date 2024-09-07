@@ -1,6 +1,6 @@
 local process = require("@lune/process")
 
-local Logging = require("Logging")
+local Logging = require("./Logging")
 
 local System = {}
 

@@ -1,3 +1,5 @@
 return {
-	Games = require("./Games/Functions")
+	Games = {
+		Functions = require("./Games/Functions")
+	}
 }

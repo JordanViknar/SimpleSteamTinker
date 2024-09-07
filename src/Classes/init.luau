@@ -1,3 +1,0 @@
-return {
-	SteamApp = require("./SteamApp"),
-}

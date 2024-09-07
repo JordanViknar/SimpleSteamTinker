@@ -1,10 +1,11 @@
 local fs = require("@lune/fs")
 local serde = require("@lune/serde")
 
-local SteamApp = require("../../Classes/SteamApp")
+local SteamApp = require("@Classes/SteamApp")
+local Metadata = require("@Metadata/")
+local Logging = require("@Utilities/Logging")
+
 local Default = require("./Default")
-local Metadata = require("../../Metadata")
-local Logging = require("../../Utilities/Logging")
 
 local function createGameConfiguration(appData : SteamApp.SteamApp) : Default.GameConfiguration
 	local newConfig = Default.getDefaultGameConfiguration(appData)

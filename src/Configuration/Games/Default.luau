@@ -1,4 +1,4 @@
-local SteamApp = require("../../Classes/SteamApp")
+local SteamApp = require("@Classes/SteamApp")
 
 export type GameConfiguration = {
 	appID : number,
