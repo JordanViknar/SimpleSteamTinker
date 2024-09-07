@@ -3,12 +3,10 @@ local process = require("@lune/process")
 
 local Metadata = require("../Metadata")
 
--- Constants
-local steamImageLocation = process.env.HOME .. "/.local/share/Steam/appcache/librarycache/"
-
 local SteamApp = {}
 
 SteamApp.Interface = {}
+SteamApp.Prototype = {}
 
 function SteamApp.Interface.new(
 	appID: number,
@@ -36,7 +34,7 @@ function SteamApp.Interface.new(
 	-- What type is the app ?
 	-- Current way of detecting if an app is a game or a tool... not the greatest.
 	local type: "Game" | "Other" | "Proton" = "Game"
-	if not fs.metadata(steamImageLocation .. appID .. "_library_600x900.jpg").exists then
+	if not fs.metadata(process.env.HOME .. "/.local/share/Steam/appcache/librarycache/" .. appID .. "_library_600x900.jpg").exists then
 		type = "Other"
 		if name:find("Proton") then
 			type = "Proton"

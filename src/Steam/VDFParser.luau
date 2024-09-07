@@ -1,48 +1,9 @@
 local fs = require("@lune/fs")
 
---[=[
-	Contains functions for parsing VDF files and strings.
-	Lune does not support VDF files natively.
-]=]
-local VDFParser = {}
-
-VDFParser.Private = {}
-VDFParser.Public = {}
-
--- ---------------------------------- Public
-
---[=[
-	Parses a VDF file into a table.
-
-	@param path string -- The path to the file.
-	@return The parsed file if successful.
-]=]
-function VDFParser.Public.parseFile(path: string)
-	return VDFParser.Public.parseString(fs.readFile(path))
-end
-
---[=[
-	Parses a VDF string into a table.
-
-	@param input string -- The VDF string to parse.
-	@return The parsed table if successful.
-]=]
-function VDFParser.Public.parseString(input: string)
-	return VDFParser.Private.sanitize(VDFParser.Private.parse(input))
-end
-
--- ---------------------------------- Private
-
 type VDFTable = { [string]: VDFValue }
 type VDFValue = string | VDFTable
 
---[=[
-	Parses a VDF string into a table. Private side of the parser.
-
-	@param input The VDF string to parse.
-	@return The parsed table if successful.
-]=]
-function VDFParser.Private.parse(input: string): VDFTable
+local function parseVDFData(input: string): VDFTable
 	-- Trim function to remove whitespace
 	local function trim(s: string): string?
 		return s:match("^%s*(.-)%s*$")
@@ -142,48 +103,46 @@ function VDFParser.Private.parse(input: string): VDFTable
 	return currentTable
 end
 
---[=[
-	Sanitizes a VDF table by converting string values to their proper types.
+local function sanitizeVDFTable(input: VDFTable)
+	local function convertValue(value: any): any
+		if type(value) == "string" then
+			-- Check for number values (integers or floats)
+			local numberValue = tonumber(value)
+			if numberValue ~= nil then
+				return numberValue
+			end
+			-- Check for empty strings
+			if value == "" then
+				return nil
+			end
+			-- If it's neither, return the original string
+			return value
+		elseif type(value) == "table" then
+			-- Recursively sanitize nested tables
+			return sanitizeVDFTable(value)
+		else
+			-- Return the value as-is for unsupported types (shouldn't happen in a VDF)
+			return value
+		end
+	end
 
-	@param input -- The VDF table to sanitize.
-	@return The sanitized table.
-]=]
-function VDFParser.Private.sanitize(input: VDFTable)
 	local result = {}
-
 	for key, value in pairs(input) do
-		result[VDFParser.Private.convertValue(key)] = VDFParser.Private.convertValue(value)
+		result[convertValue(key)] = convertValue(value)
 	end
 
 	return result
 end
 
---[=[
-	Converts a VDF value to its proper type.
 
-	@param value -- The value to convert.
-	@return The converted value.
-]=]
-function VDFParser.Private.convertValue(value: any): any
-	if type(value) == "string" then
-		-- Check for number values (integers or floats)
-		local numberValue = tonumber(value)
-		if numberValue ~= nil then
-			return numberValue
-		end
-		-- Check for empty strings
-		if value == "" then
-			return nil
-		end
-		-- If it's neither, return the original string
-		return value
-	elseif type(value) == "table" then
-		-- Recursively sanitize nested tables
-		return VDFParser.Private.sanitize(value)
-	else
-		-- Return the value as-is for unsupported types (shouldn't happen in a VDF)
-		return value
-	end
+local VDFParser = {}
+
+function VDFParser.parseFile(path: string)
+	return VDFParser.parseString(fs.readFile(path))
 end
 
-return VDFParser.Public
+function VDFParser.parseString(input: string)
+	return sanitizeVDFTable(parseVDFData(input))
+end
+
+return VDFParser

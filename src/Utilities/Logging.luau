@@ -3,26 +3,13 @@ local stdio = require("@lune/stdio")
 type LogColor = "black" | "blue" | "cyan" | "green" | "purple" | "red" | "reset" | "white" | "yellow"
 type LogType = "info" | "warn" | "error" | "debug" | "data" | "speed" | "special" | "success"
 
---[=[
-	@class Utilities.Logging
+local function color(colorName: LogColor, text: string): string
+	return stdio.color(colorName) .. text .. stdio.color("reset")
+end
 
-	Contains functions for logging to the console.
-]=]
 local Logging = {}
-Logging.Private = {}
-Logging.Public = {}
 
--- Public
-
---[=[
-	Writes a message in the logs.
-
-	@param type string -- The log type.
-	@param message string -- The message to log.
-	@return nil
-]=]
-function Logging.Public.write(type: LogType, message: string | number)
-	local color = Logging.Private.colorText
+function Logging.write(type: LogType, message: string | number)
 	local time = os.date("%H:%M:%S")
 
 	local logFunctions = {
@@ -56,21 +43,8 @@ function Logging.Public.write(type: LogType, message: string | number)
 	logFunctions[type](message)
 end
 
-function Logging.Public.separator()
+function Logging.separator()
 	print("---------------------------------------------------------------------------------------------")
 end
 
--- Private
-
---[=[
-	Colors a text.
-
-	@param colorName string -- The color's name.
-	@param text string -- The text to color.
-	@return string -- The colored text.
-]=]
-function Logging.Private.colorText(colorName: LogColor, text: string): string
-	return stdio.color(colorName) .. text .. stdio.color("reset")
-end
-
-return Logging.Public
+return Logging

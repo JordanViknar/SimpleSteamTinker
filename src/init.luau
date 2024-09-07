@@ -1,5 +1,3 @@
-local Application = {}
-
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 
@@ -10,6 +8,8 @@ local Logging = Utilities.Logging
 local System = Utilities.System
 local Steam = require("./Steam")
 local Launcher = require("./Launcher")
+
+local Application = {}
 
 function Application.start()
 	-- Prepare folders if necessary
