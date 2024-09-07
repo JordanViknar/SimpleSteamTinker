@@ -1,0 +1,13 @@
+{
+  "luau-lsp.require.mode": "relativeToFile",
+  "luau-lsp.require.directoryAliases": {
+    "@lune/": "~/.lune/.typedefs/0.8.8/",
+	"@Classes": "src/Classes",
+	"@Configuration": "src/Configuration",
+	"@Launcher" : "src/Launcher",
+	"@Steam": "src/Steam",
+	"@Utilities": "src/Utilities",
+	"@Metadata": "src/Metadata"
+},
+  "luau-lsp.sourcemap.enabled": false
+}

@@ -1,0 +1,26 @@
+{
+	"generator": { "name": "dense", "column_span": 175},
+	"bundle": {
+		"require_mode": {
+			"name" : "path",
+			"sources": {
+				"@Classes": "./src/Classes",
+				"@Configuration": "./src/Configuration",
+				"@Launcher" : "./src/Launcher",
+				"@Steam": "./src/Steam",
+				"@Utilities": "./src/Utilities",
+				"@Metadata": "./src/Metadata"
+			}
+		},
+		"excludes": ["@lune/**"]
+	},
+	"rules": [
+		"remove_comments",
+		"remove_spaces",
+		"remove_nil_declaration",
+		"compute_expression",
+		"remove_unused_if_branch",
+		"filter_after_early_return",
+		"remove_empty_do"
+	]
+}
